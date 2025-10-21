@@ -136,7 +136,7 @@ public:
         }
     };
     SolarSystem() {
-        //TODO: insert random planet generation
+        //to do: insert random planet generation
     }
     friend std::ostream& operator<<(std::ostream& out,SolarSystem system);
 };
@@ -158,7 +158,7 @@ public:
         }
     };
     Universe() {
-        //TODO: Random Systems generation
+        //to do: Random Systems generation
     }
 };
 
