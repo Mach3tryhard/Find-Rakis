@@ -18,7 +18,10 @@ private:
     Pair velocity;
 public:
     /// CONSTRUCTORS
-    Physics() {}
+    Physics() {
+        position = {0,0};
+        velocity = {0,0};
+    }
     Physics(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
@@ -36,7 +39,9 @@ public:
     void UpdatePosition() {
         this->position.x += velocity.x;
         this->position.y += velocity.y;
-
+    }
+    Pair GetPosition() {
+        return position;
     }
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
@@ -48,18 +53,30 @@ std::ostream& operator<<(std::ostream& out, const Physics& state) {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SpaceShip {
 private:
+    sf::CircleShape triangle{10.0f,3};
     Collider collider;
     Physics physics;
-    double direction;
     double fuel,energy,ore;
 public:
-    SpaceShip(Physics physics,Collider collider,double direction, double fuel, double energy, double ore) {
-        this->collider = collider;
+    SpaceShip(Physics physics, double fuel, double energy, double ore) {
+        this->triangle.setOrigin({this->triangle.getRadius(), this->triangle.getRadius()});
         this->physics = physics;
-        this->direction = direction;
         this->fuel = fuel;
         this->energy = energy;
         this->ore = ore;
+    }
+    SpaceShip(Physics physics,Collider collider,double direction, double fuel, double energy, double ore) {
+        this->collider = collider;
+        this->physics = physics;
+        this->fuel = fuel;
+        this->energy = energy;
+        this->ore = ore;
+    }
+    sf::CircleShape& GetShape() {
+        return triangle;
+    }
+    Physics& GetPhysics() {
+        return physics;
     }
     friend std::ostream& operator<<(std::ostream& out,SpaceShip ship);
 };
@@ -67,7 +84,6 @@ std::ostream& operator<<(std::ostream& out,SpaceShip ship) {
     out<<"SHIP\n";
     out<<ship.physics<<'\n';
     out<<"Stats:\n";
-    out<<"Direction:"<<ship.direction<<'\n';
     out<<"Fuel:"<<ship.fuel<<"Energy:"<<ship.energy<<"ORE:"<<ship.ore<<'\n';
     return out;
 }
@@ -220,82 +236,55 @@ std::ostream& operator<<(std::ostream& out,Universe universe) {
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
-    ///
-    std::cout << "Hello, world!\n";
-    std::array<int, 100> v{};
-    int nr;
-    std::cout << "Introduceți nr: ";
-    /////////////////////////////////////////////////////////////////////////
-    /// Observație: dacă aveți nevoie să citiți date de intrare de la tastatură,
-    /// dați exemple de date de intrare folosind fișierul tastatura.txt
-    /// Trebuie să aveți în fișierul tastatura.txt suficiente date de intrare
-    /// (în formatul impus de voi) astfel încât execuția programului să se încheie.
-    /// De asemenea, trebuie să adăugați în acest fișier date de intrare
-    /// pentru cât mai multe ramuri de execuție.
-    /// Dorim să facem acest lucru pentru a automatiza testarea codului, fără să
-    /// mai pierdem timp de fiecare dată să introducem de la zero aceleași date de intrare.
-    ///
-    /// Pe GitHub Actions (bife), fișierul tastatura.txt este folosit
-    /// pentru a simula date introduse de la tastatură.
-    /// Bifele verifică dacă programul are erori de compilare, erori de memorie și memory leaks.
-    ///
-    /// Dacă nu puneți în tastatura.txt suficiente date de intrare, îmi rezerv dreptul să vă
-    /// testez codul cu ce date de intrare am chef și să nu pun notă dacă găsesc vreun bug.
-    /// Impun această cerință ca să învățați să faceți un demo și să arătați părțile din
-    /// program care merg (și să le evitați pe cele care nu merg).
-    ///
-    /////////////////////////////////////////////////////////////////////////
-    std::cin >> nr;
-    /////////////////////////////////////////////////////////////////////////
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "v[" << i << "] = ";
-        std::cin >> v[i];
-    }
-    std::cout << "\n\n";
-    std::cout << "Am citit de la tastatură " << nr << " elemente:\n";
-    for(int i = 0; i < nr; ++i) {
-        std::cout << "- " << v[i] << "\n";
-    }
-    ///////////////////////////////////////////////////////////////////////////
-    /// Pentru date citite din fișier, NU folosiți tastatura.txt. Creați-vă voi
-    /// alt fișier propriu cu ce alt nume doriți.
-    /// Exemplu:
-    /// std::ifstream fis("date.txt");
-    /// for(int i = 0; i < nr2; ++i)
-    ///     fis >> v2[i];
-    ///
-    ///////////////////////////////////////////////////////////////////////////
-
     sf::RenderWindow window;
-    ///////////////////////////////////////////////////////////////////////////
     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
-    window.create(sf::VideoMode({800, 700}), "My Window", sf::Style::Default);
-    ///////////////////////////////////////////////////////////////////////////
+    window.create(sf::VideoMode({800, 800}), "My Window", sf::Style::Default);
     std::cout << "Fereastra a fost creată\n";
-    ///////////////////////////////////////////////////////////////////////////
-    /// NOTE: mandatory use one of vsync or FPS limit (not both)            ///
-    /// This is needed so we do not burn the GPU                            ///
-    window.setVerticalSyncEnabled(true);                                    ///
-    /// window.setFramerateLimit(60);                                       ///
-    ///////////////////////////////////////////////////////////////////////////
+    window.setFramerateLimit(60);//window.setVerticalSyncEnabled(true);
+    sf::View view(sf::FloatRect({0, 0}, {800, 800}));
+    window.setView(view);
+
+    sf::Font font("jetbrains.ttf");
+    sf::Text debugText(font);
+    debugText.setFont(font);
+    debugText.setCharacterSize(18);
+    debugText.setFillColor(sf::Color::White);
+    debugText.setPosition({10, 10});
+
+    Physics physics;
+    SpaceShip player{physics,100,100,100};
+    player.GetShape().setPosition({400.0f,400.0f});
 
     while(window.isOpen()) {
         bool shouldExit = false;
-
         while(const std::optional event = window.pollEvent()) {
-            if (event->is<sf::Event::Closed>()) {
+            if (event->is<sf::Event::Closed>())
                 window.close();
-                std::cout << "Fereastra a fost închisă\n";
-            }
-            else if (event->is<sf::Event::Resized>()) {
-                std::cout << "New width: " << window.getSize().x << '\n'
-                          << "New height: " << window.getSize().y << '\n';
+            else
+            if (event->is<sf::Event::Resized>()) {
+                const auto* resize = event->getIf<sf::Event::Resized>();
+                float newWidth = static_cast<float>(resize->size.x);
+                float newHeight = static_cast<float>(resize->size.y);
+                sf::FloatRect visibleArea({0.f, 0.f}, {newWidth, newHeight});
+                view = sf::View(visibleArea);
+                window.setView(view);
+
+                player.GetShape().setPosition({newWidth / 2.f, newHeight / 2.f});
+
+                std::cout << "x nou: " << newWidth << '\n'
+                          << "y nou: " << newHeight << '\n';
             }
             else if (event->is<sf::Event::KeyPressed>()) {
                 const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
                 std::cout << "Received key " << (keyPressed->scancode == sf::Keyboard::Scancode::X ? "X" : "(other)") << "\n";
                 if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                     shouldExit = true;
+                }
+                else if (keyPressed->scancode == sf::Keyboard::Scancode::Up) {
+                    std::cout << "Up arrow pressed\n";
+                }
+                else if (keyPressed->scancode == sf::Keyboard::Scancode::Down) {
+                    std::cout << "Down arrow pressed\n";
                 }
             }
         }
@@ -304,13 +293,29 @@ int main() {
             std::cout << "Fereastra a fost închisă (shouldExit == true)\n";
             break;
         }
-        using namespace std::chrono_literals;
-        std::this_thread::sleep_for(300ms);
-
+        //using namespace std::chrono_literals;
+        //std::this_thread::sleep_for(300ms);
         window.clear();
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+            player.GetShape().rotate(sf::degrees(-10.f));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
+            player.GetShape().rotate(sf::degrees(10.f));
+        }
+
+        window.draw(player.GetShape());
+
+        std::string posText ="x: " + std::to_string(player.GetPhysics().GetPosition().x) +" y: " + std::to_string(player.GetPhysics().GetPosition().y);
+        debugText.setString(posText);
+        window.draw(debugText);
+
         window.display();
     }
-
+    /// TODO : solar systems can generate on eachother
+    /// TODO : move spaceship
+    /// TODO : show celestial bodies when they are in view
+    /// TODO : move things from main into functions
     std::cout << "Programul a terminat execuția\n";
     return 0;
 }
