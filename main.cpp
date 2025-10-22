@@ -4,12 +4,14 @@
 #include <chrono>
 #include <thread>
 #include <SFML/Graphics.hpp>
+#include <random>
 
 struct Pair {
     double x,y;
 };
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Collider {};
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Physics {
 private:
     Pair position;
@@ -26,57 +28,24 @@ public:
         this->velocity = velocity;
     }
     ~Physics() {}
-    /// OPERATORS
     Physics& operator=(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
         return *this;
     }
-    friend std::ostream& operator<<(std::ostream& out,const Physics& state);
-    /// FUNCTIONS
     void UpdatePosition() {
         this->position.x += velocity.x;
         this->position.y += velocity.y;
 
     }
+    friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
     out<<"Position:X-"<<state.position.x<<" Y-"<<state.position.y<<'\n';
     out<<"Velocity:X-"<<state.velocity.x<<" Y-"<<state.velocity.y<<'\n';
     return out;
 }
-
-class Celestial {
-private:
-    Collider collider;
-    Physics physics;
-    int health;
-    double radius,gravity,gravity_radius;
-    int color;
-    bool solid;
-public:
-    Celestial(Physics physics,Collider collider,int health,double radius,double gravity,double gravity_radius,int color,bool solid){
-        this->collider = collider;
-        this->physics = physics;
-        this->health = health;
-        this->radius = radius;
-        this->gravity = gravity;
-        this->gravity_radius = gravity_radius;
-        this->color = color;
-        this->solid = solid;
-    }
-    friend std::ostream& operator<<(std::ostream& out,Celestial body);
-};
-std::ostream& operator<<(std::ostream& out,Celestial body){
-    out<<"BODY\n";
-    out<<body.physics<<'\n';
-    out<<"Stats:\n";
-    out<<"Health:"<<body.health<<'\n'<<"Radius:"<<body.radius<<'\n';
-    out<<"Gravity:"<<body.gravity<<'\n'<<"Gravity_Radius:"<<body.gravity_radius<<'\n';
-    out<<"Color:"<<body.color<<'\n'<<"Solid:"<<body.solid<<'\n';
-    return out;
-}
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SpaceShip {
 private:
     Collider collider;
@@ -102,8 +71,7 @@ std::ostream& operator<<(std::ostream& out,SpaceShip ship) {
     out<<"Fuel:"<<ship.fuel<<"Energy:"<<ship.energy<<"ORE:"<<ship.ore<<'\n';
     return out;
 }
-
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Bullet {
 private:
     Collider collider;
@@ -124,7 +92,48 @@ std::ostream& operator<<(std::ostream& out,Bullet bullet) {
     out<<"Damage:"<<bullet.damage<<'\n';
     return out;
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class Celestial {
+private:
+    Collider collider;
+    Physics physics;
+    int health,index,color;
+    double radius,gravity,gravity_radius;
+    bool solid;
+public:
+    Celestial(Physics physics,int index) {
+        ///RANDOMLY GENERATED CELESTIAL
+        this->health = 10;
+        this->index = index;
+        this->color = 0;
+        this->radius = 30;
+        this->gravity = 10;
+        this->gravity_radius = 50;
+        this->solid = true;
+    }
+    Celestial(Physics physics,Collider collider,int health,double radius,double gravity,double gravity_radius,int color,bool solid,int index){
+        this->collider = collider;
+        this->physics = physics;
+        this->health = health;
+        this->radius = radius;
+        this->gravity = gravity;
+        this->gravity_radius = gravity_radius;
+        this->color = color;
+        this->solid = solid;
+        this->index = index;
+    }
+    friend std::ostream& operator<<(std::ostream& out,Celestial body);
+};
+std::ostream& operator<<(std::ostream& out,Celestial body){
+    out<<"BODY\n";
+    out<<body.physics<<'\n';
+    out<<"Stats:\n";
+    out<<"Index"<<body.index<<'\n'<<"Health:"<<body.health<<'\n'<<"Radius:"<<body.radius<<'\n';
+    out<<"Gravity:"<<body.gravity<<'\n'<<"Gravity_Radius:"<<body.gravity_radius<<'\n';
+    out<<"Color:"<<body.color<<'\n'<<"Solid:"<<body.solid<<'\n';
+    return out;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SolarSystem {
 private:
     Physics physics;
@@ -135,8 +144,32 @@ public:
             this->bodies.push_back(bod);
         }
     };
-    SolarSystem() {
-        //to do: insert random planet generation
+    SolarSystem(Physics physics) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> d_planets(2, 9);
+        int n_planets = d_planets(gen);
+        std::uniform_int_distribution<> d_stars(1, 3);
+        int n_stars = d_stars(gen);
+        std::uniform_int_distribution<> d_asteroid(n_stars+1, n_planets+n_stars);
+        int asteroid_position = d_asteroid(gen);
+
+        /// Generating planets positions
+        int r=0;
+        for (int i=0; i<=n_stars; i++) {
+            std::uniform_int_distribution<> distrib_radius(100, 120);
+            std::uniform_real_distribution<> distrib(-r, r);
+            double posx=distrib(gen);
+            double posy= sqrt(r*r-posx*posx);
+            if (n_planets%2==0) posy=-posy;
+            Pair object_position = {posx,posy};
+            Pair object_velocity = {0,0};
+            Physics newphysics(object_position,object_velocity);
+            Celestial newcelestial(newphysics,i);
+            bodies.push_back(newcelestial);
+
+            r+=distrib_radius(gen);
+        }
     }
     friend std::ostream& operator<<(std::ostream& out,SolarSystem system);
 };
@@ -147,21 +180,45 @@ std::ostream& operator<<(std::ostream& out,SolarSystem system) {
     }
     return out;
 }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Universe {
 private:
     std::vector<SolarSystem> systems;
 public:
+    Universe(){}
     Universe(std::vector<SolarSystem> systems) {
         for (auto& system : systems) {
             this->systems.push_back(system);
         }
     };
-    Universe() {
-        //to do: Random Systems generation
+    ~Universe() {
+        systems.clear();
     }
+    void Create_Universe(const int number) {
+        for (int i=1;i<=number;i++) {
+            int min = -10800,max = 10800;
+            std::random_device rd;
+            std::mt19937 gen(rd());
+            std::uniform_real_distribution<> distrib(min, max);
+            double posx = distrib(gen);
+            double posy = distrib(gen);
+            Pair system_position = {posx,posy};
+            Pair system_velocity = {0,0};
+            Physics newphysics(system_position,system_velocity);
+            SolarSystem newsystem(newphysics);
+            systems.push_back(newsystem);
+        }
+    }
+    friend std::ostream& operator<<(std::ostream& out,Universe universe);
 };
-
+std::ostream& operator<<(std::ostream& out,Universe universe) {
+    out<<"THE WHOLE UNIVERSE : \n";
+    for (auto& each_system : universe.systems) {
+        out<<each_system<<'\n';
+    }
+    return out;
+}
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
     ///
     std::cout << "Hello, world!\n";
