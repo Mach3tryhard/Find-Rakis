@@ -1,5 +1,4 @@
 #include <iostream>
-#include <array>
 #include <vector>
 #include <chrono>
 #include <thread>
@@ -16,6 +15,7 @@ class Physics {
 private:
     Pair position;
     Pair velocity;
+    Pair acceleration;
 public:
     /// CONSTRUCTORS
     Physics() {
@@ -25,24 +25,40 @@ public:
     Physics(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
+        this->acceleration = state.acceleration;
     }
-    Physics(Pair position, Pair velocity) {
+    Physics(Pair position) {
         this->position = position;
-        this->velocity = velocity;
+        this->velocity = {0,0};
+        this->acceleration = {0,0};
     }
     ~Physics() {}
     Physics& operator=(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
+        this->acceleration = state.velocity;
         return *this;
     }
-    void UpdatePosition() {
-        this->position.x += velocity.x;
-        this->position.y += velocity.y;
+    void UpdatePhysics() {
+        this->velocity.x += this->acceleration.x;
+        this->velocity.y += this->acceleration.y;
+        this->position.x += this->velocity.x;
+        if (this->velocity.x>2)
+            this->velocity.x = 2;
+        if ( this->velocity.y>2)
+            this->velocity.y = 2;
+        if (this->velocity.x<-2)
+            this->velocity.x = -2;
+        if (this->velocity.y<-2)
+            this->velocity.y = -2;
+        this->position.y += this->velocity.y;
     }
-    Pair GetPosition() {
-        return position;
-    }
+    Pair GetPosition() {return position;}
+    Pair GetVelocity() {return velocity;}
+    Pair GetAcceleration() {return acceleration;}
+    void SetAcceleration(Pair acceleration) {this->acceleration = acceleration;}
+    void SetPosition(Pair position) {this->position = position;}
+    void SetVelocity(Pair velocity) {this->velocity = velocity;}
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
@@ -57,6 +73,7 @@ private:
     Collider collider;
     Physics physics;
     double fuel,energy,ore;
+    bool upPressed=false;
 public:
     SpaceShip(Physics physics, double fuel, double energy, double ore) {
         this->triangle.setOrigin({this->triangle.getRadius(), this->triangle.getRadius()});
@@ -65,7 +82,7 @@ public:
         this->energy = energy;
         this->ore = ore;
     }
-    SpaceShip(Physics physics,Collider collider,double direction, double fuel, double energy, double ore) {
+    SpaceShip(Physics physics,Collider collider, double fuel, double energy, double ore) {
         this->collider = collider;
         this->physics = physics;
         this->fuel = fuel;
@@ -78,9 +95,30 @@ public:
     Physics& GetPhysics() {
         return physics;
     }
-    friend std::ostream& operator<<(std::ostream& out,SpaceShip ship);
+    void Action() {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+            triangle.rotate(sf::degrees(-5.f));
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
+            triangle.rotate(sf::degrees(5.f));
+        }
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
+            upPressed = true;
+            float angleRad = triangle.getRotation().asRadians();
+            Pair direction{std::cos(angleRad), std::sin(angleRad)};
+            float thrust = 0.025f;
+            direction.x *= thrust;direction.y *= thrust;
+            physics.SetAcceleration(direction);
+        }else
+        if (upPressed) {
+            upPressed = false;
+            physics.SetAcceleration({0, 0});
+        }
+    }
+    friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
 };
-std::ostream& operator<<(std::ostream& out,SpaceShip ship) {
+std::ostream& operator<<(std::ostream& out,const SpaceShip& ship) {
     out<<"SHIP\n";
     out<<ship.physics<<'\n';
     out<<"Stats:\n";
@@ -179,8 +217,7 @@ public:
             double posy= sqrt(r*r-posx*posx);
             if (n_planets%2==0) posy=-posy;
             Pair object_position = {posx,posy};
-            Pair object_velocity = {0,0};
-            Physics newphysics(object_position,object_velocity);
+            Physics newphysics(object_position);
             Celestial newcelestial(newphysics,i);
             bodies.push_back(newcelestial);
 
@@ -219,8 +256,7 @@ public:
             double posx = distrib(gen);
             double posy = distrib(gen);
             Pair system_position = {posx,posy};
-            Pair system_velocity = {0,0};
-            Physics newphysics(system_position,system_velocity);
+            Physics newphysics(system_position);
             SolarSystem newsystem(newphysics);
             systems.push_back(newsystem);
         }
@@ -235,6 +271,33 @@ std::ostream& operator<<(std::ostream& out,Universe universe) {
     return out;
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+class GUI {
+private:
+    sf::Font font;
+    sf::Text debugText;
+public:
+    GUI() : debugText(font) {
+        this->font = sf::Font("../resources/jetbrains.ttf");
+        this->debugText = sf::Text(font);
+        this->debugText.setFont(font);
+        this->debugText.setCharacterSize(18);
+        this->debugText.setFillColor(sf::Color::White);
+    }
+    sf::Text& GetText() {
+        return this->debugText;
+    }
+    void UpdateGUI(SpaceShip& player) {
+        std::string posText ="position: x: " + std::to_string(player.GetPhysics().GetPosition().x)
+        +"y: " + std::to_string(player.GetPhysics().GetPosition().y)
+        + "\ndirection: "+ std::to_string(player.GetShape().getRotation().asDegrees())
+        + "\nvelocity: x " + std::to_string(player.GetPhysics().GetVelocity().x)
+        +"y: " + std::to_string(player.GetPhysics().GetVelocity().y)
+        + "\nacceleration: x " + std::to_string(player.GetPhysics().GetAcceleration().x)
+        +"y: " + std::to_string(player.GetPhysics().GetAcceleration().y);
+        debugText.setString(posText);
+    }
+};
 int main() {
     sf::RenderWindow window;
     /// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
@@ -244,13 +307,11 @@ int main() {
     sf::View view(sf::FloatRect({0, 0}, {800, 800}));
     window.setView(view);
 
-    sf::Font font("jetbrains.ttf");
-    sf::Text debugText(font);
-    debugText.setFont(font);
-    debugText.setCharacterSize(18);
-    debugText.setFillColor(sf::Color::White);
-    debugText.setPosition({10, 10});
+    /// CREATE GUI
+    GUI gui{};
+    gui.GetText().setPosition({10,10});
 
+    /// CREATE PLAYER
     Physics physics;
     SpaceShip player{physics,100,100,100};
     player.GetShape().setPosition({400.0f,400.0f});
@@ -263,28 +324,18 @@ int main() {
             else
             if (event->is<sf::Event::Resized>()) {
                 const auto* resize = event->getIf<sf::Event::Resized>();
-                float newWidth = static_cast<float>(resize->size.x);
-                float newHeight = static_cast<float>(resize->size.y);
-                sf::FloatRect visibleArea({0.f, 0.f}, {newWidth, newHeight});
+                sf::FloatRect visibleArea({0.f, 0.f}, {static_cast<float>(resize->size.x), static_cast<float>(resize->size.y)});
                 view = sf::View(visibleArea);
                 window.setView(view);
-
-                player.GetShape().setPosition({newWidth / 2.f, newHeight / 2.f});
-
-                std::cout << "x nou: " << newWidth << '\n'
-                          << "y nou: " << newHeight << '\n';
+                player.GetShape().setPosition({static_cast<float>(resize->size.x) / 2.f, static_cast<float>(resize->size.y) / 2.f});
+                std::cout << "x nou: " << static_cast<float>(resize->size.x) << '\n'
+                          << "y nou: " << static_cast<float>(resize->size.y) << '\n';
             }
             else if (event->is<sf::Event::KeyPressed>()) {
                 const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
                 std::cout << "Received key " << (keyPressed->scancode == sf::Keyboard::Scancode::X ? "X" : "(other)") << "\n";
                 if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                     shouldExit = true;
-                }
-                else if (keyPressed->scancode == sf::Keyboard::Scancode::Up) {
-                    std::cout << "Up arrow pressed\n";
-                }
-                else if (keyPressed->scancode == sf::Keyboard::Scancode::Down) {
-                    std::cout << "Down arrow pressed\n";
                 }
             }
         }
@@ -297,18 +348,13 @@ int main() {
         //std::this_thread::sleep_for(300ms);
         window.clear();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
-            player.GetShape().rotate(sf::degrees(-10.f));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
-            player.GetShape().rotate(sf::degrees(10.f));
-        }
-
+        /// DRAW PLAYER, INPUT AND UPDATE PLAYER
+        player.Action();
+        player.GetPhysics().UpdatePhysics();
         window.draw(player.GetShape());
-
-        std::string posText ="x: " + std::to_string(player.GetPhysics().GetPosition().x) +" y: " + std::to_string(player.GetPhysics().GetPosition().y);
-        debugText.setString(posText);
-        window.draw(debugText);
+        /// DRAW GUI
+        gui.UpdateGUI(player);
+        window.draw(gui.GetText());
 
         window.display();
     }
