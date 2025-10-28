@@ -15,7 +15,7 @@ class Collider {};
 class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 public:
-    ParticleSystem(unsigned int count)
+    explicit ParticleSystem(unsigned int count)
         : m_particles(count), m_vertices(sf::PrimitiveType::Points, count)
     {}
     void setEmitter(sf::Vector2f position) {
@@ -104,12 +104,12 @@ public:
         this->velocity = state.velocity;
         this->acceleration = state.acceleration;
     }
-    Physics(Pair position) {
+    explicit Physics(Pair position) {
         this->position = position;
         this->velocity = {0,0};
         this->acceleration = {0,0};
     }
-    ~Physics() {}
+    ~Physics() = default;
     Physics& operator=(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
@@ -147,13 +147,13 @@ std::ostream& operator<<(std::ostream& out, const Physics& state) {
 class Bullet {
 private:
     sf::CircleShape shape;
-    Collider collider;
+    //Collider collider;
     Physics physics;
     const int damage=10;
     const int radius =5;
 public:
     static const float speed;
-    Bullet(const Physics& physics) {
+    explicit Bullet(const Physics& physics) {
         shape.setRadius(this->radius);
         shape.setOrigin({static_cast<float>(this->radius), static_cast<float>(this->radius)});
         Pair pos = physics.getPosition();
@@ -352,12 +352,12 @@ private:
     Physics physics;
     std::vector<Celestial> bodies;
 public:
-    SolarSystem(const std::vector<Celestial>& bodies) {
+    explicit SolarSystem(const std::vector<Celestial>& bodies) {
         for (auto& bod : bodies) {
             this->bodies.push_back(bod);
         }
     };
-    SolarSystem(const Physics& physics) {
+    explicit SolarSystem(const Physics& physics) {
         this->physics = physics;
         std::random_device rd;
         std::mt19937 gen(rd());
@@ -391,7 +391,7 @@ public:
             r+=distrib_radius(gen);
         }
     }
-    Physics getPhysics() {
+    Physics& getPhysics() {
         return physics;
     }
     std::vector<Celestial> getBodies() {
@@ -413,7 +413,7 @@ private:
     const int min_dist = 2000;
     std::vector<SolarSystem> systems;
 public:
-    Universe(int number) {
+    explicit Universe(int number) {
         for (int i=1;i<=number;i++) {
             int min = -constaint,max = constaint;
             std::random_device rd;
@@ -439,7 +439,7 @@ public:
             systems.push_back(newsystem);
         }
     }
-    Universe(std::vector<SolarSystem> systems) {
+    explicit Universe(std::vector<SolarSystem> systems) {
         for (auto& system : systems) {
             this->systems.push_back(system);
         }
