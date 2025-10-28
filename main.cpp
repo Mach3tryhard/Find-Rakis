@@ -163,7 +163,7 @@ public:
     }
     sf::CircleShape& getShape() {return shape;}
     Physics& getPhysics() { return physics; }
-    void Display(Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
+    void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
         Pair shipPos = position;
         Pair bulletPos = physics.getPosition();
         const sf::Vector2f screenCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
@@ -296,7 +296,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(Physics physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
+    Celestial(Physics& physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
         this->collider = collider;
         this->physics = physics;
         this->health = health;
@@ -353,7 +353,7 @@ private:
     std::vector<Celestial> bodies;
 public:
     explicit SolarSystem(const std::vector<Celestial>& bodies) {
-        for (auto& bod : bodies) {
+        for (const auto& bod : bodies) {
             this->bodies.push_back(bod);
         }
     };
@@ -399,9 +399,9 @@ public:
     }
     friend std::ostream& operator<<(std::ostream& out,SolarSystem system);
 };
-std::ostream& operator<<(std::ostream& out,SolarSystem system) {
+std::ostream& operator<<(std::ostream& out,SolarSystem& system) {
     out<<"SOLAR SYSTEM\n";
-    for (auto& bod : system.bodies) {
+    for (const auto& bod : system.getBodies()) {
         out<<bod<<'\n';
     }
     return out;
@@ -437,7 +437,7 @@ public:
         }
     }
     explicit Universe(std::vector<SolarSystem> systems) {
-        for (auto& system : systems) {
+        for (const auto& system : systems) {
             this->systems.push_back(system);
         }
     };
@@ -451,7 +451,7 @@ public:
 };
 std::ostream& operator<<(std::ostream& out,Universe universe) {
     out<<"THE WHOLE UNIVERSE : \n";
-    for (auto& each_system : universe.systems) {
+    for (const auto& each_system : universe.systems) {
         out<<each_system<<'\n';
     }
     return out;
