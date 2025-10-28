@@ -133,9 +133,9 @@ public:
     Pair getPosition() const {return position;}
     Pair getVelocity() const {return velocity;}
     Pair getAcceleration() {return acceleration;}
-    void SetAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
-    void SetPosition(Pair position_) {this->position = position_;}
-    void SetVelocity(Pair velocity_) {this->velocity = velocity_;}
+    void setAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
+    void setPosition(Pair position_) {this->position = position_;}
+    void setVelocity(Pair velocity_) {this->velocity = velocity_;}
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
@@ -221,7 +221,7 @@ public:
         float angleRad = triangle.getRotation().asRadians();
         angleRad -= 3.14159265f / 2.f;
         Pair direction{std::cos(angleRad) * thrust, std::sin(angleRad) * thrust};
-        physics.SetAcceleration(direction);
+        physics.setAcceleration(direction);
     }
     void ExhaustMove() {
         float angleRad = triangle.getRotation().asRadians();
@@ -240,7 +240,7 @@ public:
         Pair bulletVelocity{std::cos(angleRad) * Bullet::speed, std::sin(angleRad) * Bullet::speed};
         Pair bulletPos{shipPos.x, shipPos.y};
         Physics bulletPhysics(bulletPos);
-        bulletPhysics.SetVelocity(bulletVelocity);
+        bulletPhysics.setVelocity(bulletVelocity);
 
         Bullet newbullet(bulletPhysics);
         bullets.push_back(newbullet);
@@ -259,7 +259,7 @@ public:
         }else
         if (upPressed) {
             upPressed = false;
-            physics.SetAcceleration({0, 0});
+            physics.setAcceleration({0, 0});
         }
         exhaust.setEmitting(upPressed);
     }
@@ -420,7 +420,7 @@ public:
             std::mt19937 gen(rd());
             std::uniform_real_distribution<> distrib(min, max);
             Pair newpos={0,0};
-            int gasit=false;
+            /*int gasit=false;
             while (gasit==false) {
                 newpos = {distrib(gen), distrib(gen)};
                 gasit=true;
@@ -429,10 +429,7 @@ public:
                     if ( distance < min_dist)
                         gasit=false;
                 }
-            }
-            /// FOR TESTING
-            newpos= {0,0};
-            /// FOR TESTING
+            }*/
             Pair system_position = {newpos.x,newpos.y};
             Physics newphysics(system_position);
             SolarSystem newsystem(newphysics);
@@ -444,7 +441,7 @@ public:
             this->systems.push_back(system);
         }
     };
-    std::vector<SolarSystem> getSystems() {
+    std::vector<SolarSystem>& getSystems() {
         return systems;
     }
     ~Universe() {
