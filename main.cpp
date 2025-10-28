@@ -163,7 +163,7 @@ public:
     }
     sf::CircleShape& getShape() {return shape;}
     Physics& getPhysics() { return physics; }
-    void Display(Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
+    void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
         Pair shipPos = position;
         Pair bulletPos = physics.getPosition();
         const sf::Vector2f screenCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
@@ -296,7 +296,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(Physics physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
+    Celestial(Physics& physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
         this->collider = collider;
         this->physics = physics;
         this->health = health;
@@ -335,9 +335,9 @@ public:
     Physics& getPhysics() {
         return physics;
     }
-    friend std::ostream& operator<<(std::ostream& out,Celestial body);
+    friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
 };
-std::ostream& operator<<(std::ostream& out,Celestial body){
+std::ostream& operator<<(std::ostream& out,const Celestial& body){
     out<<"BODY\n";
     out<<body.physics<<'\n';
     out<<"Stats:\n";
@@ -394,14 +394,15 @@ public:
     Physics& getPhysics() {
         return physics;
     }
-    std::vector<Celestial> getBodies() {
+    std::vector<Celestial>& getBodies() {
         return bodies;
     }
-    friend std::ostream& operator<<(std::ostream& out,SolarSystem system);
+    friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);
 };
-std::ostream& operator<<(std::ostream& out,SolarSystem system) {
+
+std::ostream& operator<<(std::ostream& out,const SolarSystem& system) {
     out<<"SOLAR SYSTEM\n";
-    for (auto& bod : system.bodies) {
+    for (const auto& bod : system.bodies) {
         out<<bod<<'\n';
     }
     return out;
@@ -410,7 +411,7 @@ std::ostream& operator<<(std::ostream& out,SolarSystem system) {
 class Universe {
 private:
     const int constaint = 10800;
-    const int min_dist = 2000;
+    //const int min_dist = 2000;
     std::vector<SolarSystem> systems;
 public:
     explicit Universe(int number) {
@@ -436,8 +437,8 @@ public:
             systems.push_back(newsystem);
         }
     }
-    explicit Universe(std::vector<SolarSystem> systems) {
-        for (auto& system : systems) {
+    explicit Universe(std::vector<SolarSystem>& systems) {
+        for (const auto& system : systems) {
             this->systems.push_back(system);
         }
     };
@@ -447,11 +448,11 @@ public:
     ~Universe() {
         systems.clear();
     }
-    friend std::ostream& operator<<(std::ostream& out,Universe universe);
+    friend std::ostream& operator<<(std::ostream& out,Universe& universe);
 };
-std::ostream& operator<<(std::ostream& out,Universe universe) {
+std::ostream& operator<<(std::ostream& out,Universe& universe) {
     out<<"THE WHOLE UNIVERSE : \n";
-    for (auto& each_system : universe.systems) {
+    for (const auto& each_system : universe.systems) {
         out<<each_system<<'\n';
     }
     return out;
