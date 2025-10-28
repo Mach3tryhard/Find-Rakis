@@ -98,11 +98,7 @@ private:
     Pair acceleration{};
 public:
     /// CONSTRUCTORS
-    Physics() {
-        position = {0,0};
-        velocity = {0,0};
-        acceleration = {0,0};
-    }
+    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}){}
     Physics(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
@@ -137,9 +133,9 @@ public:
     Pair getPosition() const {return position;}
     Pair getVelocity() const {return velocity;}
     Pair getAcceleration() {return acceleration;}
-    void SetAcceleration(Pair acceleration) {this->acceleration = acceleration;}
-    void SetPosition(Pair position) {this->position = position;}
-    void SetVelocity(Pair velocity) {this->velocity = velocity;}
+    void SetAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
+    void SetPosition(Pair position_) {this->position = position_;}
+    void SetVelocity(Pair velocity_) {this->velocity = velocity_;}
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
@@ -151,7 +147,6 @@ std::ostream& operator<<(std::ostream& out, const Physics& state) {
 class Bullet {
 private:
     sf::CircleShape shape;
-    double lifetime,maxlifetime;
     Collider collider;
     Physics physics;
     const int damage=10;
@@ -164,7 +159,6 @@ public:
         Pair pos = physics.getPosition();
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(sf::Color::Green);
-        this->collider = collider;
         this->physics = physics;
     }
     sf::CircleShape& getShape() {return shape;}
@@ -544,7 +538,6 @@ int main() {
                     }
                     if(keyPressed->code == sf::Keyboard::Key::C) {
                         player.ShootBullet();
-                        std::cout<<"SHOOT";
                     }
                 }
         }
