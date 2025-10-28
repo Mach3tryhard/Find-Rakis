@@ -296,7 +296,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(Physics& physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
+    Celestial(const Physics& physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
         this->collider = collider;
         this->physics = physics;
         this->health = health;
@@ -353,7 +353,7 @@ private:
     std::vector<Celestial> bodies;
 public:
     explicit SolarSystem(const std::vector<Celestial>& bodies) {
-        for (auto& bod : bodies) {
+        for (const auto& bod : bodies) {
             this->bodies.push_back(bod);
         }
     };
@@ -437,7 +437,7 @@ public:
             systems.push_back(newsystem);
         }
     }
-    explicit Universe(std::vector<SolarSystem>& systems) {
+    explicit Universe(const std::vector<SolarSystem>& systems) {
         for (const auto& system : systems) {
             this->systems.push_back(system);
         }
@@ -448,9 +448,9 @@ public:
     ~Universe() {
         systems.clear();
     }
-    friend std::ostream& operator<<(std::ostream& out,Universe& universe);
+    friend std::ostream& operator<<(std::ostream& out,const Universe& universe);
 };
-std::ostream& operator<<(std::ostream& out,Universe& universe) {
+std::ostream& operator<<(std::ostream& out,const Universe& universe) {
     out<<"THE WHOLE UNIVERSE : \n";
     for (const auto& each_system : universe.systems) {
         out<<each_system<<'\n';
