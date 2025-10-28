@@ -133,9 +133,9 @@ public:
     Pair getPosition() const {return position;}
     Pair getVelocity() const {return velocity;}
     Pair getAcceleration() {return acceleration;}
-    void setAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
-    void setPosition(Pair position_) {this->position = position_;}
-    void setVelocity(Pair velocity_) {this->velocity = velocity_;}
+    void SetAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
+    void SetPosition(Pair position_) {this->position = position_;}
+    void SetVelocity(Pair velocity_) {this->velocity = velocity_;}
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
@@ -163,7 +163,7 @@ public:
     }
     sf::CircleShape& getShape() {return shape;}
     Physics& getPhysics() { return physics; }
-    void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
+    void Display(Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
         Pair shipPos = position;
         Pair bulletPos = physics.getPosition();
         const sf::Vector2f screenCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
@@ -221,7 +221,7 @@ public:
         float angleRad = triangle.getRotation().asRadians();
         angleRad -= 3.14159265f / 2.f;
         Pair direction{std::cos(angleRad) * thrust, std::sin(angleRad) * thrust};
-        physics.setAcceleration(direction);
+        physics.SetAcceleration(direction);
     }
     void ExhaustMove() {
         float angleRad = triangle.getRotation().asRadians();
@@ -240,7 +240,7 @@ public:
         Pair bulletVelocity{std::cos(angleRad) * Bullet::speed, std::sin(angleRad) * Bullet::speed};
         Pair bulletPos{shipPos.x, shipPos.y};
         Physics bulletPhysics(bulletPos);
-        bulletPhysics.setVelocity(bulletVelocity);
+        bulletPhysics.SetVelocity(bulletVelocity);
 
         Bullet newbullet(bulletPhysics);
         bullets.push_back(newbullet);
@@ -259,7 +259,7 @@ public:
         }else
         if (upPressed) {
             upPressed = false;
-            physics.setAcceleration({0, 0});
+            physics.SetAcceleration({0, 0});
         }
         exhaust.setEmitting(upPressed);
     }
@@ -296,7 +296,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(Physics& physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
+    Celestial(Physics physics,Collider collider,int health,double radius,double gravity,int color,bool solid,int index){
         this->collider = collider;
         this->physics = physics;
         this->health = health;
@@ -353,7 +353,7 @@ private:
     std::vector<Celestial> bodies;
 public:
     explicit SolarSystem(const std::vector<Celestial>& bodies) {
-        for (const auto& bod : bodies) {
+        for (auto& bod : bodies) {
             this->bodies.push_back(bod);
         }
     };
@@ -394,14 +394,14 @@ public:
     Physics& getPhysics() {
         return physics;
     }
-    std::vector<Celestial>& getBodies() {
+    std::vector<Celestial> getBodies() {
         return bodies;
     }
     friend std::ostream& operator<<(std::ostream& out,SolarSystem system);
 };
-std::ostream& operator<<(std::ostream& out,SolarSystem& system) {
+std::ostream& operator<<(std::ostream& out,SolarSystem system) {
     out<<"SOLAR SYSTEM\n";
-    for (const auto& bod : system.getBodies()) {
+    for (auto& bod : system.bodies) {
         out<<bod<<'\n';
     }
     return out;
@@ -430,6 +430,9 @@ public:
                         gasit=false;
                 }
             }
+            /// FOR TESTING
+            newpos= {0,0};
+            /// FOR TESTING
             Pair system_position = {newpos.x,newpos.y};
             Physics newphysics(system_position);
             SolarSystem newsystem(newphysics);
@@ -437,11 +440,11 @@ public:
         }
     }
     explicit Universe(std::vector<SolarSystem> systems) {
-        for (const auto& system : systems) {
+        for (auto& system : systems) {
             this->systems.push_back(system);
         }
     };
-    std::vector<SolarSystem>& getSystems() {
+    std::vector<SolarSystem> getSystems() {
         return systems;
     }
     ~Universe() {
@@ -451,7 +454,7 @@ public:
 };
 std::ostream& operator<<(std::ostream& out,Universe universe) {
     out<<"THE WHOLE UNIVERSE : \n";
-    for (const auto& each_system : universe.systems) {
+    for (auto& each_system : universe.systems) {
         out<<each_system<<'\n';
     }
     return out;
@@ -508,7 +511,6 @@ int main() {
 
     /// CREATE UNIVERSE
     Universe universe(1);
-    universe.getSystems()[0].getPhysics().setPosition({0.f,0.f});
 
     sf::Clock clock;
     while(window.isOpen()) {
