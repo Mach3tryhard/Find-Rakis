@@ -12,6 +12,7 @@ struct Pair {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Collider {};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///PARTICULELE NU SUNT CODUL MEU: https://www.sfml-dev.org/tutorials/3.0/graphics/vertex-array/#example-particle-system
 class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 public:
@@ -415,10 +416,10 @@ private:
     std::vector<SolarSystem> systems;
 public:
     explicit Universe(int number) {
+        std::random_device rd;
+        std::mt19937 gen(rd());
         for (int i=1;i<=number;i++) {
             int min = -constaint,max = constaint;
-            std::random_device rd;
-            std::mt19937 gen(rd());
             std::uniform_real_distribution<> distrib(min, max);
             Pair newpos={0,0};
             /*int gasit=false;
@@ -464,7 +465,7 @@ private:
     sf::Text debugText;
 public:
     GUI() : debugText(font) {
-        this->font = sf::Font("../resources/jetbrains.ttf");
+        this->font = sf::Font("fonts/jetbrains.ttf");
         this->debugText = sf::Text(font);
         this->debugText.setFont(font);
         this->debugText.setCharacterSize(18);
@@ -490,7 +491,8 @@ public:
 int main() {
     sf::RenderWindow window;
     window.create(sf::VideoMode({800, 800}), "My Window", sf::Style::Default);/// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
-    window.setFramerateLimit(240);//window.setVerticalSyncEnabled(true);
+    //window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(true);
     sf::View view(sf::FloatRect({0, 0}, {800, 800}));
     window.setView(view);
     sf::Vector2f center = view.getCenter();

@@ -1,6 +1,13 @@
 # Find Rakis
 
-Game about finding the planet Rakis. You are a ship that harvests fuel from different celestial bodies trying to reach your goal, all while making sure you are not crashing into anything.
+You are a ship in a randomly generated universe. The universe has multiple solar systems. You must use your three tools to travel: the hyperdrive, the thrusters, the gun and the extractor.
+- Using your gun you can destroy asteroids to harvest special fuel for your hyperdrive.
+- Using your extractor you can get normal fuel from stars and gas giants.
+- Using your thrusters you can traverse solar systems.
+- Using your hyperdrive you can move between solar systems.
+
+You have limited fuel and using your knowledge of space travel, you must find the planet Rakis, so you can get the spice.
+The game relies a lot on its atmosphere since the gameplay is simple.
 
 ### Tema 0
 
