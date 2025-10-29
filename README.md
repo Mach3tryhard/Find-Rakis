@@ -5,6 +5,7 @@ You are a ship in a randomly generated universe. The universe has multiple solar
 - Using your extractor you can get normal fuel from stars and gas giants.
 - Using your thrusters you can traverse solar systems.
 - Using your hyperdrive you can move between solar systems.
+
 Controls :
 - You move forward using the up key.
 - You rotate left using the left key.
