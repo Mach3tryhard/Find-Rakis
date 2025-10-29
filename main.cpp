@@ -4,11 +4,11 @@
 #include <thread>
 #include <SFML/Graphics.hpp>
 #include <random>
-#include <cmath>
+#include "code/Physics.h"
 
-struct Pair {
+/*struct Pair {
     double x,y;
-};
+};*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Collider {};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -92,59 +92,6 @@ private:
     float m_baseAngle = 270.f;
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Physics {
-private:
-    Pair position{};
-    Pair velocity{};
-    Pair acceleration{};
-public:
-    /// CONSTRUCTORS
-    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}){}
-    Physics(const Physics& state) {
-        this->position = state.position;
-        this->velocity = state.velocity;
-        this->acceleration = state.acceleration;
-    }
-    explicit Physics(Pair position) {
-        this->position = position;
-        this->velocity = {0,0};
-        this->acceleration = {0,0};
-    }
-    ~Physics() = default;
-    Physics& operator=(const Physics& state) {
-        this->position = state.position;
-        this->velocity = state.velocity;
-        this->acceleration = state.velocity;
-        return *this;
-    }
-    void UpdatePhysics(float cap,sf::Time dt) {
-        float delta = dt.asSeconds();
-        this->velocity.x += this->acceleration.x * delta;
-        this->velocity.y += this->acceleration.y * delta;
-
-        float len = sqrtf(velocity.x*velocity.x + velocity.y*velocity.y);
-        if (len > cap) {
-            this->velocity.x = velocity.x / len * cap;
-            this->velocity.y = velocity.y / len * cap;
-        }
-        this->position.x += this->velocity.x * delta;
-        this->position.y += this->velocity.y * delta;
-    }
-
-    Pair getPosition() const {return position;}
-    Pair getVelocity() const {return velocity;}
-    Pair getAcceleration() {return acceleration;}
-    void setAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
-    void setPosition(Pair position_) {this->position = position_;}
-    void setVelocity(Pair velocity_) {this->velocity = velocity_;}
-    friend std::ostream& operator<<(std::ostream& out,const Physics& state);
-};
-std::ostream& operator<<(std::ostream& out, const Physics& state) {
-    out<<"Position:X-"<<state.position.x<<" Y-"<<state.position.y<<'\n';
-    out<<"Velocity:X-"<<state.velocity.x<<" Y-"<<state.velocity.y<<'\n';
-    return out;
-}
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Bullet {
 private:
     sf::CircleShape shape;
@@ -178,7 +125,7 @@ public:
     }
     friend std::ostream& operator<<(std::ostream& out,const Bullet& bullet);
 };
-const float Bullet::speed = 300.f;
+const float Bullet::speed = 50.f;
 std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {
     out<<"BULLET\n";
     out<<bullet.physics<<'\n';
@@ -241,7 +188,8 @@ public:
         Pair bulletVelocity{std::cos(angleRad) * Bullet::speed, std::sin(angleRad) * Bullet::speed};
         Pair bulletPos{shipPos.x, shipPos.y};
         Physics bulletPhysics(bulletPos);
-        bulletPhysics.setVelocity(bulletVelocity);
+        Pair combined_velocity= {bulletVelocity.x+physics.getVelocity().x, bulletVelocity.y+physics.getVelocity().y};
+        bulletPhysics.setVelocity(combined_velocity);
 
         Bullet newbullet(bulletPhysics);
         bullets.push_back(newbullet);
