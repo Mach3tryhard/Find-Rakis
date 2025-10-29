@@ -62,6 +62,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Physics.h
         code/Pair.cpp
         code/Pair.h
+        code/Bullet.cpp
+        code/Bullet.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

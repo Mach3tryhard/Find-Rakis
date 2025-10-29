@@ -4,11 +4,10 @@
 #include <thread>
 #include <SFML/Graphics.hpp>
 #include <random>
+#include "code/Pair.h"
 #include "code/Physics.h"
+#include "code/Bullet.h"
 
-/*struct Pair {
-    double x,y;
-};*/
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Collider {};
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -91,48 +90,6 @@ private:
     bool m_emitting = false;
     float m_baseAngle = 270.f;
 };
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-class Bullet {
-private:
-    sf::CircleShape shape;
-    //Collider collider;
-    Physics physics;
-    const int damage=10;
-    const int radius =5;
-public:
-    static const float speed;
-    explicit Bullet(const Physics& physics) {
-        shape.setRadius(this->radius);
-        shape.setOrigin({static_cast<float>(this->radius), static_cast<float>(this->radius)});
-        Pair pos = physics.getPosition();
-        shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
-        shape.setFillColor(sf::Color::Green);
-        this->physics = physics;
-    }
-    sf::CircleShape& getShape() {return shape;}
-    Physics& getPhysics() { return physics; }
-    void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
-        Pair shipPos = position;
-        Pair bulletPos = physics.getPosition();
-        const sf::Vector2f screenCenter(window.getSize().x / 2.f, window.getSize().y / 2.f);
-        float screenX = screenCenter.x + static_cast<float>(bulletPos.x - shipPos.x);
-        float screenY = screenCenter.y + static_cast<float>(bulletPos.y - shipPos.y);
-
-        if (viewRect.contains({screenX, screenY})) {
-            shape.setPosition({screenX, screenY});
-            window.draw(shape);
-        }
-    }
-    friend std::ostream& operator<<(std::ostream& out,const Bullet& bullet);
-};
-const float Bullet::speed = 50.f;
-std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {
-    out<<"BULLET\n";
-    out<<bullet.physics<<'\n';
-    out<<"Stats:\n";
-    out<<"Damage:"<<bullet.damage<<'\n';
-    return out;
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class SpaceShip {
 private:
@@ -438,7 +395,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 int main() {
     sf::RenderWindow window;
-    window.create(sf::VideoMode({800, 800}), "My Window", sf::Style::Default);/// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
+    window.create(sf::VideoMode({800, 800}), "Find Rakis", sf::Style::Default);/// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
     //window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
     sf::View view(sf::FloatRect({0, 0}, {800, 800}));
