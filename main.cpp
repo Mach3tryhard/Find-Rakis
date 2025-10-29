@@ -16,7 +16,7 @@ int main() {
     window.create(sf::VideoMode({1920, 1008}), "Find Rakis", sf::Style::Default);/// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
     //window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(true);
-    sf::View view(sf::FloatRect({0, 0}, {800, 800}));
+    sf::View view(sf::FloatRect({0, 0}, {1920, 1008}));
     window.setView(view);
     sf::Vector2f center = view.getCenter();
     sf::Vector2f size = view.getSize();

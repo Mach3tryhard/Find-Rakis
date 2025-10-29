@@ -5,6 +5,15 @@ You are a ship in a randomly generated universe. The universe has multiple solar
 - Using your extractor you can get normal fuel from stars and gas giants.
 - Using your thrusters you can traverse solar systems.
 - Using your hyperdrive you can move between solar systems.
+Controls :
+- You move forward using the up key.
+- You rotate left using the left key.
+- You rotate right using the right key.
+- You interact using the c button.
+- You switch between interactions using the down key.S
+
+You balance your different types of fuels while looking for the planet desert orange planet rakis.
+When you find it, you will be notified of the time it took for you to find it and distance traveled.
 
 You have limited fuel and using your knowledge of space travel, you must find the planet Rakis, so you can get the spice.
 The game relies a lot on its atmosphere since the gameplay is simple.
