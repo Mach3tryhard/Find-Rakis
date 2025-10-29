@@ -64,6 +64,18 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Pair.h
         code/Bullet.cpp
         code/Bullet.h
+        code/GUI.cpp
+        code/GUI.h
+        code/SpaceShip.cpp
+        code/SpaceShip.h
+        code/ParticleSystem.cpp
+        code/ParticleSystem.h
+        code/Celestial.cpp
+        code/Celestial.h
+        code/SolarSystem.cpp
+        code/SolarSystem.h
+        code/Universe.cpp
+        code/Universe.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
