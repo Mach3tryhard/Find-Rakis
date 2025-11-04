@@ -1,7 +1,3 @@
-//
-// Created by tris on 29.10.2025.
-//
-
 #ifndef OOP_PARTICLESYSTEM_H
 #define OOP_PARTICLESYSTEM_H
 #include <cmath>
@@ -13,7 +9,7 @@ class ParticleSystem : public sf::Drawable, public sf::Transformable
 {
 public:
     explicit ParticleSystem(unsigned int count)
-        : m_particles(count), m_vertices(sf::PrimitiveType::Points, count)
+        : m_particles(1000), m_vertices(sf::PrimitiveType::Points, 1000)
     {}
     void setEmitter(sf::Vector2f position);
     void setEmitting(bool flag);
@@ -31,7 +27,7 @@ private:
     std::vector<Particle> m_particles;
     sf::VertexArray m_vertices;
     sf::Vector2f m_emitter;
-    sf::Time m_lifetime = sf::seconds(0.3f);
+    sf::Time m_lifetime = sf::seconds(0.6f);
     bool m_emitting = false;
     float m_baseAngle = 270.f;
 };

@@ -80,7 +80,7 @@ int main() {
         window.draw(player.getExhaust());
         /// DRAW BULLETS
         for (auto& bullet: player.getBullets()) {
-            bullet.getPhysics().UpdatePhysics(Bullet::speed,dt);
+            bullet.getPhysics().UpdatePosition(dt);
             Pair ship_position = player.getPhysics().getPosition();
             bullet.Display(ship_position,window,viewRect);
         }

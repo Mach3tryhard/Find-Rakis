@@ -17,16 +17,22 @@ sf::CircleShape& SpaceShip::getShape() { return triangle; }
         Pair direction{std::cos(angleRad) * thrust, std::sin(angleRad) * thrust};
         physics.setAcceleration(direction);
     }
-    void SpaceShip::ExhaustMove() {
-        float angleRad = triangle.getRotation().asRadians();
-        float shipRotationDeg = triangle.getRotation().asDegrees();
-        sf::Vector2f shipPos(triangle.getPosition().x,triangle.getPosition().y);
-        sf::Vector2f offset(-std::cos(angleRad) * 2.f, -std::sin(angleRad) * 2.f);
-        float emissionDeg = shipRotationDeg - 90.f + 180.f; // backward from ship nose
-        float emissionRad = emissionDeg * 3.14159265f / 180.f;
-        exhaust.setEmitter(shipPos + offset);
-        exhaust.setDirection(emissionRad);
-    }
+void SpaceShip::ExhaustMove() {
+    float angleRad = triangle.getRotation().asRadians() - 3.14159265f / 2.f;
+    sf::Vector2f shipPos = triangle.getPosition();
+
+    float backOffsetDist = triangle.getRadius() * 0.5f;
+    sf::Vector2f offset(-std::cos(angleRad) * backOffsetDist,
+                        -std::sin(angleRad) * backOffsetDist);
+
+    float lateralOffset = triangle.getRadius() * 0.01f;
+    sf::Vector2f lateral(-std::sin(angleRad) * lateralOffset,
+                          std::cos(angleRad) * lateralOffset);
+
+    exhaust.setEmitter(shipPos + offset + lateral);
+    exhaust.setDirection(angleRad + 3.14159265f);
+}
+
     void SpaceShip::ShootBullet() {
         Pair shipPos = physics.getPosition();
         float angleRad = triangle.getRotation().asRadians();

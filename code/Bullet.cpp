@@ -18,7 +18,7 @@ void Bullet::Display(const Pair& position, sf::RenderWindow& window, sf::FloatRe
         window.draw(shape);
     }
 }
-const float Bullet::speed = 50.f;
+const float Bullet::speed = 200.f;
 std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {
     out<<"BULLET\n";
     out<<bullet.physics<<'\n';

@@ -46,17 +46,17 @@ void ParticleSystem::resetParticle(std::size_t index)
     static std::random_device rd;
     static std::mt19937 rng(rd());
 
-    std::uniform_real_distribution<float> angleDist(m_baseAngle - 0.30f, m_baseAngle + 0.30f);
+    std::uniform_real_distribution<float> angleDist(m_baseAngle - 0.60f, m_baseAngle + 0.60f);
     float angle = angleDist(rng);
 
     float speed = std::uniform_real_distribution<float>(50.f, 120.f)(rng);
     m_particles[index].velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
 
     m_particles[index].velocity = sf::Vector2f(std::cos(angle) * speed, std::sin(angle) * speed);
-    m_particles[index].lifetime = sf::milliseconds(std::uniform_int_distribution<int>(100, 600)(rng));
+    m_particles[index].lifetime = sf::milliseconds(std::uniform_int_distribution<int>(100, 800)(rng));
     m_particles[index].position = m_emitter;
 
     m_vertices[index].position = m_emitter;
-    sf::CircleShape shape(50);
+    sf::CircleShape shape(100);
     m_vertices[index].color = sf::Color(0x8ab9ffFF);
 }

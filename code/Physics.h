@@ -1,6 +1,5 @@
 #ifndef OOP_PHYSICS_H
 #define OOP_PHYSICS_H
-
 #include "Pair.h"
 #include <cmath>
 #include <SFML/Graphics.hpp>
@@ -31,6 +30,8 @@ public:
         return *this;
     }
     void UpdatePhysics(float cap,sf::Time dt);
+    void UpdatePosition(sf::Time dt);
+    void FlickPhysics(Pair bulletspeed,Pair startacceleration,sf::Time dt);
 
     Pair getPosition() const;
     Pair getVelocity() const;

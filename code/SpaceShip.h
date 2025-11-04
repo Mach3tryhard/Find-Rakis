@@ -1,11 +1,9 @@
 #ifndef OOP_SPACESHIP_H
 #define OOP_SPACESHIP_H
-#include "Physics.h"
-#include "Pair.h"
-#include <cmath>
 #include <SFML/Graphics.hpp>
 #include "Bullet.h"
 #include "ParticleSystem.h"
+#include "Physics.h"
 
 class SpaceShip {
 private:

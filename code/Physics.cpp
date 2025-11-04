@@ -16,6 +16,11 @@ void Physics::UpdatePhysics(float cap,sf::Time dt) {
     this->position.x += this->velocity.x * delta;
     this->position.y += this->velocity.y * delta;
 }
+void Physics::UpdatePosition(sf::Time dt) {
+    float delta = dt.asSeconds();
+    this->position.x += this->velocity.x * delta;
+    this->position.y += this->velocity.y * delta;
+}
 Pair Physics::getPosition() const {
     return position;
 }
