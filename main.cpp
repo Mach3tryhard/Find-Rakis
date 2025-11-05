@@ -13,8 +13,7 @@
 
 int main() {
     sf::RenderWindow window;
-    window.create(sf::VideoMode({1920, 1008}), "Find Rakis", sf::Style::Default);/// NOTE: sync with env variable APP_WINDOW from .github/workflows/cmake.yml:31
-    //window.setFramerateLimit(60);
+    window.create(sf::VideoMode({1920, 1008}), "Find Rakis", sf::Style::Default);
     window.setVerticalSyncEnabled(true);
     sf::View view(sf::FloatRect({0, 0}, {1920, 1008}));
     window.setView(view);
@@ -23,17 +22,20 @@ int main() {
     sf::FloatRect viewRect({center.x - size.x/2.f, center.y - size.y/2.f}, {size.x, size.y});
     std::cout << "Fereastra a fost creată\n";
 
+    std::mt19937 gen(std::random_device{}());
+
     /// CREATE GUI
     GUI gui{};
     gui.getText().setPosition({10,10});
+    gui.Initialize(window);
 
     /// CREATE PLAYER
     Physics playerphysics;
     SpaceShip player{playerphysics,100,100,100};
-    player.getShape().setPosition({400.0f,400.0f});
+    player.getShape().setPosition({center.x,center.y});
 
     /// CREATE UNIVERSE
-    Universe universe(1);
+    Universe universe(25,gen);
 
     sf::Clock clock;
     while(window.isOpen()) {
@@ -72,8 +74,10 @@ int main() {
 
         window.clear();
         /// DRAW CELESTIALS
-        for (auto& i:universe.getSystems()[0].getBodies()) {
-            i.Display(player,window,viewRect);
+        for (auto& i: universe.getSystems()) {
+            for (auto& j:i.getBodies()) {
+                j.Display(player,window,viewRect);
+            }
         }
         /// DRAW PARTICLES
         player.getExhaust().update(dt);
@@ -89,9 +93,9 @@ int main() {
         player.getPhysics().UpdatePhysics(player.getCap(),dt);
         window.draw(player.getShape());
         /// DRAW GUI
-        gui.UpdateGUI(player,universe.getSystems()[0]);
+        gui.DrawMiniMap(window,universe,player);
+        gui.UpdateGUI(player,universe.getSystems()[1].getBodies()[0]);
         window.draw(gui.getText());
-
         window.display();
 
     }

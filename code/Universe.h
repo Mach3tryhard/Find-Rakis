@@ -6,17 +6,15 @@
 class Universe {
 private:
     const int constaint = 10800;
-    //const int min_dist = 2000;
+    const int min_dist = 2000;
     std::vector<SolarSystem> systems;
 public:
-    explicit Universe(int number) {
-        std::random_device rd;
-        std::mt19937 gen(rd());
+    explicit Universe(int number,std::mt19937& gen) {
         for (int i=1;i<=number;i++) {
             int min = -constaint,max = constaint;
             std::uniform_real_distribution<> distrib(min, max);
             Pair newpos={0,0};
-            /*int gasit=false;
+            int gasit=false;
             while (gasit==false) {
                 newpos = {distrib(gen), distrib(gen)};
                 gasit=true;
@@ -25,10 +23,10 @@ public:
                     if ( distance < min_dist)
                         gasit=false;
                 }
-            }*/
+            }
             Pair system_position = {newpos.x,newpos.y};
             Physics newphysics(system_position);
-            SolarSystem newsystem(newphysics);
+            SolarSystem newsystem(newphysics,gen);
             systems.push_back(newsystem);
         }
     }

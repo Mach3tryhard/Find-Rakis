@@ -17,10 +17,8 @@ public:
             this->bodies.push_back(bod);
         }
     };
-    explicit SolarSystem(const Physics& physics) {
+    explicit SolarSystem(const Physics& physics,std::mt19937& gen) {
         this->physics = physics;
-        std::random_device rd;
-        std::mt19937 gen(rd());
         std::uniform_int_distribution<> d_planets(2, 9);
         int n_planets = d_planets(gen);
         int n_stars = 1;

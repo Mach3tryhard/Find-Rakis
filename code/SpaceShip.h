@@ -7,13 +7,13 @@
 
 class SpaceShip {
 private:
-    ParticleSystem exhaust{200};
+    ParticleSystem exhaust{1000};
     sf::CircleShape triangle{10.0f,3};
     std::vector<Bullet> bullets;
     Physics physics;
     const float thrust = 120.0f;
     double fuel,energy,ore;
-    const float cap=300;
+    const float cap=350;
     bool upPressed=false;
 public:
     SpaceShip(const Physics& physics, double fuel, double energy, double ore) {
