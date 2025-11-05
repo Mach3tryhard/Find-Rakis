@@ -47,13 +47,24 @@ int main() {
             else
                 if (event->is<sf::Event::Resized>()) {
                     const auto* resize = event->getIf<sf::Event::Resized>();
-                    sf::FloatRect visibleArea({0.f, 0.f}, {static_cast<float>(resize->size.x), static_cast<float>(resize->size.y)});
-                    view = sf::View(visibleArea);
+                    // Keep the same world rectangle (no stretching)
+                    view.setSize({1920.f, 1008.f}); // your fixed world size
+                    view.setCenter({static_cast<float>(player.getPhysics().getPosition().x),static_cast<float>(player.getPhysics().getPosition().y)}); // keep ship centered
+                    // Update viewport to fit the new window aspect ratio
+                    float windowAspect = float(resize->size.x) / float(resize->size.y);
+                    float worldAspect = 1920.f / 1008.f;
+
+                    if (windowAspect > worldAspect) {
+                        // Window is wider than world → add horizontal bars
+                        float width = 1008.f * windowAspect;
+                        view.setViewport(sf::FloatRect({(resize->size.x - width)/2.f / resize->size.x, 0.f},{ width / resize->size.x, 1.f}));
+                    } else {
+                        // Window is taller → add vertical bars
+                        float height = 1920.f / windowAspect;
+                        view.setViewport(sf::FloatRect({0.f, (resize->size.y - height)/2.f / resize->size.y} ,{ 1.f, height / resize->size.y}));
+                    }
+
                     window.setView(view);
-                    viewRect = sf::FloatRect({0, 0}, {static_cast<float>(resize->size.x), static_cast<float>(resize->size.y)});
-                    player.getShape().setPosition({static_cast<float>(resize->size.x) / 2.f, static_cast<float>(resize->size.y) / 2.f});
-                    std::cout << "x nou: " << static_cast<float>(resize->size.x) << '\n'
-                              << "y nou: " << static_cast<float>(resize->size.y) << '\n';
                 }
                 else if (event->is<sf::Event::KeyPressed>()) {
                     const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();

@@ -20,19 +20,6 @@ public:
         this->debugText.setCharacterSize(18);
         this->debugText.setFillColor(sf::Color::White);
 
-        float viewportWidth = 0.2f;
-        float viewportHeight = 0.25f;
-        float viewportAspect = viewportWidth / viewportHeight;
-        float universeWidth = 21600.f;
-        float universeHeight = 21600.f;
-
-        if (universeWidth / universeHeight > viewportAspect) {
-            float newHeight = universeWidth / viewportAspect;
-            minimapView.setSize(sf::Vector2f(universeWidth, newHeight));
-        } else {
-            float newWidth = universeHeight * viewportAspect;
-            minimapView.setSize(sf::Vector2f(newWidth, universeHeight));
-        }
         minimapView = sf::View(sf::Vector2f(0.f, 0.f), sf::Vector2f(21600.f, 21600.f));
 
         minimapBox.setSize({minimapSize, minimapSize});
