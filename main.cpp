@@ -26,7 +26,6 @@ int main() {
 
     /// CREATE GUI
     GUI gui{};
-    gui.getText().setPosition({10,10});
     gui.Initialize(window);
 
     /// CREATE PLAYER
@@ -104,8 +103,9 @@ int main() {
         player.getPhysics().UpdatePhysics(player.getCap(),dt);
         window.draw(player.getShape());
         /// DRAW GUI
+        gui.DrawVelocityArrowHUD(window, player);
         gui.DrawMiniMap(window,universe,player);
-        gui.UpdateGUI(player,universe.getSystems()[1].getBodies()[0]);
+        gui.UpdateGUI(player);
         window.draw(gui.getText());
         window.display();
 
