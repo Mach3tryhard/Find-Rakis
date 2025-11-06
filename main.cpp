@@ -98,6 +98,13 @@ int main() {
             Pair ship_position = player.getPhysics().getPosition();
             bullet.Display(ship_position,window,viewRect);
         }
+        /// UPDATE SPACESHIP->CELESTIAL GRAVITY
+        player.getPhysics().resetAcceleration();
+        for (auto& system : universe.getSystems()) {
+            for (auto& body : system.getBodies()) {
+                player.getPhysics().addAcceleration(player.computeGravity(body.getPhysics().getPosition(),body.getPhysics().getMass(),2000));
+            }
+        }
         /// DRAW PLAYER, INPUT AND UPDATE PLAYER
         player.InputCheck(dt);
         player.getPhysics().UpdatePhysics(player.getCap(),dt);

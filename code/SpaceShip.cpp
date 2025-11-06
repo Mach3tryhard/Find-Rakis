@@ -33,37 +33,59 @@ void SpaceShip::ExhaustMove() {
     exhaust.setDirection(angleRad + 3.14159265f);
 }
 
-    void SpaceShip::ShootBullet() {
-        Pair shipPos = physics.getPosition();
-        float angleRad = triangle.getRotation().asRadians();
-        angleRad -= 3.14159265f / 2.f;
-        Pair bulletVelocity{std::cos(angleRad) * Bullet::speed, std::sin(angleRad) * Bullet::speed};
-        Pair bulletPos{shipPos.x, shipPos.y};
-        Physics bulletPhysics(bulletPos);
-        Pair combined_velocity= {bulletVelocity.x+physics.getVelocity().x, bulletVelocity.y+physics.getVelocity().y};
-        bulletPhysics.setVelocity(combined_velocity);
+Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
+    const double G = 1.0;  // gravitational constant, adjust as needed
 
-        Bullet newbullet(bulletPhysics);
-        bullets.push_back(newbullet);
+    Pair shipPos = this->getPhysics().getPosition();
+    double dx = position.x - shipPos.x;
+    double dy = position.y - shipPos.y;
+
+    double distSq = dx * dx + dy * dy;
+
+    // avoid singularity when too close and ignore if out of influence
+    if (distSq < 1e-6 || distSq > influenceRadius * influenceRadius) {
+        return {0.0, 0.0};
     }
-    void SpaceShip::InputCheck(sf::Time dt) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
-            triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
-            triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-            upPressed = true;
-            ShipMove();
-            ExhaustMove();
-        }else
-        if (upPressed) {
-            upPressed = false;
-            physics.setAcceleration({0, 0});
-        }
-        exhaust.setEmitting(upPressed);
+
+    double dist = std::sqrt(distSq);
+
+    // acceleration magnitude due to gravity: a = G * M / r^2
+    double accel = G * mass / distSq;
+
+    // acceleration vector pointing toward the celestial body
+    return { (dx / dist) * accel, (dy / dist) * accel };
+}
+void SpaceShip::ShootBullet() {
+    Pair shipPos = physics.getPosition();
+    float angleRad = triangle.getRotation().asRadians();
+    angleRad -= 3.14159265f / 2.f;
+    Pair bulletVelocity{std::cos(angleRad) * Bullet::speed, std::sin(angleRad) * Bullet::speed};
+    Pair bulletPos{shipPos.x, shipPos.y};
+    Physics bulletPhysics(bulletPos);
+    Pair combined_velocity= {bulletVelocity.x+physics.getVelocity().x, bulletVelocity.y+physics.getVelocity().y};
+    bulletPhysics.setVelocity(combined_velocity);
+
+    Bullet newbullet(bulletPhysics);
+    bullets.push_back(newbullet);
+}
+void SpaceShip::InputCheck(sf::Time dt) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+        triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
     }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
+        triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
+        upPressed = true;
+        ShipMove();
+        ExhaustMove();
+    }else
+    if (upPressed) {
+        upPressed = false;
+        physics.setAcceleration({0, 0});
+    }
+    exhaust.setEmitting(upPressed);
+}
 
 std::ostream& operator<<(std::ostream& out,const SpaceShip& ship) {
     out<<"SHIP\n";

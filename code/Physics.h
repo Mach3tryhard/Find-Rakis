@@ -9,6 +9,7 @@ private:
     Pair position{};
     Pair velocity{};
     Pair acceleration{};
+    double mass;
 public:
     /// CONSTRUCTORS
     Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}){}
@@ -39,6 +40,10 @@ public:
     void setAcceleration(Pair acceleration_);
     void setPosition(Pair position_);
     void setVelocity(Pair velocity_);
+    double getMass();
+    void addAcceleration(Pair accelerationtoadd);
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
+
+    void resetAcceleration();
 };
 #endif //OOP_PHYSICS_H

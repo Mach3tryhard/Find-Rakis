@@ -32,6 +32,7 @@ public:
     void ExhaustMove();
     void ShootBullet();
     void InputCheck(sf::Time dt);
+    Pair computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
 };
 
