@@ -9,10 +9,14 @@ private:
     Pair position{};
     Pair velocity{};
     Pair acceleration{};
-    double mass;
+    double mass=2000;
 public:
     /// CONSTRUCTORS
-    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}){}
+    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}) {
+    }
+    Physics(double mass): position({0,0}), velocity({0,0}), acceleration({0,0}) {
+        this->mass = mass;
+    }
     Physics(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
@@ -27,7 +31,7 @@ public:
     Physics& operator=(const Physics& state) {
         this->position = state.position;
         this->velocity = state.velocity;
-        this->acceleration = state.velocity;
+        this->acceleration = state.acceleration;
         return *this;
     }
     void UpdatePhysics(float cap,sf::Time dt);
@@ -43,7 +47,5 @@ public:
     double getMass();
     void addAcceleration(Pair accelerationtoadd);
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
-
-    void resetAcceleration();
 };
 #endif //OOP_PHYSICS_H

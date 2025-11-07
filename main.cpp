@@ -29,7 +29,7 @@ int main() {
     gui.Initialize(window);
 
     /// CREATE PLAYER
-    Physics playerphysics;
+    Physics playerphysics{5};
     SpaceShip player{playerphysics,100,100,100};
     player.getShape().setPosition({center.x,center.y});
 
@@ -99,11 +99,19 @@ int main() {
             bullet.Display(ship_position,window,viewRect);
         }
         /// UPDATE SPACESHIP->CELESTIAL GRAVITY
-        player.getPhysics().resetAcceleration();
+        Pair totalGravity = {0, 0};
+        int bodyCount = 0;
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
+                bodyCount++;
                 player.getPhysics().addAcceleration(player.computeGravity(body.getPhysics().getPosition(),body.getPhysics().getMass(),2000));
+                totalGravity.x+=body.getPhysics().getAcceleration().x;
+                totalGravity.y+=body.getPhysics().getAcceleration().y;
             }
+        }
+        if (bodyCount>0) {
+            std::cout << "Bodies in range: " << bodyCount << " | Total gravity: ("
+                      << totalGravity.x << ", " << totalGravity.y << ")\n";
         }
         /// DRAW PLAYER, INPUT AND UPDATE PLAYER
         player.InputCheck(dt);

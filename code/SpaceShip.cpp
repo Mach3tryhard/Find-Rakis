@@ -7,16 +7,16 @@
 #include "SpaceShip.h"
 
 sf::CircleShape& SpaceShip::getShape() { return triangle; }
-    Physics& SpaceShip::getPhysics() { return physics; }
-    float SpaceShip::getCap() const { return cap; }
-    ParticleSystem& SpaceShip::getExhaust() { return exhaust;}
-    std::vector<Bullet>& SpaceShip::getBullets() { return bullets; }
-    void SpaceShip::ShipMove() {
-        float angleRad = triangle.getRotation().asRadians();
-        angleRad -= 3.14159265f / 2.f;
-        Pair direction{std::cos(angleRad) * thrust, std::sin(angleRad) * thrust};
-        physics.setAcceleration(direction);
-    }
+Physics& SpaceShip::getPhysics() { return physics; }
+float SpaceShip::getCap() const { return cap; }
+ParticleSystem& SpaceShip::getExhaust() { return exhaust;}
+std::vector<Bullet>& SpaceShip::getBullets() { return bullets; }
+void SpaceShip::ShipMove() {
+    float angleRad = triangle.getRotation().asRadians();
+    angleRad -= 3.14159265f / 2.f;
+    Pair direction{std::cos(angleRad) * thrust, std::sin(angleRad) * thrust};
+    physics.addAcceleration(direction);
+}
 void SpaceShip::ExhaustMove() {
     float angleRad = triangle.getRotation().asRadians() - 3.14159265f / 2.f;
     sf::Vector2f shipPos = triangle.getPosition();
@@ -34,7 +34,7 @@ void SpaceShip::ExhaustMove() {
 }
 
 Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
-    const double G = 1.0;  // gravitational constant, adjust as needed
+    const double G = 1000.0;
 
     Pair shipPos = this->getPhysics().getPosition();
     double dx = position.x - shipPos.x;
@@ -42,17 +42,11 @@ Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
 
     double distSq = dx * dx + dy * dy;
 
-    // avoid singularity when too close and ignore if out of influence
-    if (distSq < 1e-6 || distSq > influenceRadius * influenceRadius) {
+    if (distSq < 1e-3 || distSq > influenceRadius * influenceRadius) {
         return {0.0, 0.0};
     }
-
     double dist = std::sqrt(distSq);
-
-    // acceleration magnitude due to gravity: a = G * M / r^2
     double accel = G * mass / distSq;
-
-    // acceleration vector pointing toward the celestial body
     return { (dx / dist) * accel, (dy / dist) * accel };
 }
 void SpaceShip::ShootBullet() {
@@ -82,7 +76,6 @@ void SpaceShip::InputCheck(sf::Time dt) {
     }else
     if (upPressed) {
         upPressed = false;
-        physics.setAcceleration({0, 0});
     }
     exhaust.setEmitting(upPressed);
 }
