@@ -30,7 +30,7 @@ int main() {
 
     /// CREATE PLAYER
     Physics playerphysics{5};
-    SpaceShip player{playerphysics,100,100,100};
+    SpaceShip player{playerphysics,10,100,100,100};
     player.getShape().setPosition({center.x,center.y});
 
     /// CREATE UNIVERSE
@@ -50,7 +50,7 @@ int main() {
                     view.setSize({1920.f, 1008.f}); // your fixed world size
                     view.setCenter({static_cast<float>(player.getPhysics().getPosition().x),static_cast<float>(player.getPhysics().getPosition().y)}); // keep ship centered
                     // Update viewport to fit the new window aspect ratio
-                    float windowAspect = float(resize->size.x) / float(resize->size.y);
+                    float windowAspect = static_cast<float>(resize->size.x) / static_cast<float>(resize->size.y);
                     float worldAspect = 1920.f / 1008.f;
 
                     if (windowAspect > worldAspect) {
@@ -99,19 +99,18 @@ int main() {
             bullet.Display(ship_position,window,viewRect);
         }
         /// UPDATE SPACESHIP->CELESTIAL GRAVITY
-        Pair totalGravity = {0, 0};
-        int bodyCount = 0;
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
-                bodyCount++;
                 player.getPhysics().addAcceleration(player.computeGravity(body.getPhysics().getPosition(),body.getPhysics().getMass(),2000));
-                totalGravity.x+=body.getPhysics().getAcceleration().x;
-                totalGravity.y+=body.getPhysics().getAcceleration().y;
             }
         }
-        if (bodyCount>0) {
-            std::cout << "Bodies in range: " << bodyCount << " | Total gravity: ("
-                      << totalGravity.x << ", " << totalGravity.y << ")\n";
+        /// UPDATE COLLIDERS
+        for (auto& system : universe.getSystems()) {
+            for (auto& body : system.getBodies()) {
+                if (player.getCollider().isCollidingWith(player.getPhysics(),body.getPhysics(),body.getCollider())) {
+                    player.getCollider().addNormalVector(player.getPhysics());
+                }
+            }
         }
         /// DRAW PLAYER, INPUT AND UPDATE PLAYER
         player.InputCheck(dt);

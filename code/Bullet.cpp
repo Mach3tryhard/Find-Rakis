@@ -1,6 +1,5 @@
 #include "Bullet.h"
 #include "Pair.h"
-#include <cmath>
 #include <SFML/Graphics.hpp>
 #include "Physics.h"
 

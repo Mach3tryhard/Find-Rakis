@@ -1,6 +1,5 @@
 #ifndef OOP_BULLET_H
 #define OOP_BULLET_H
-#include "Bullet.h"
 #include "Pair.h"
 #include <SFML/Graphics.hpp>
 #include "Physics.h"

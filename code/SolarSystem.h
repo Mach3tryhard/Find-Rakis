@@ -26,8 +26,9 @@ public:
         /// Generating planets positions
         int r=0;
         for (int i=0; i<n_stars+n_planets; i++) {
-            std::uniform_int_distribution<> distrib_radius(400, 640);
+            std::uniform_int_distribution<> distrib_orbit(400, 640);
             std::uniform_real_distribution<> distrib(-r, r);
+            std::uniform_real_distribution<> distrib_radius(50, 200);
 
             double posx=distrib(gen);
             double posy= sqrt(r*r-posx*posx);
@@ -35,18 +36,19 @@ public:
 
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
+            double radius = distrib_radius(gen);
             if (i==0 ) {
                 sf::Color color = sf::Color(0xFFB154FF);
-                Celestial newcelestial(newphysics,i,color);
+                Celestial newcelestial(newphysics,i,color,radius);
                 bodies.push_back(newcelestial);
             }
             else {
                 sf::Color color = sf::Color(0x8A8A8AFF);
-                Celestial newcelestial(newphysics,i,color);
+                Celestial newcelestial(newphysics,i,color,radius);
                 bodies.push_back(newcelestial);
             }
 
-            r+=distrib_radius(gen);
+            r+=distrib_orbit(gen);
         }
     }
     Physics& getPhysics();

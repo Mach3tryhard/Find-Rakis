@@ -4,19 +4,21 @@
 #include <SFML/Graphics.hpp>
 #include "SpaceShip.h"
 
-double& Celestial::getRadius() {
-    return radius;
+Collider Celestial::getCollider(){return collider;}
+double Celestial::getRadius() {
+    return this->collider.getRadius();
 }
 void Celestial::Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    float radius = getRadius();
     Pair shipPos = player.getPhysics().getPosition();
     Pair starPos = physics.getPosition();
     const sf::Vector2f screenCenter = {static_cast<float>(window.getSize().x/2), static_cast<float>(window.getSize().y/2)};
     float screenX = screenCenter.x + static_cast<float>(starPos.x - shipPos.x);
     float screenY = screenCenter.y + static_cast<float>(starPos.y - shipPos.y);
-    if (viewRect.contains({screenX - static_cast<float>(radius), screenY - static_cast<float>(radius)})
-        || viewRect.contains({screenX + static_cast<float>(radius), screenY + static_cast<float>(radius)})
-        || viewRect.contains({screenX - static_cast<float>(radius), screenY + static_cast<float>(radius)})
-        || viewRect.contains({screenX + static_cast<float>(radius), screenY - static_cast<float>(radius)}))
+    if (viewRect.contains({screenX - radius, screenY - radius})
+        || viewRect.contains({screenX + radius, screenY + radius})
+        || viewRect.contains({screenX - radius, screenY + radius})
+        || viewRect.contains({screenX + radius, screenY - radius}))
     {
         shape.setPosition({screenX, screenY});
         window.draw(shape);
@@ -32,7 +34,7 @@ std::ostream& operator<<(std::ostream& out,const Celestial& body){
     out<<"BODY\n";
     out<<body.physics<<'\n';
     out<<"Stats:\n";
-    out<<"Index"<<body.index<<'\n'<<"Health:"<<body.health<<'\n'<<"Radius:"<<body.radius<<'\n';
+    out<<"Index"<<body.index<<'\n'<<"Health:"<<body.health<<'\n';
     out<<"Gravity:"<<body.gravity<<'\n';
     out<<"Color:"<<body.color<<'\n'<<"Solid:"<<body.solid<<'\n';
     return out;

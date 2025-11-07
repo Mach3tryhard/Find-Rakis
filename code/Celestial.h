@@ -5,44 +5,47 @@
 #include <SFML/Graphics.hpp>
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
+#include "Collider.h"
 
 class Celestial {
 private:
     sf::CircleShape shape;
     Physics physics;
     int health,index,color;
-    double radius,gravity;
+    double gravity;
     bool solid;
+    Collider collider;
 public:
-    Celestial(const Physics& physics,int index,sf::Color color) {
+    Celestial(const Physics& physics,int index,sf::Color color,double radius) : collider(radius) {
         ///RANDOMLY GENERATED CELESTIAL NOT DONE YET
         this->physics = physics;
         this->health = 10;
         this->index = index;
-        this->radius = 150;
         this->gravity = 10;
         this->solid = true;
-        shape.setRadius(this->radius);
-        shape.setOrigin({static_cast<float>(this->radius), static_cast<float>(this->radius)});
+        shape.setRadius(static_cast<float>(radius));
+        shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
         Pair pos = physics.getPosition();
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(const Physics& physics,int health,double radius,double gravity,int color,bool solid,int index){
+
+    Celestial(const Physics& physics,int health,double radius,double gravity,int color,bool solid,int index) : collider(radius) {
         this->physics = physics;
         this->health = health;
-        this->radius = radius;
         this->gravity = gravity;
         this->color = color;
         this->solid = solid;
         this->index = index;
-        shape.setRadius(this->radius);
-        shape.setOrigin({static_cast<float>(this->radius), static_cast<float>(this->radius)});
+        shape.setRadius(radius);
+        shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
         Pair pos = physics.getPosition();
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(sf::Color::Blue);
     }
-    double& getRadius();
+
+    Collider getCollider();
+    double getRadius();
     void Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     sf::CircleShape& getShape();
     Physics& getPhysics();

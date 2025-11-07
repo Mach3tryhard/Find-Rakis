@@ -5,7 +5,9 @@
 #include "Bullet.h"
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
+#include "Collider.h"
 
+Collider SpaceShip::getCollider(){return collider;}
 sf::CircleShape& SpaceShip::getShape() { return triangle; }
 Physics& SpaceShip::getPhysics() { return physics; }
 float SpaceShip::getCap() const { return cap; }
@@ -42,7 +44,7 @@ Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
 
     double distSq = dx * dx + dy * dy;
 
-    if (distSq < 1e-3 || distSq > influenceRadius * influenceRadius) {
+    if (distSq < 100 || distSq > influenceRadius * influenceRadius) {
         return {0.0, 0.0};
     }
     double dist = std::sqrt(distSq);
