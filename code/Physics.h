@@ -42,7 +42,6 @@ public:
     Pair getPosition() const;
     Pair getVelocity() const;
     Pair getAcceleration();
-    void setAcceleration(Pair acceleration_);
     void setPosition(Pair position_);
     void setVelocity(Pair velocity_);
     double getMass();

@@ -38,7 +38,6 @@ Pair Physics::getAcceleration(){
 double Physics::getMass() {
     return mass;
 }
-void Physics::setAcceleration(Pair acceleration_) {this->acceleration = acceleration_;}
 void Physics::setPosition(Pair position_) {this->position = position_;}
 void Physics::setVelocity(Pair velocity_) {this->velocity = velocity_;}
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
