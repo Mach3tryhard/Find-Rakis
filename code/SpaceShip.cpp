@@ -73,8 +73,7 @@ void SpaceShip::InputCheck(sf::Time dt) {
         upPressed = true;
         ShipMove();
         ExhaustMove();
-    }else
-    if (upPressed) {
+    }else{
         upPressed = false;
     }
     exhaust.setEmitting(upPressed);

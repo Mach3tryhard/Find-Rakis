@@ -14,7 +14,7 @@ public:
     /// CONSTRUCTORS
     Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}) {
     }
-    Physics(double mass): position({0,0}), velocity({0,0}), acceleration({0,0}) {
+    explicit Physics(double mass): position({0,0}), velocity({0,0}), acceleration({0,0}) {
         this->mass = mass;
     }
     Physics(const Physics& state) {
@@ -32,6 +32,7 @@ public:
         this->position = state.position;
         this->velocity = state.velocity;
         this->acceleration = state.acceleration;
+        this->mass = state.mass;
         return *this;
     }
     void UpdatePhysics(float cap,sf::Time dt);
