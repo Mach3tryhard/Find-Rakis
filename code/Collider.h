@@ -1,6 +1,6 @@
 #ifndef OOP_COLLIDER_H
 #define OOP_COLLIDER_H
-#include "SFML/Graphics/CircleShape.hpp"
+#include <SFML/Graphics.hpp>
 #include "Physics.h"
 
 class Collider {
@@ -8,7 +8,7 @@ private:
     double radius;
     sf::CircleShape debugShape;
 public:
-    Collider(double radius) {
+    explicit Collider(double radius) {
         this->radius = radius;
         debugShape.setRadius(radius);
         debugShape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
@@ -21,9 +21,9 @@ public:
           debugShape(debug_shape) {
     }
     ~Collider() = default;
-    bool isCollidingWith(Physics& thisf,Physics& thatf,Collider& collider);
+    bool isCollidingWith(const Physics& thisf, const Physics& thatf,Collider& collider);
     double getRadius();
-    void drawDebug(sf::RenderWindow& window, const Physics& physics);
+    //void drawDebug(sf::RenderWindow& window, const Physics& physics);
     Physics resolveCollision(const Physics &shipPhys, const Physics &planetPhys);
 };
 

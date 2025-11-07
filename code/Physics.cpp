@@ -38,7 +38,7 @@ Pair Physics::getAcceleration(){
 double Physics::getMass() {
     return mass;
 }
-void Physics::setPhysics(Physics newPhysics) {
+void Physics::setPhysics(const Physics& newPhysics) {
     this->mass = newPhysics.mass;
     this->velocity = newPhysics.velocity;
     this->acceleration = newPhysics.acceleration;

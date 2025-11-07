@@ -1,7 +1,7 @@
 #include "Collider.h"
 #include "Physics.h"
 
-bool Collider::isCollidingWith(Physics& thisf,Physics& thatf,Collider& other) {
+bool Collider::isCollidingWith(const Physics& thisf, const Physics& thatf,Collider& other) {
     Pair shipPos = thisf.getPosition();
     Pair thatPos = thatf.getPosition();
     double distance = sqrt(pow(shipPos.x-thatPos.x,2)+pow(shipPos.y-thatPos.y,2));
@@ -32,8 +32,8 @@ Physics Collider::resolveCollision(const Physics& shipPhys, const Physics& plane
 
     return shipPhys;
 }
-void Collider::drawDebug(sf::RenderWindow& window, const Physics& physics) {
+/*void Collider::drawDebug(sf::RenderWindow& window, const Physics& physics) {
     Pair pos = physics.getPosition();
     debugShape.setPosition({(float)pos.x, (float)pos.y});
     window.draw(debugShape);
-}
+}*/
