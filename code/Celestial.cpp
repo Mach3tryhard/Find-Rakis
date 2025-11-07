@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "SpaceShip.h"
 
-Collider Celestial::getCollider(){return collider;}
+Collider &Celestial::getCollider(){return collider;}
 double Celestial::getRadius() {
     return this->collider.getRadius();
 }

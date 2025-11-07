@@ -80,7 +80,17 @@ void SpaceShip::InputCheck(sf::Time dt) {
     }
     exhaust.setEmitting(upPressed);
 }
+void SpaceShip::alignToPlanet(const Physics& planetPhys) {
+    Pair shipPos = physics.getPosition();
+    Pair planetPos = planetPhys.getPosition();
 
+    double dx = shipPos.x - planetPos.x;
+    double dy = shipPos.y - planetPos.y;
+    double angle = std::atan2(dy, dx);
+
+    triangle.setRotation(sf::degrees(angle * 180.0 / 3.1415926 + 90.0));
+
+}
 std::ostream& operator<<(std::ostream& out,const SpaceShip& ship) {
     out<<"SHIP\n";
     out<<ship.physics<<'\n';

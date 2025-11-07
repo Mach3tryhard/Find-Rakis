@@ -108,7 +108,8 @@ int main() {
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
                 if (player.getCollider().isCollidingWith(player.getPhysics(),body.getPhysics(),body.getCollider())) {
-                    player.getCollider().addNormalVector(player.getPhysics());
+                    player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),body.getPhysics()));
+                    player.alignToPlanet(body.getPhysics());
                 }
             }
         }

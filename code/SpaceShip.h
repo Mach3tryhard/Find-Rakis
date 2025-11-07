@@ -39,6 +39,7 @@ public:
     Collider getCollider();
     Pair computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
+    void alignToPlanet(const Physics& planetPhys);
 };
 
 #endif //OOP_SPACESHIP_H

@@ -46,6 +46,7 @@ public:
     void setVelocity(Pair velocity_);
     double getMass();
     void addAcceleration(Pair accelerationtoadd);
+    void setPhysics(Physics newPhysics);
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 #endif //OOP_PHYSICS_H

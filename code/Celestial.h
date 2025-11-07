@@ -44,7 +44,7 @@ public:
         shape.setFillColor(sf::Color::Blue);
     }
 
-    Collider getCollider();
+    Collider &getCollider();
     double getRadius();
     void Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     sf::CircleShape& getShape();
