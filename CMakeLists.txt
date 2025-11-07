@@ -76,6 +76,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/SolarSystem.h
         code/Universe.cpp
         code/Universe.h
+        code/Collider.cpp
+        code/Collider.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
