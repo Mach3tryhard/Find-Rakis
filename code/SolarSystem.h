@@ -51,6 +51,7 @@ public:
             r+=distrib_orbit(gen);
         }
     }
+    void Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     Physics& getPhysics();
     std::vector<Celestial>& getBodies();
     friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);

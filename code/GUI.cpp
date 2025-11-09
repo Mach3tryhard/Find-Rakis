@@ -28,7 +28,7 @@ void GUI::Initialize(sf::Window &window) {
     arrowbox.setPosition({window.getSize().x - minimapSize-10.f, window.getSize().y - minimapSize-10.f});
 }
 
-void GUI::UpdateGUI(SpaceShip& player) {
+void GUI::DrawText(SpaceShip& player) {
     std::string posText ="position:     x: " + std::to_string(player.getPhysics().getPosition().x)
     +" y: " + std::to_string(player.getPhysics().getPosition().y)
     + "\ndirection:    d: "+ std::to_string(player.getShape().getRotation().asDegrees())

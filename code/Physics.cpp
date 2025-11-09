@@ -44,8 +44,15 @@ void Physics::setPhysics(const Physics& newPhysics) {
     this->acceleration = newPhysics.acceleration;
     this->position = newPhysics.position;
 }
-void Physics::setPosition(Pair position_) {this->position = position_;}
-void Physics::setVelocity(Pair velocity_) {this->velocity = velocity_;}
+void Physics::setAcceleration(Pair accelerationtoadd) {
+    this->acceleration = accelerationtoadd;
+}
+void Physics::setPosition(Pair position_) {
+    this->position = position_;
+}
+void Physics::setVelocity(Pair velocity_) {
+    this->velocity = velocity_;
+}
 std::ostream& operator<<(std::ostream& out, const Physics& state) {
     out<<"Position:X-"<<state.position.x<<" Y-"<<state.position.y<<'\n';
     out<<"Velocity:X-"<<state.velocity.x<<" Y-"<<state.velocity.y<<'\n';

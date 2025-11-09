@@ -7,12 +7,6 @@
 #include "SpaceShip.h"
 #include "Collider.h"
 
-Collider SpaceShip::getCollider(){return collider;}
-sf::CircleShape& SpaceShip::getShape() { return triangle; }
-Physics& SpaceShip::getPhysics() { return physics; }
-float SpaceShip::getCap() const { return cap; }
-ParticleSystem& SpaceShip::getExhaust() { return exhaust;}
-std::vector<Bullet>& SpaceShip::getBullets() { return bullets; }
 void SpaceShip::ShipMove() {
     float angleRad = triangle.getRotation().asRadians();
     angleRad -= 3.14159265f / 2.f;
@@ -35,7 +29,7 @@ void SpaceShip::ExhaustMove() {
     exhaust.setDirection(angleRad + 3.14159265f);
 }
 
-Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
+void SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
     const double G = 1000.0;
 
     Pair shipPos = this->getPhysics().getPosition();
@@ -45,11 +39,12 @@ Pair SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     double distSq = dx * dx + dy * dy;
 
     if (distSq < 100 || distSq > influenceRadius * influenceRadius) {
-        return {0.0, 0.0};
+        physics.addAcceleration({ 0, 0 });
+        return;
     }
     double dist = std::sqrt(distSq);
     double accel = G * mass / distSq;
-    return { (dx / dist) * accel, (dy / dist) * accel };
+    physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
 void SpaceShip::ShootBullet() {
     Pair shipPos = physics.getPosition();
@@ -90,6 +85,29 @@ void SpaceShip::alignToPlanet(const Physics& planetPhys) {
 
     triangle.setRotation(sf::degrees(angle * 180.0 / 3.1415926 + 90.0));
 
+}
+void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    for (auto i:bullets) {
+        i.Update(dt,getPhysics().getPosition(),window,viewRect);
+    }
+}
+Collider SpaceShip::getCollider() {
+    return collider;
+}
+sf::CircleShape& SpaceShip::getShape() {
+    return triangle;
+}
+Physics& SpaceShip::getPhysics() {
+    return physics;
+}
+float SpaceShip::getCap() const {
+    return cap;
+}
+ParticleSystem& SpaceShip::getExhaust() {
+    return exhaust;
+}
+std::vector<Bullet>& SpaceShip::getBullets() {
+    return bullets;
 }
 std::ostream& operator<<(std::ostream& out,const SpaceShip& ship) {
     out<<"SHIP\n";

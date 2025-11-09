@@ -24,7 +24,7 @@ public:
     bool isCollidingWith(const Physics& thisf, const Physics& thatf,Collider& collider);
     double getRadius();
     //void drawDebug(sf::RenderWindow& window, const Physics& physics);
-    Physics resolveCollision(const Physics &shipPhys, const Physics &planetPhys);
+    Physics resolveCollision(const Physics& shipPhys, const Physics& planetPhys, double planetRadius)  const;
 };
 
 

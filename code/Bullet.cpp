@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include "Physics.h"
 
-sf::CircleShape& Bullet::getShape() {return shape;}
-Physics& Bullet::getPhysics() { return physics; }
 void Bullet::Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect) {
     Pair shipPos = position;
     Pair bulletPos = physics.getPosition();
@@ -16,6 +14,16 @@ void Bullet::Display(const Pair& position, sf::RenderWindow& window, sf::FloatRe
         shape.setPosition({screenX, screenY});
         window.draw(shape);
     }
+}
+void Bullet::Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    physics.UpdatePosition(dt);
+    Display(player,window,viewRect);
+}
+sf::CircleShape& Bullet::getShape() {
+    return shape;
+}
+Physics& Bullet::getPhysics() {
+    return physics;
 }
 const float Bullet::speed = 200.f;
 std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {

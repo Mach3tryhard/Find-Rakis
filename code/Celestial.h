@@ -12,7 +12,6 @@ private:
     sf::CircleShape shape;
     Physics physics;
     int health,index,color;
-    double gravity;
     bool solid;
     Collider collider;
 public:
@@ -21,7 +20,6 @@ public:
         this->physics = physics;
         this->health = 10;
         this->index = index;
-        this->gravity = 10;
         this->solid = true;
         shape.setRadius(static_cast<float>(radius));
         shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
@@ -33,7 +31,6 @@ public:
     Celestial(const Physics& physics,int health,double radius,double gravity,int color,bool solid,int index) : collider(radius) {
         this->physics = physics;
         this->health = health;
-        this->gravity = gravity;
         this->color = color;
         this->solid = solid;
         this->index = index;
@@ -46,7 +43,7 @@ public:
 
     Collider &getCollider();
     double getRadius();
-    void Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect);
+    void Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     sf::CircleShape& getShape();
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const Celestial& body);

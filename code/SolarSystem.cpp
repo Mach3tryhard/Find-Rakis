@@ -5,6 +5,11 @@
 #include "Celestial.h"
 #include "ParticleSystem.h"
 
+void SolarSystem::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    for (auto i:this->bodies) {
+        i.Display(player,window,viewRect);
+    }
+}
 Physics& SolarSystem::getPhysics() {
     return physics;
 }

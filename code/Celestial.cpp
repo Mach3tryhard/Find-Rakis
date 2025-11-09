@@ -4,17 +4,12 @@
 #include <SFML/Graphics.hpp>
 #include "SpaceShip.h"
 
-Collider &Celestial::getCollider(){return collider;}
-double Celestial::getRadius() {
-    return this->collider.getRadius();
-}
-void Celestial::Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
     float radius = getRadius();
-    Pair shipPos = player.getPhysics().getPosition();
     Pair starPos = physics.getPosition();
     const sf::Vector2f screenCenter = {static_cast<float>(window.getSize().x/2), static_cast<float>(window.getSize().y/2)};
-    float screenX = screenCenter.x + static_cast<float>(starPos.x - shipPos.x);
-    float screenY = screenCenter.y + static_cast<float>(starPos.y - shipPos.y);
+    float screenX = screenCenter.x + static_cast<float>(starPos.x - player.x);
+    float screenY = screenCenter.y + static_cast<float>(starPos.y - player.y);
     if (viewRect.contains({screenX - radius, screenY - radius})
         || viewRect.contains({screenX + radius, screenY + radius})
         || viewRect.contains({screenX - radius, screenY + radius})
@@ -27,15 +22,21 @@ void Celestial::Display(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect
 sf::CircleShape& Celestial::getShape() {
     return shape;
 }
+
 Physics& Celestial::getPhysics() {
     return physics;
+}
+double Celestial::getRadius() {
+    return this->collider.getRadius();
+}
+Collider &Celestial::getCollider() {
+    return collider;
 }
 std::ostream& operator<<(std::ostream& out,const Celestial& body){
     out<<"BODY\n";
     out<<body.physics<<'\n';
     out<<"Stats:\n";
     out<<"Index"<<body.index<<'\n'<<"Health:"<<body.health<<'\n';
-    out<<"Gravity:"<<body.gravity<<'\n';
     out<<"Color:"<<body.color<<'\n'<<"Solid:"<<body.solid<<'\n';
     return out;
 }

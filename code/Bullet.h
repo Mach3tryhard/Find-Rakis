@@ -23,6 +23,7 @@ public:
     }
     sf::CircleShape& getShape();
     Physics& getPhysics();
+    void Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect);
     friend std::ostream& operator<<(std::ostream& out,const Bullet& bullet);
 };

@@ -38,6 +38,7 @@ public:
     ~Universe() {
         systems.clear();
     }
+    void Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
     std::vector<SolarSystem>& getSystems();
     friend std::ostream& operator<<(std::ostream& out,const Universe& universe);
 };

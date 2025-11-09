@@ -48,7 +48,7 @@ public:
     }
     void Initialize(sf::Window &window);
     sf::Text& getText();
-    void UpdateGUI(SpaceShip& player);
+    void DrawText(SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
     void DrawVelocityArrowHUD(sf::RenderWindow& window,SpaceShip& player);
 };
