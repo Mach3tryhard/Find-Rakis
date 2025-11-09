@@ -78,6 +78,12 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Universe.h
         code/Collider.cpp
         code/Collider.h
+        code/Planet.cpp
+        code/Planet.h
+        code/Star.cpp
+        code/Star.h
+        code/Asteroid.cpp
+        code/Asteroid.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
@@ -113,6 +119,6 @@ endif()
 include(cmake/CopyHelper.cmake)
 #
 #copy_files(DIRECTORY images fonts COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
-copy_files(FILES tastatura.txt DIRECTORY fonts COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
+copy_files(FILES tastatura.txt DIRECTORY fonts textures COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(FILES tastatura.txt config.json DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})
 # copy_files(DIRECTORY images sounds COPY_TO_DESTINATION TARGET_NAME ${MAIN_EXECUTABLE_NAME})

@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "SpaceShip.h"
 
-void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     float radius = getRadius();
     Pair starPos = physics.getPosition();
     const sf::Vector2f screenCenter = {static_cast<float>(window.getSize().x/2), static_cast<float>(window.getSize().y/2)};
@@ -16,6 +16,7 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
         || viewRect.contains({screenX + radius, screenY - radius}))
     {
         shape.setPosition({screenX, screenY});
+        shape.setTexture(&texture);
         window.draw(shape);
     }
 }
@@ -36,7 +37,7 @@ std::ostream& operator<<(std::ostream& out,const Celestial& body){
     out<<"BODY\n";
     out<<body.physics<<'\n';
     out<<"Stats:\n";
-    out<<"Index"<<body.index<<'\n'<<"Health:"<<body.health<<'\n';
+    out<<'\n'<<"Health:"<<body.health<<'\n';
     out<<"Color:"<<body.color<<'\n'<<"Solid:"<<body.solid<<'\n';
     return out;
 }

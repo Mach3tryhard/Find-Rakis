@@ -34,7 +34,10 @@ int main() {
     player.getShape().setPosition({center.x,center.y});
 
     /// CREATE UNIVERSE
-    Universe universe(50,gen);
+    Universe universe(25,gen);
+
+    sf::Texture texture;
+    texture.loadFromFile("textures/noiseTexture.png");
 
     sf::Clock clock;
     while(window.isOpen()) {
@@ -80,7 +83,7 @@ int main() {
 
         window.clear();
 
-        universe.Display(player.getPhysics().getPosition(),window,viewRect);
+        universe.Display(player.getPhysics().getPosition(),window,viewRect,texture);
 
         player.getExhaust().update(dt);
         window.draw(player.getExhaust());
@@ -89,15 +92,15 @@ int main() {
         /// UPDATE SPACESHIP->CELESTIAL GRAVITY
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
-                player.computeGravity(body.getPhysics().getPosition(),body.getPhysics().getMass(),2000);
+                player.computeGravity(body->getPhysics().getPosition(),body->getPhysics().getMass(),2000);
             }
         }
         /// UPDATE COLLIDERS
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
-                if (player.getCollider().isCollidingWith(player.getPhysics(),body.getPhysics(),body.getCollider())) {
-                    player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),body.getPhysics(),body.getCollider().getRadius()));
-                    player.alignToPlanet(body.getPhysics());
+                if (player.getCollider().isCollidingWith(player.getPhysics(),body->getPhysics(),body->getCollider())) {
+                    player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),body->getPhysics(),body->getCollider().getRadius()));
+                    player.alignToPlanet(body->getPhysics());
                 }
             }
         }

@@ -5,15 +5,15 @@
 #include "Celestial.h"
 #include "ParticleSystem.h"
 
-void SolarSystem::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+void SolarSystem::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     for (auto i:this->bodies) {
-        i.Display(player,window,viewRect);
+        i->Display(player,window,viewRect,texture);
     }
 }
 Physics& SolarSystem::getPhysics() {
     return physics;
 }
-std::vector<Celestial>& SolarSystem::getBodies() {
+std::vector<Celestial*>& SolarSystem::getBodies() {
     return bodies;
 }
 

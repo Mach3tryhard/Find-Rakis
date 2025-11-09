@@ -18,7 +18,7 @@ public:
             while (gasit==false) {
                 newpos = {distrib(gen), distrib(gen)};
                 gasit=true;
-                for (auto system : systems) {
+                for (auto &system : systems) {
                     int distance = sqrt(pow(system.getPhysics().getPosition().x - newpos.x,2)+pow(system.getPhysics().getPosition().y - newpos.y,2));
                     if ( distance < min_dist)
                         gasit=false;
@@ -35,10 +35,8 @@ public:
             this->systems.push_back(system);
         }
     };
-    ~Universe() {
-        systems.clear();
-    }
-    void Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
+    ~Universe() = default;
+    void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
     std::vector<SolarSystem>& getSystems();
     friend std::ostream& operator<<(std::ostream& out,const Universe& universe);
 };

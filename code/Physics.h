@@ -45,6 +45,9 @@ public:
     void setPosition(Pair position_);
     void setVelocity(Pair velocity_);
     double getMass();
+
+    double setMass(double mass);
+
     void addAcceleration(Pair accelerationtoadd);
     void setPhysics(const Physics& newPhysics);
     void setAcceleration(Pair accelerationtoadd);

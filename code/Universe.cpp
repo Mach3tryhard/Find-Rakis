@@ -1,8 +1,8 @@
 #include "Universe.h"
 
-void Universe::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+void Universe::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     for (auto& i:systems) {
-        i.Display(player,window,viewRect);
+        i.Display(player,window,viewRect,texture);
     }
 }
 std::vector<SolarSystem>& Universe::getSystems() {
