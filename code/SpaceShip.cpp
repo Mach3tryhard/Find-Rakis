@@ -106,9 +106,6 @@ float SpaceShip::getCap() const {
 ParticleSystem& SpaceShip::getExhaust() {
     return exhaust;
 }
-std::vector<Bullet>& SpaceShip::getBullets() {
-    return bullets;
-}
 std::ostream& operator<<(std::ostream& out,const SpaceShip& ship) {
     out<<"SHIP\n";
     out<<ship.physics<<'\n';

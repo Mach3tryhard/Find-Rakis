@@ -44,9 +44,6 @@ void Physics::setPhysics(const Physics& newPhysics) {
     this->acceleration = newPhysics.acceleration;
     this->position = newPhysics.position;
 }
-void Physics::setAcceleration(Pair accelerationtoadd) {
-    this->acceleration = accelerationtoadd;
-}
 void Physics::setPosition(Pair position_) {
     this->position = position_;
 }
