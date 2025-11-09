@@ -28,7 +28,7 @@ public:
         shape.setFillColor(color);
     }
 
-    Celestial(const Physics& physics,int health,double radius,double gravity,int color,bool solid,int index) : collider(radius) {
+    Celestial(const Physics& physics,int health,double radius,int color,bool solid,int index) : collider(radius) {
         this->physics = physics;
         this->health = health;
         this->color = color;
