@@ -37,7 +37,9 @@ int main() {
     Universe universe(25,gen);
 
     sf::Texture texture;
-    texture.loadFromFile("textures/noiseTexture.png");
+    if (!texture.loadFromFile("textures/noiseTexture.png")) {
+        return -1;
+    }
 
     sf::Clock clock;
     while(window.isOpen()) {
