@@ -6,7 +6,7 @@
 class Planet : public Celestial {
 public:
     static const std::vector<sf::Color> possibleColors;
-    Planet(const Physics& physics): Celestial(physics, sf::Color::White) {
+    explicit Planet(const Physics& physics): Celestial(physics, sf::Color::White) {
     }
 
     void initialize(std::mt19937& gen) override;

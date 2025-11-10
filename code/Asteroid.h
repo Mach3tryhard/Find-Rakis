@@ -6,7 +6,7 @@
 class Asteroid : public Celestial {
 public:
     static const std::vector<sf::Color> possibleColors;
-    Asteroid(const Physics& physics): Celestial(physics, sf::Color::White) {
+    explicit Asteroid(const Physics& physics): Celestial(physics, sf::Color::White) {
 
     }
 

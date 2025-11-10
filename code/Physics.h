@@ -9,7 +9,7 @@ private:
     Pair position{};
     Pair velocity{};
     Pair acceleration{};
-    double mass=2000;
+    double mass;
 public:
     /// CONSTRUCTORS
     Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}) {

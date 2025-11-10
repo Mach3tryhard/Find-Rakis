@@ -53,10 +53,9 @@ public:
         }
     }
     ~SolarSystem() {
-        for (auto* b : bodies) delete b;
+        for (const auto* b : bodies) delete b;
     }
-    SolarSystem(const SolarSystem& other) {
-        physics = other.physics;
+    SolarSystem(const SolarSystem& other): physics(other.physics) {
         for (auto* b : other.bodies)
             bodies.push_back(b->clone());
     }
@@ -72,9 +71,7 @@ public:
         }
         return *this;
     }
-    SolarSystem(SolarSystem&& other) noexcept {
-        physics = other.physics;
-        bodies = std::move(other.bodies);
+    SolarSystem(SolarSystem&& other):physics(other.physics),bodies(other.bodies){
         other.bodies.clear();
     }
 
