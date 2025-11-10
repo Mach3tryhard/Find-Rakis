@@ -38,8 +38,8 @@ Pair Physics::getAcceleration(){
 double Physics::getMass() {
     return mass;
 }
-void Physics::setMass(double mass) {
-    this->mass = mass;
+void Physics::setMass(double mass_) {
+    this->mass = mass_;
 }
 void Physics::setPhysics(const Physics& newPhysics) {
     this->mass = newPhysics.mass;
