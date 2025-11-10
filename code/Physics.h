@@ -21,6 +21,7 @@ public:
         this->position = state.position;
         this->velocity = state.velocity;
         this->acceleration = state.acceleration;
+        this->mass = state.mass;
     }
     explicit Physics(Pair position) {
         this->position = position;
@@ -46,7 +47,7 @@ public:
     void setVelocity(Pair velocity_);
     double getMass();
 
-    double setMass(double mass);
+    void setMass(double mass);
 
     void addAcceleration(Pair accelerationtoadd);
     void setPhysics(const Physics& newPhysics);
