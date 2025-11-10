@@ -19,7 +19,7 @@ std::vector<Celestial*>& SolarSystem::getBodies() {
 
 std::ostream& operator<<(std::ostream& out,const SolarSystem& system) {
     out<<"SOLAR SYSTEM\n";
-    for (const auto& bod : system.bodies) {
+    for (const auto* bod : system.bodies) {
         out<<bod<<'\n';
     }
     return out;

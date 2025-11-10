@@ -12,7 +12,7 @@ private:
     double mass;
 public:
     /// CONSTRUCTORS
-    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}) {
+    Physics(): position({0,0}), velocity({0,0}), acceleration({0,0}),mass{0} {
     }
     explicit Physics(double mass): position({0,0}), velocity({0,0}), acceleration({0,0}) {
         this->mass = mass;
@@ -27,6 +27,7 @@ public:
         this->position = position;
         this->velocity = {0,0};
         this->acceleration = {0,0};
+        this->mass = 0;
     }
     ~Physics() = default;
     Physics& operator=(const Physics& state) {

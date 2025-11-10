@@ -56,17 +56,17 @@ public:
         for (const auto* b : bodies) delete b;
     }
     SolarSystem(const SolarSystem& other): physics(other.physics) {
-        for (auto* b : other.bodies)
+        for (const auto* b : other.bodies)
             bodies.push_back(b->clone());
     }
     SolarSystem& operator=(const SolarSystem& other) {
         if (this != &other) {
             // delete existing bodies
-            for (auto* b : bodies) delete b;
+            for (const auto* b : bodies) delete b;
             bodies.clear();
 
             physics = other.physics;
-            for (auto* b : other.bodies)
+            for (const auto* b : other.bodies)
                 bodies.push_back(b->clone());
         }
         return *this;
