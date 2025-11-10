@@ -87,7 +87,7 @@ void SpaceShip::alignToPlanet(const Physics& planetPhys) {
 
 }
 void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect) {
-    for (auto i:bullets) {
+    for (auto& i:bullets) {
         i.Update(dt,getPhysics().getPosition(),window,viewRect);
     }
 }

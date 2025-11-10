@@ -84,6 +84,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Star.h
         code/Asteroid.cpp
         code/Asteroid.h
+        code/Generator.cpp
+        code/Generator.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

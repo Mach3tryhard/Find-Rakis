@@ -7,9 +7,11 @@
 #include "code/Physics.h"
 #include "code/Bullet.h"
 #include "code/Celestial.h"
+#include "code/Generator.h"
 #include "code/GUI.h"
 #include "code/ParticleSystem.h"
 #include "code/Universe.h"
+#include "code/Generator.h"
 
 int main() {
     sf::RenderWindow window;
@@ -36,10 +38,11 @@ int main() {
     /// CREATE UNIVERSE
     Universe universe(25,gen);
 
-    sf::Texture texture;
-    if (!texture.loadFromFile("textures/noiseTexture.png")) {
+    /*sf::Texture texture;
+    if (!texture.loadFromFile("textures/Noise1color.png")) {
         return -1;
-    }
+    }*/
+    Generator noise(1000,sf::Color::White);
 
     sf::Clock clock;
     while(window.isOpen()) {
@@ -85,7 +88,7 @@ int main() {
 
         window.clear();
 
-        universe.Display(player.getPhysics().getPosition(),window,viewRect,texture);
+        universe.Display(player.getPhysics().getPosition(),window,viewRect,noise.getTexture());
 
         player.getExhaust().update(dt);
         window.draw(player.getExhaust());
