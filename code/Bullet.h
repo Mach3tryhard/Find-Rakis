@@ -11,8 +11,9 @@ private:
     sf::CircleShape shape;
     Physics physics;
     Collider collider;
-    const float damage=10;
-    const float radius =5;
+    float damage=10;
+    float radius =5;
+    float lifetime=10;
 public:
     static const float speed;
     explicit Bullet(const Physics& physics) : collider(5.f) {
@@ -27,8 +28,10 @@ public:
     sf::CircleShape& getShape();
     Physics& getPhysics();
     float getDamage() const;
-    void Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect);
+    float getLifetime() const;
+    void Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRects);
     void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect);
+    Bullet &operator=(const Bullet &other);
     friend std::ostream& operator<<(std::ostream& out,const Bullet& bullet);
 };
 #endif //OOP_BULLET_H

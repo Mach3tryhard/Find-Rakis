@@ -16,6 +16,7 @@ void Bullet::Display(const Pair& position, sf::RenderWindow& window, sf::FloatRe
     }
 }
 void Bullet::Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    lifetime-=dt.asSeconds();
     physics.UpdatePosition(dt);
     Display(player,window,viewRect);
 }
@@ -28,7 +29,21 @@ Physics& Bullet::getPhysics() {
 float Bullet::getDamage() const {
     return damage;
 }
+float Bullet::getLifetime() const {
+    return lifetime;
+}
 const float Bullet::speed = 200.f;
+Bullet &Bullet::operator=(const Bullet &other) {
+    if (this!=&other) {
+        shape = other.shape;
+        physics = other.physics;
+        collider = other.collider;
+        damage = other.damage;
+        radius = other.radius;
+        lifetime = other.lifetime;
+    }
+    return *this;
+}
 std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {
     out<<"BULLET\n";
     out<<bullet.physics<<'\n';
