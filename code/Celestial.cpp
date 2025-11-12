@@ -20,10 +20,20 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
         window.draw(shape);
     }
 }
+void Celestial::CheckHit(Bullet& bullet) {
+    if (collider.isCollidingWith(bullet.getPhysics(),physics,collider)) {
+        LoseHealth(bullet.getDamage());
+    }
+}
+void Celestial::LoseHealth(float damage) {
+    health-=damage;
+    if (health<=0) {
+        // KILL CELESTIAL
+    }
+}
 sf::CircleShape& Celestial::getShape() {
     return shape;
 }
-
 Physics& Celestial::getPhysics() {
     return physics;
 }

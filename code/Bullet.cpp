@@ -25,6 +25,9 @@ sf::CircleShape& Bullet::getShape() {
 Physics& Bullet::getPhysics() {
     return physics;
 }
+float Bullet::getDamage() const {
+    return damage;
+}
 const float Bullet::speed = 200.f;
 std::ostream& operator<<(std::ostream& out,const Bullet& bullet) {
     out<<"BULLET\n";

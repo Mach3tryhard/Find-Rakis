@@ -43,6 +43,8 @@ public:
         shape.setFillColor(sf::Color::Blue);
     }
 
+    void CheckHit(Bullet& bullet);
+    void LoseHealth(float damage);
     Collider &getCollider();
     double getRadius();
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
@@ -53,5 +55,6 @@ public:
     friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
 };
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// TODO: CEva cu factory la solar system constructor ca sa apelez diferit idk si o functie virtuala cu functionalitate diferita nu doar generare
 
 #endif //OOP_CELESTIAL_H
