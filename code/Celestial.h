@@ -43,8 +43,8 @@ public:
         shape.setFillColor(sf::Color::Blue);
     }
 
-    void CheckHit(Bullet& bullet);
-    void LoseHealth(float damage);
+    void CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind);
+    void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind);
     Collider &getCollider();
     double getRadius();
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);

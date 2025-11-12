@@ -20,16 +20,20 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
         window.draw(shape);
     }
 }
-void Celestial::CheckHit(Bullet& bullet) {
-    if (collider.isCollidingWith(bullet.getPhysics(),physics,collider)) {
-        LoseHealth(bullet.getDamage());
-        // remove bullet
+void Celestial::CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind) {
+    for (int i=0;i<bullet.size();i++) {
+        if (collider.isCollidingWith(physics,bullet[i].getPhysics(),bullet[i].getCollider())) {
+            std::cout<<"AM PIERDUT VIATA";
+            LoseHealth(bullet[i].getDamage(),celestials,ind);
+            bullet.erase(bullet.begin()+i);
+            i--;
+        }
     }
 }
-void Celestial::LoseHealth(float damage) {
+void Celestial::LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind) {
     health-=damage;
     if (health<=0) {
-        // KILL CELESTIAL
+        celestials.erase(celestials.begin()+ind);
     }
 }
 sf::CircleShape& Celestial::getShape() {

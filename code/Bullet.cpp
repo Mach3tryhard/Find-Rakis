@@ -32,6 +32,10 @@ float Bullet::getDamage() const {
 float Bullet::getLifetime() const {
     return lifetime;
 }
+
+Collider &Bullet::getCollider(){
+    return collider;
+}
 const float Bullet::speed = 200.f;
 Bullet &Bullet::operator=(const Bullet &other) {
     if (this!=&other) {

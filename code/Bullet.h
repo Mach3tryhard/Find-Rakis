@@ -11,7 +11,7 @@ private:
     sf::CircleShape shape;
     Physics physics;
     Collider collider;
-    float damage=10;
+    float damage=25;
     float radius =5;
     float lifetime=10;
 public:
@@ -29,6 +29,8 @@ public:
     Physics& getPhysics();
     float getDamage() const;
     float getLifetime() const;
+
+    Collider &getCollider();
     void Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRects);
     void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect);
     Bullet &operator=(const Bullet &other);

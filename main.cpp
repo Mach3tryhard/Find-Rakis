@@ -110,10 +110,9 @@ int main() {
             }
         }
         for (auto& system : universe.getSystems()) {
-            for (auto& body : system.getBodies()) {
-                for (auto& bullet : player.getBullets()) {
-                    body->CheckHit(bullet);
-                }
+
+            for (int i=0;i<system.getBodies().size();i++) {
+                system.getBodies()[i]->CheckHit(player.getBullets(),system.getBodies(),i);
             }
         }
         /// DRAW PLAYER, INPUT AND UPDATE PLAYER
