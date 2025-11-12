@@ -23,6 +23,7 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
 void Celestial::CheckHit(Bullet& bullet) {
     if (collider.isCollidingWith(bullet.getPhysics(),physics,collider)) {
         LoseHealth(bullet.getDamage());
+        // remove bullet
     }
 }
 void Celestial::LoseHealth(float damage) {
