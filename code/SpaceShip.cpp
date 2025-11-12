@@ -87,8 +87,11 @@ void SpaceShip::alignToPlanet(const Physics& planetPhys) {
 
 }
 void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect) {
-    for (auto& i:bullets) {
-        i.Update(dt,getPhysics().getPosition(),window,viewRect);
+    for (int i=0;i<bullets.size();i++) {
+        bullets[i].Update(dt,getPhysics().getPosition(),window,viewRect);
+        if (bullets[i].getLifetime()<0) {
+            bullets.erase(bullets.begin()+i);
+        }
     }
 }
 Collider SpaceShip::getCollider() {
