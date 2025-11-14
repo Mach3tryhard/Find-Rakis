@@ -47,6 +47,7 @@ public:
     void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind);
     Collider &getCollider();
     double getRadius();
+    void computeGravity(SpaceShip& player);
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
     sf::CircleShape& getShape();
     Physics& getPhysics();

@@ -1,6 +1,8 @@
 #ifndef OOP_UNIVERSE_H
 #define OOP_UNIVERSE_H
+#include <functional>
 #include "SolarSystem.h"
+#include "SpaceShip.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Universe {
@@ -37,6 +39,7 @@ public:
     };
     ~Universe() = default;
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
+    void computeGravity(SpaceShip& player);
     std::vector<SolarSystem>& getSystems();
     friend std::ostream& operator<<(std::ostream& out,const Universe& universe);
 };

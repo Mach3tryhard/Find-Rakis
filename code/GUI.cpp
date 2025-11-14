@@ -62,34 +62,38 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
     window.draw(minimapBox);
 }
 
-void GUI::DrawVelocityArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
-    // Switch to arrow HUD view
+void GUI::DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
     window.setView(arrowView);
 
     sf::Vector2f velocity = {static_cast<float>(player.getPhysics().getVelocity().x), static_cast<float>(player.getPhysics().getVelocity().y)};
     float length = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
-    if (length < 1.f) length = 1.f; // minimal visible length
-
+    if (length < 1.f) length = 1.f;
     float angleRad = std::atan2(velocity.y, velocity.x);
-
-    // Normalize scale so the arrow fits in the box
     float maxLength = minimapSize * 0.4f;
     float scaledLength = std::min(length * 0.5f, maxLength);
 
-    // Draw from center of the box view (0,0 is center in this view)
     sf::Vector2f center(0.f, 0.f);
     velocityLine.setSize({scaledLength, 5.f});
     velocityLine.setOrigin({0.f, 2.5f});
     velocityLine.setPosition(center);
     velocityLine.setRotation(sf::radians(angleRad));
-
     velocityTip.setRotation(sf::radians(angleRad));
-    velocityTip.setPosition(center + sf::Vector2f(std::cos(angleRad) * (scaledLength+10.f),
-                                                  std::sin(angleRad) * (scaledLength+10.f)));
+    velocityTip.setPosition(center + sf::Vector2f(std::cos(angleRad) * (scaledLength+10.f),std::sin(angleRad) * (scaledLength+10.f)));
 
-    // Draw arrow and reset to default view
+    float normalsize=30.f;
+    float directionAngleRad = player.getShape().getRotation().asRadians()-90.f*3.14159265f/180.f;
+    directionLine.setSize({normalsize, 5.f});
+    directionLine.setOrigin({0.f, 2.5f});
+    directionLine.setPosition(center);
+    directionLine.setRotation(sf::radians(directionAngleRad));
+    directionTip.setRotation(sf::radians(directionAngleRad));
+    directionTip.setPosition(center + sf::Vector2f(std::cos(directionAngleRad) * (normalsize+10.f),std::sin(directionAngleRad) * (normalsize+10.f)));
+
     window.draw(velocityLine);
     window.draw(velocityTip);
+
+    window.draw(directionLine);
+    window.draw(directionTip);
 
     window.setView(window.getDefaultView());
     window.draw(arrowbox);

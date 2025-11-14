@@ -1,10 +1,19 @@
 #include "Universe.h"
+#include <functional>
+#include "SpaceShip.h"
 
-void Universe::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
-    for (auto& i:systems) {
-        i.Display(player,window,viewRect,texture);
+void Universe::Display(Pair p, sf::RenderWindow& w, sf::FloatRect& v, sf::Texture& t) {
+    for (int i = 0; i < systems.size(); i++) {
+        systems[i].Display(p, w, v, t);
     }
 }
+
+void Universe::computeGravity(SpaceShip& player) {
+    for (int i = 0; i < systems.size(); i++) {
+        systems[i].computeGravity(player);
+    }
+}
+
 std::vector<SolarSystem>& Universe::getSystems() {
     return systems;
 }

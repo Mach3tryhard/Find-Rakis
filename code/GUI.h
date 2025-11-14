@@ -15,8 +15,12 @@ private:
     sf::RectangleShape minimapBox;
     float minimapSize = 300.f;
 
+    sf::RectangleShape directionLine;
+    sf::ConvexShape directionTip;
+
     sf::RectangleShape velocityLine;
     sf::ConvexShape velocityTip;
+
     sf::RectangleShape arrowbox;
     sf::View arrowView;
 public:
@@ -41,6 +45,16 @@ public:
         velocityTip.setPoint(1, sf::Vector2f(-15.f, 7.5f));
         velocityTip.setPoint(2, sf::Vector2f(-15.f, -7.5f));
         velocityTip.setFillColor(sf::Color::White);
+
+        directionLine.setSize({3.f, 1.f});
+        directionLine.setFillColor(sf::Color::Red);
+        directionLine.setOrigin({0.f, 1.5f});
+        directionTip.setPointCount(3);
+        directionTip.setPoint(0, sf::Vector2f(0.f, 0.f));
+        directionTip.setPoint(1, sf::Vector2f(-15.f, 7.5f));
+        directionTip.setPoint(2, sf::Vector2f(-15.f, -7.5f));
+        directionTip.setFillColor(sf::Color::Red);
+
         arrowbox.setSize({minimapSize, minimapSize});
         arrowbox.setFillColor(sf::Color(0,0,0,10));
         arrowbox.setOutlineColor(sf::Color::White);
@@ -50,7 +64,7 @@ public:
     sf::Text& getText();
     void DrawText(SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
-    void DrawVelocityArrowHUD(sf::RenderWindow& window,SpaceShip& player);
+    void DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player);
 };
 
 #endif //OOP_GUI_H

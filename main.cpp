@@ -94,12 +94,9 @@ int main() {
         window.draw(player.getExhaust());
 
         player.UpdateBullets(dt,window,viewRect);
+        universe.computeGravity(player);
         /// UPDATE SPACESHIP->CELESTIAL GRAVITY
-        for (auto& system : universe.getSystems()) {
-            for (auto& body : system.getBodies()) {
-                player.computeGravity(body->getPhysics().getPosition(),body->getPhysics().getMass(),2000);
-            }
-        }
+        gui.DrawText(player);
         /// UPDATE COLLIDERS
         for (auto& system : universe.getSystems()) {
             for (auto& body : system.getBodies()) {
@@ -110,7 +107,6 @@ int main() {
             }
         }
         for (auto& system : universe.getSystems()) {
-
             for (int i=0;i<system.getBodies().size();i++) {
                 system.getBodies()[i]->CheckHit(player.getBullets(),system.getBodies(),i);
             }
@@ -120,9 +116,8 @@ int main() {
         player.getPhysics().UpdatePhysics(player.getCap(),dt);
         window.draw(player.getShape());
         /// DRAW GUI
-        gui.DrawVelocityArrowHUD(window, player);
+        gui.DrawArrowHUD(window, player);
         gui.DrawMiniMap(window,universe,player);
-        gui.DrawText(player);
         window.draw(gui.getText());
         window.display();
 

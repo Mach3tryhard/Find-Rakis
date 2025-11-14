@@ -20,10 +20,12 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
         window.draw(shape);
     }
 }
+void Celestial::computeGravity(SpaceShip& player) {
+    player.computeGravity(physics.getPosition(),physics.getMass(),2000);
+}
 void Celestial::CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind) {
     for (int i=0;i<bullet.size();i++) {
         if (collider.isCollidingWith(physics,bullet[i].getPhysics(),bullet[i].getCollider())) {
-            std::cout<<"AM PIERDUT VIATA";
             LoseHealth(bullet[i].getDamage(),celestials,ind);
             bullet.erase(bullet.begin()+i);
             i--;

@@ -39,7 +39,7 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     double distSq = dx * dx + dy * dy;
 
     if (distSq < 100 || distSq > influenceRadius * influenceRadius) {
-        physics.addAcceleration({ 0, 0 });
+        //physics.addAcceleration({ 0, 0 });
         return;
     }
     double dist = std::sqrt(distSq);
