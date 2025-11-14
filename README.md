@@ -11,7 +11,7 @@ Controls :
 - You rotate left using the left key.
 - You rotate right using the right key.
 - You interact using the c button.
-- You switch between interactions using the down key.S
+- You switch between interactions using the down key.
 
 You balance your different types of fuels while looking for the planet desert orange planet rakis.
 When you find it, you will be notified of the time it took for you to find it and distance traveled.

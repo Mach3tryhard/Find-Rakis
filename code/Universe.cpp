@@ -3,13 +3,13 @@
 #include "SpaceShip.h"
 
 void Universe::Display(Pair p, sf::RenderWindow& w, sf::FloatRect& v, sf::Texture& t) {
-    for (int i = 0; i < systems.size(); i++) {
+    for (long unsigned int i = 0; i < systems.size(); i++) {
         systems[i].Display(p, w, v, t);
     }
 }
 
 void Universe::computeGravity(SpaceShip& player) {
-    for (int i = 0; i < systems.size(); i++) {
+    for (long unsigned int i = 0; i < systems.size(); i++) {
         systems[i].computeGravity(player);
     }
 }

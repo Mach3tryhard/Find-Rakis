@@ -42,7 +42,7 @@ int main() {
     if (!texture.loadFromFile("textures/Noise1color.png")) {
         return -1;
     }*/
-    Generator noise(1000,sf::Color::White);
+    Generator noise(1000,sf::Color::White,0);
 
     sf::Clock clock;
     while(window.isOpen()) {
@@ -107,7 +107,7 @@ int main() {
             }
         }
         for (auto& system : universe.getSystems()) {
-            for (int i=0;i<system.getBodies().size();i++) {
+            for (long unsigned int i=0;i<system.getBodies().size();i++) {
                 system.getBodies()[i]->CheckHit(player.getBullets(),system.getBodies(),i);
             }
         }

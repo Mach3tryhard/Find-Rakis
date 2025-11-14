@@ -36,8 +36,11 @@ private:
         return lerp(t, b, v);
     }
 public:
-    Generator(unsigned int size, sf::Color baseColor) {
-        generateDitheredPlanet(size, baseColor);
+    Generator(unsigned int size, sf::Color baseColor,int type) {
+        if (type==0)
+            generateDitheredPlanet(size, baseColor);
+        else
+            generatePerlinPlanet(size, baseColor);
     }
     int generateDitheredPlanet(unsigned int size, sf::Color baseColor);
     int generatePerlinPlanet(unsigned int size, sf::Color baseColor);
