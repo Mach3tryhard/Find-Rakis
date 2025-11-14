@@ -1,6 +1,6 @@
 #include "Generator.h"
 #include <random>
-#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Image.hpp>
 
 int Generator::generateDitheredPlanet(unsigned int size, sf::Color baseColor) {
     sf::Image img({size, size});
@@ -73,7 +73,6 @@ int Generator::generatePerlinPlanet(unsigned int size, sf::Color baseColor)
                 continue;
             }
 
-            // Radial shading for spherical look
             float gradient = 1.f - (dist / radius);
             gradient = std::pow(gradient, 3.f);
 
