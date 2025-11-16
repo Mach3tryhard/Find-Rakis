@@ -24,6 +24,7 @@ public:
 
         /// Generating planets positions
         int r=0;
+        Celestial::CelestialType type;
         for (int i=0; i<n_stars+n_planets; i++) {
             std::uniform_int_distribution<> distrib_orbit(400, 640);
             std::uniform_real_distribution<> distrib(-r, r);
@@ -34,21 +35,12 @@ public:
 
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
-            if (i==0 ) {
-                Star *newstar = new Star(newphysics);
-                newstar->initialize(gen);
-                bodies.push_back(newstar);
-            }
-            else if (i==3){
-                Asteroid *newasteroid = new Asteroid(newphysics);
-                newasteroid->initialize(gen);
-                bodies.push_back(newasteroid);
-            }
-            else {
-                Planet *newplanet = new Planet(newphysics);
-                newplanet->initialize(gen);
-                bodies.push_back(newplanet);
-            }
+
+            if (i == 0) type = Celestial::CelestialType::Star;
+            else if (i == 3) type = Celestial::CelestialType::Asteroid;
+            else type = Celestial::CelestialType::Planet;
+
+            bodies.push_back(Celestial::CelestialFactory(type, newphysics, gen));
 
             r+=distrib_orbit(gen);
         }

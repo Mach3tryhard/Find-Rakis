@@ -9,6 +9,8 @@ public:
     explicit Star(const Physics& physics) : Celestial(physics, sf::Color::White) {
     }
 
+    void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) override;
+
     void initialize(std::mt19937& gen) override;
     Star* clone() const override { return new Star(*this); }
 };

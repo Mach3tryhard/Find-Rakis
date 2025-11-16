@@ -2,18 +2,45 @@
 #include "Physics.h"
 #include "Pair.h"
 #include <SFML/Graphics.hpp>
+#include "Asteroid.h"
+#include "Planet.h"
 #include "SpaceShip.h"
+#include "Star.h"
 
+Celestial* Celestial::CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen){
+    Celestial* body = nullptr;
+
+    switch(type) {
+        case Celestial::CelestialType::Star:
+            body = new Star(physics);
+            break;
+        case Celestial::CelestialType::Planet:
+            body = new Planet(physics);
+            break;
+        case Celestial::CelestialType::Asteroid:
+            body = new Asteroid(physics);
+            break;
+    }
+
+    if (body) body->initialize(gen);
+    return body;
+}
+bool Celestial::ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect) {
+    if (viewRect.contains({screenX - radius, screenY - radius})
+        || viewRect.contains({screenX + radius, screenY + radius})
+        || viewRect.contains({screenX - radius, screenY + radius})
+        || viewRect.contains({screenX + radius, screenY - radius})) {
+        return true;
+    }
+    return false;
+}
 void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     float radius = getRadius();
     Pair starPos = physics.getPosition();
     const sf::Vector2f screenCenter = {static_cast<float>(window.getSize().x/2), static_cast<float>(window.getSize().y/2)};
     float screenX = screenCenter.x + static_cast<float>(starPos.x - player.x);
     float screenY = screenCenter.y + static_cast<float>(starPos.y - player.y);
-    if (viewRect.contains({screenX - radius, screenY - radius})
-        || viewRect.contains({screenX + radius, screenY + radius})
-        || viewRect.contains({screenX - radius, screenY + radius})
-        || viewRect.contains({screenX + radius, screenY - radius}))
+    if (ToDisplay(screenX,screenY,radius,viewRect))
     {
         shape.setPosition({screenX, screenY});
         shape.setTexture(&texture);

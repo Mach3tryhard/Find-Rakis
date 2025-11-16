@@ -17,6 +17,12 @@ protected:
     bool solid;
     Collider collider;
 public:
+    enum class CelestialType {
+        Star,
+        Planet,
+        Asteroid
+    };
+    static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen);
     Celestial(const Physics& physics,sf::Color color) : collider(0) {
         ///RANDOMLY GENERATED CELESTIAL NOT DONE YET
         this->physics = physics;
@@ -28,9 +34,6 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-
-    virtual void initialize(std::mt19937& gen) = 0;
-
     Celestial(const Physics& physics,int health,double radius,int color,bool solid) : collider(radius) {
         this->physics = physics;
         this->health = health;
@@ -42,7 +45,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(sf::Color::Blue);
     }
-
+    bool ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect);
     void CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind);
     void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind);
     Collider &getCollider();
@@ -51,11 +54,11 @@ public:
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
     sf::CircleShape& getShape();
     Physics& getPhysics();
+    friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
+
+    virtual void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) = 0;
     virtual ~Celestial() = default;
     virtual Celestial* clone() const = 0;
-    friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
+    virtual void initialize(std::mt19937& gen) = 0;
 };
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// TODO: CEva cu factory la solar system constructor ca sa apelez diferit idk si o functie virtuala cu functionalitate diferita nu doar generare
-
 #endif //OOP_CELESTIAL_H

@@ -18,3 +18,29 @@ void Planet::initialize(std::mt19937& gen) {
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
+void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
+    float r = getRadius();
+
+    pulseCounter += 0.001f;
+    if (pulseCounter >= 2 * 3.14159f) pulseCounter -= 2 * 3.14159f;
+
+    float pulseRadius = r + r/3 * (pow(std::sin(pulseCounter),2)+1);
+
+    Pair pos = physics.getPosition();
+    const sf::Vector2f screenCenter = { window.getSize().x / 2.f, window.getSize().y / 2.f };
+    float screenX = screenCenter.x + static_cast<float>(pos.x - player.x);
+    float screenY = screenCenter.y + static_cast<float>(pos.y - player.y);
+
+    if (!ToDisplay(screenX, screenY, pulseRadius, viewRect)) return;
+
+    sf::Color planetColor = shape.getFillColor();
+    sf::Color atmosphereColor = planetColor;
+    atmosphereColor.a = 100;
+
+    sf::CircleShape atmosphere(pulseRadius);
+    atmosphere.setOrigin({pulseRadius, pulseRadius});
+    atmosphere.setPosition({screenX, screenY});
+    atmosphere.setFillColor(atmosphereColor);
+
+    window.draw(atmosphere);
+}

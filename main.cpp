@@ -38,10 +38,7 @@ int main() {
     /// CREATE UNIVERSE
     Universe universe(25,gen);
 
-    /*sf::Texture texture;
-    if (!texture.loadFromFile("textures/Noise1color.png")) {
-        return -1;
-    }*/
+    /// CREATE TEXTURES
     Generator noise(1000,sf::Color::White,0);
 
     sf::Clock clock;
@@ -104,6 +101,11 @@ int main() {
                     player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),body->getPhysics(),body->getCollider().getRadius()));
                     player.alignToPlanet(body->getPhysics());
                 }
+            }
+        }
+        for (auto& system : universe.getSystems()) {
+            for (auto* body : system.getBodies()) {
+                body->CelestialEffects(window,player.getPhysics().getPosition(),viewRect);
             }
         }
         for (auto& system : universe.getSystems()) {
