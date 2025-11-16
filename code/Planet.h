@@ -4,7 +4,7 @@
 #include "Celestial.h"
 
 class Planet : public Celestial {
-    float pulseCounter;
+    float pulseCounter{};
 public:
     static const std::vector<sf::Color> possibleColors;
     explicit Planet(const Physics& physics): Celestial(physics, sf::Color::White) {
