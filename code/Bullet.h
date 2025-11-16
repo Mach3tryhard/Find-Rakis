@@ -33,6 +33,7 @@ public:
     Collider &getCollider();
     void Update(sf::Time dt,Pair player,sf::RenderWindow& window,sf::FloatRect& viewRects);
     void Display(const Pair& position, sf::RenderWindow& window, sf::FloatRect& viewRect);
+    Bullet(const Bullet& other);
     Bullet &operator=(const Bullet &other);
     friend std::ostream& operator<<(std::ostream& out,const Bullet& bullet);
 };

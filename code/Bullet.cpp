@@ -37,6 +37,13 @@ Collider &Bullet::getCollider(){
     return collider;
 }
 const float Bullet::speed = 200.f;
+Bullet::Bullet(const Bullet& other) :
+    shape(other.shape),
+    physics(other.physics),
+    collider(other.collider),
+    damage(other.damage)
+{}
+
 Bullet &Bullet::operator=(const Bullet &other) {
     if (this!=&other) {
         shape = other.shape;
