@@ -80,7 +80,6 @@ public:
 
     void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture);
     Physics& getPhysics();
-    std::vector<Celestial*>& getBodies();
     friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);
 };
 

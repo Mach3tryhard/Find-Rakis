@@ -23,9 +23,6 @@ void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRec
 Physics& SolarSystem::getPhysics() {
     return physics;
 }
-std::vector<Celestial*>& SolarSystem::getBodies() {
-    return bodies;
-}
 
 std::ostream& operator<<(std::ostream& out,const SolarSystem& system) {
     out<<"SOLAR SYSTEM\n";
