@@ -1,16 +1,16 @@
 #include "Star.h"
 
-const std::vector<sf::Color> Star::possibleColors= {sf::Color::White,sf::Color::White,sf::Color::White};
+const std::vector<sf::Color> Star::possibleColors= {sf::Color(0X92b5ffFF),sf::Color(0Xa2c0ffFF),sf::Color(0Xd5e0ffFF),sf::Color(0Xffede3FF),sf::Color(0Xffdab5FF),sf::Color(0Xffb56cFF),sf::Color(0Xf9f5ffFF)};
 
 void Star::initialize(std::mt19937& gen) {
-    std::uniform_real_distribution<> distrib_radius(80.0, 300.0);
-    std::uniform_real_distribution<> distrib_mass(500.0, 2000.0);
-    std::uniform_int_distribution<> distrib_color(0, 2);
+    std::uniform_real_distribution<> distrib_radius(200.0, 250.0);
+    std::uniform_real_distribution<> distrib_mass(5000.0, 8000.0);
+    std::uniform_int_distribution<> distrib_color(0, 6);
 
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
-    health = 100;
+    health = 2000;
 
     shape.setRadius(radius);
     shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
@@ -34,29 +34,32 @@ void Star::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect
 
     float triSize = r * 1.4f;
 
+    sf::Color starcolor= shape.getFillColor();
+    starcolor.a = 100;
+
     sf::CircleShape triangle1(triSize, 3);
     triangle1.setOrigin({triSize, triSize});
     triangle1.setPosition({screenX, screenY});
     triangle1.setRotation(sf::degrees(rotationOffset));
-    triangle1.setFillColor(sf::Color(255, 255, 255, 100));
+    triangle1.setFillColor(starcolor);
 
     sf::CircleShape triangle2(triSize, 3);
     triangle2.setOrigin({triSize, triSize});
     triangle2.setPosition({screenX, screenY});
     triangle2.setRotation(sf::degrees(rotationOffset + 180.f));
-    triangle2.setFillColor(sf::Color(255, 255, 255, 100));
+    triangle2.setFillColor(starcolor);
 
     sf::CircleShape triangle3(triSize, 3);
     triangle3.setOrigin({triSize, triSize});
     triangle3.setPosition({screenX, screenY});
     triangle3.setRotation(sf::degrees(rotationOffset + 90.f));
-    triangle3.setFillColor(sf::Color(255, 255, 255, 100));
+    triangle3.setFillColor(starcolor);
 
     sf::CircleShape triangle4(triSize, 3);
     triangle4.setOrigin({triSize, triSize});
     triangle4.setPosition({screenX, screenY});
     triangle4.setRotation(sf::degrees(rotationOffset + 270.f));
-    triangle4.setFillColor(sf::Color(255, 255, 255, 100));
+    triangle4.setFillColor(starcolor);
 
     window.draw(triangle1);
     window.draw(triangle2);

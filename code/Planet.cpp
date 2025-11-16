@@ -1,16 +1,16 @@
 #include "Planet.h"
 
-const std::vector<sf::Color> Planet::possibleColors= {sf::Color::Blue,sf::Color::Green,sf::Color::Red};
+const std::vector<sf::Color> Planet::possibleColors= {sf::Color(0Xc0a480FF),sf::Color(0Xc26d5cFF),sf::Color(0Xbfaf9bFF),sf::Color(0X426b8fFF),sf::Color(0Xf4dbc4FF),sf::Color(0Xd9b292FF),sf::Color(0X7bb368FF)};
 
 void Planet::initialize(std::mt19937& gen) {
-    std::uniform_real_distribution<> distrib_radius(80.0, 300.0);
-    std::uniform_real_distribution<> distrib_mass(500.0, 2000.0);
-    std::uniform_int_distribution<> distrib_color(0, 2);
+    std::uniform_real_distribution<> distrib_radius(100.0, 150.0);
+    std::uniform_real_distribution<> distrib_mass(1000.0, 1500.0);
+    std::uniform_int_distribution<> distrib_color(0, 6);
 
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
-    health = 100;
+    health = 1000;
 
     shape.setRadius(radius);
     shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
@@ -24,7 +24,7 @@ void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRe
     pulseCounter += 0.0005f;
     if (pulseCounter >= 2 * 3.14159f) pulseCounter -= 2 * 3.14159f;
 
-    float pulseRadius = r + r/6 * (pow(std::sin(pulseCounter),2)+1);
+    float pulseRadius = r + r/5.6f * (pow(std::sin(pulseCounter),2)+1);
 
     Pair pos = physics.getPosition();
     const sf::Vector2f screenCenter = { window.getSize().x / 2.f, window.getSize().y / 2.f };
@@ -33,8 +33,7 @@ void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRe
 
     if (!ToDisplay(screenX, screenY, pulseRadius, viewRect)) return;
 
-    sf::Color planetColor = shape.getFillColor();
-    sf::Color atmosphereColor = planetColor;
+    sf::Color atmosphereColor = shape.getFillColor();
     atmosphereColor.a = 100;
 
     sf::CircleShape atmosphere(pulseRadius);

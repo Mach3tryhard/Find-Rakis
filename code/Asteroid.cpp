@@ -1,10 +1,10 @@
 #include "Asteroid.h"
 
-const std::vector<sf::Color> Asteroid::possibleColors= {sf::Color(0x964B00FF),sf::Color(0x964B00FF),sf::Color(0x964B00FF)};
+const std::vector<sf::Color> Asteroid::possibleColors= {sf::Color(0x5a554cFF),sf::Color(0x767676FF),sf::Color(0x93928cFF)};
 
 void Asteroid::initialize(std::mt19937& gen) {
-    std::uniform_real_distribution<> distrib_radius(80.0, 300.0);
-    std::uniform_real_distribution<> distrib_mass(500.0, 2000.0);
+    std::uniform_real_distribution<> distrib_radius(50.0, 70.0);
+    std::uniform_real_distribution<> distrib_mass(100.0, 500.0);
     std::uniform_int_distribution<> distrib_color(0, 2);
 
     double radius = distrib_radius(gen);
@@ -26,13 +26,13 @@ void Asteroid::CelestialEffects(sf::RenderWindow& window, Pair player, sf::Float
 
     float radius = getRadius();
 
-    if (!ToDisplay(screenX, screenY, radius + 200.f, viewRect)) return;
+    if (!ToDisplay(screenX, screenY, radius + 100.f, viewRect)) return;
 
     for (auto& p : dustParticles) {
         p.offset += p.velocity;
 
-        if (std::abs(p.offset.x) > 200.f) p.velocity.x = -p.velocity.x;
-        if (std::abs(p.offset.y) > 200.f) p.velocity.y = -p.velocity.y;
+        if (std::abs(p.offset.x) > 100.f) p.velocity.x = -p.velocity.x;
+        if (std::abs(p.offset.y) > 100.f) p.velocity.y = -p.velocity.y;
 
         sf::CircleShape dust(3.f);
         dust.setOrigin({3.f, 3.f});
