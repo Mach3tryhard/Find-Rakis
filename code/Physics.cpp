@@ -3,6 +3,8 @@
 #include <cmath>
 #include <SFML/Graphics.hpp>
 
+#include "Exceptions.h"
+
 void Physics::UpdatePhysics(float cap,sf::Time dt) {
     float delta = dt.asSeconds();
     this->velocity.x += this->acceleration.x * delta;
@@ -16,6 +18,9 @@ void Physics::UpdatePhysics(float cap,sf::Time dt) {
     this->position.x += this->velocity.x * delta;
     this->position.y += this->velocity.y * delta;
     acceleration = {0.0, 0.0};
+    if (std::isnan(velocity.x) || std::isnan(velocity.y)) {
+        throw PhysicsException("Velocity este nan");
+    }
 }
 void Physics::UpdatePosition(sf::Time dt) {
     float delta = dt.asSeconds();

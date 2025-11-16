@@ -7,15 +7,16 @@
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
 
-void SolarSystem::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
-    for (auto i:this->bodies) {
-        i->Display(player,window,viewRect,texture);
-    }
-}
-
-void SolarSystem::computeGravity(SpaceShip& player) {
-    for (auto i:this->bodies) {
-        i->computeGravity(player);
+void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
+    for (long unsigned int i=0;i<bodies.size();i++) {
+        bodies[i]->Display(player.getPhysics().getPosition(),window,viewRect,texture);
+        bodies[i]->computeGravity(player);
+        bodies[i]->CelestialEffects(window,player.getPhysics().getPosition(),viewRect);
+        bodies[i]->CheckHit(player.getBullets(),bodies,i);
+        if (player.getCollider().isCollidingWith(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider())) {
+            player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider().getRadius()));
+            player.alignToPlanet(bodies[i]->getPhysics());
+        }
     }
 }
 

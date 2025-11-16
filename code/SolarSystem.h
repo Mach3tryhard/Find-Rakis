@@ -77,8 +77,8 @@ public:
         }
         return *this;
     }
-    void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
-    void computeGravity(SpaceShip& player);
+
+    void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture);
     Physics& getPhysics();
     std::vector<Celestial*>& getBodies();
     friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);

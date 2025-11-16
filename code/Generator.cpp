@@ -3,6 +3,8 @@
 #include <SFML/Graphics/Image.hpp>
 #include <algorithm>
 
+#include "Exceptions.h"
+
 int Generator::generateDitheredPlanet(unsigned int size, sf::Color baseColor) {
     sf::Image img(sf::Vector2u(size, size), sf::Color::Black);
     std::mt19937 rng(static_cast<unsigned>(std::time(nullptr)));
@@ -111,7 +113,7 @@ int Generator::generatePerlinPlanet(unsigned int size, sf::Color baseColor)
     }
 
     if (!texture.loadFromImage(img))
-        return -1;
+        throw ResourceLoadException("Nu am putut sa dau load la textura generata");
     return 1;
 }
 

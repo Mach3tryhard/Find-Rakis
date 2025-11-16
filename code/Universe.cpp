@@ -2,15 +2,9 @@
 #include <functional>
 #include "SpaceShip.h"
 
-void Universe::Display(Pair p, sf::RenderWindow& w, sf::FloatRect& v, sf::Texture& t) {
+void Universe::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     for (long unsigned int i = 0; i < systems.size(); i++) {
-        systems[i].Display(p, w, v, t);
-    }
-}
-
-void Universe::computeGravity(SpaceShip& player) {
-    for (long unsigned int i = 0; i < systems.size(); i++) {
-        systems[i].computeGravity(player);
+        systems[i].Update(player,window,viewRect,texture);
     }
 }
 

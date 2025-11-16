@@ -6,6 +6,7 @@
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
 #include "Collider.h"
+#include "Exceptions.h"
 
 void SpaceShip::ShipMove() {
     float angleRad = triangle.getRotation().asRadians();
@@ -39,11 +40,13 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     double distSq = dx * dx + dy * dy;
 
     if (distSq < 100 || distSq > influenceRadius * influenceRadius) {
-        //physics.addAcceleration({ 0, 0 });
         return;
     }
     double dist = std::sqrt(distSq);
     double accel = G * mass / distSq;
+    if (std::isnan(dist) || std::isnan(accel)) {
+        throw PhysicsException("Gravity computation produced NaN.");
+    }
     physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
 void SpaceShip::ShootBullet() {

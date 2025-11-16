@@ -38,8 +38,7 @@ public:
         }
     };
     ~Universe() = default;
-    void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
-    void computeGravity(SpaceShip& player);
+    void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture);
     std::vector<SolarSystem>& getSystems();
     friend std::ostream& operator<<(std::ostream& out,const Universe& universe);
 };

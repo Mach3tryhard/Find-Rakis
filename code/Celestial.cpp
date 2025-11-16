@@ -3,6 +3,7 @@
 #include "Pair.h"
 #include <SFML/Graphics.hpp>
 #include "Asteroid.h"
+#include "Exceptions.h"
 #include "Planet.h"
 #include "SpaceShip.h"
 #include "Star.h"
@@ -36,6 +37,9 @@ bool Celestial::ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& vi
 }
 void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     float radius = getRadius();
+    if (radius<10) {
+        throw GenerationException("Radiusul este prea mic");
+    }
     Pair starPos = physics.getPosition();
     const sf::Vector2f screenCenter = {static_cast<float>(window.getSize().x/2), static_cast<float>(window.getSize().y/2)};
     float screenX = screenCenter.x + static_cast<float>(starPos.x - player.x);

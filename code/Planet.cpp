@@ -21,10 +21,10 @@ void Planet::initialize(std::mt19937& gen) {
 void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     float r = getRadius();
 
-    pulseCounter += 0.001f;
+    pulseCounter += 0.0005f;
     if (pulseCounter >= 2 * 3.14159f) pulseCounter -= 2 * 3.14159f;
 
-    float pulseRadius = r + r/3 * (pow(std::sin(pulseCounter),2)+1);
+    float pulseRadius = r + r/6 * (pow(std::sin(pulseCounter),2)+1);
 
     Pair pos = physics.getPosition();
     const sf::Vector2f screenCenter = { window.getSize().x / 2.f, window.getSize().y / 2.f };
