@@ -19,7 +19,7 @@ private:
     const float cap=350;
     bool upPressed=false;
 public:
-    SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius) {
+    SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius/2) {
         this->triangle.setRadius(radius);
         this->triangle.setPointCount(3);
         this->triangle.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
