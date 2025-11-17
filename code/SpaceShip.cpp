@@ -7,8 +7,6 @@
 #include "SpaceShip.h"
 
 #include <iostream>
-#include <X11/Xlibint.h>
-
 #include "Collider.h"
 #include "Exceptions.h"
 
@@ -43,7 +41,7 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
 
     double distSq = dx * dx + dy * dy;
 
-    if (distSq < 100 || distSq > influenceRadius * influenceRadius) {
+    if (distSq < 100.f || distSq > influenceRadius * influenceRadius) {
         return;
     }
     double dist = std::sqrt(distSq);
@@ -53,6 +51,7 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     }
     physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
+
 void SpaceShip::ShootBullet() {
     energy-=10;
     Pair shipPos = physics.getPosition();
@@ -78,7 +77,7 @@ void SpaceShip::InputCheck(sf::Time dt) {
         ShipMove();
         ExhaustMove();
         fuel -= dt.asSeconds();
-        fuel = max(0.f, fuel);
+        fuel = std::max(0.f, static_cast<float>(fuel));
         upPressed = true;
     } else {
         upPressed = false;
@@ -96,11 +95,10 @@ void SpaceShip::alignToPlanet(const Physics& planetPhys) {
     double angle = std::atan2(dy, dx);
 
     triangle.setRotation(sf::degrees(angle * 180.0 / 3.1415926 + 90.0));
-
 }
 void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect) {
     energy+=dt.asSeconds()*5.f;
-    energy=min(energy,matscap);
+    energy=std::min(energy,matscap);
     for (long unsigned int i=0;i<bullets.size();i++) {
         bullets[i].Update(dt,getPhysics().getPosition(),window,viewRect);
         if (bullets[i].getLifetime()<0) {
@@ -135,7 +133,7 @@ ParticleSystem& SpaceShip::getExhaust() {
 }
 void SpaceShip::addOre(float value) {
     ore+=value;
-    ore=min(ore,matscap);
+    ore=std::min(ore,matscap);
 }
 std::vector<Bullet> &SpaceShip::getBullets() {
     return bullets;

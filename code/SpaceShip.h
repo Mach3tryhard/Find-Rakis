@@ -42,6 +42,7 @@ public:
     void ShootBullet();
     void InputCheck(sf::Time dt);
     Collider getCollider();
+    void snapToPlanetSurface(const Physics& planetPhys, double planetRadius);
     void computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);

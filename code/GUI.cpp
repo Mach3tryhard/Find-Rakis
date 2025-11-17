@@ -62,7 +62,7 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
     window.draw(minimapBox);
 }
 
-void GUI::DrawBars(sf::RenderWindow& window,SpaceShip& player) {
+void GUI::DrawBars(sf::RenderWindow& window, const SpaceShip& player) {
     FuelBar.setSize({player.getFuel(),10.f});
     EnergyBar.setSize({player.getEnergy(),10.f});
     OreBar.setSize({player.getOre(),10.f});
