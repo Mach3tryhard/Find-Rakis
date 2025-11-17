@@ -62,6 +62,37 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
     window.draw(minimapBox);
 }
 
+void GUI::DrawBars(sf::RenderWindow& window,SpaceShip& player) {
+    FuelBar.setSize({player.getFuel(),10.f});
+    EnergyBar.setSize({player.getEnergy(),10.f});
+    OreBar.setSize({player.getOre(),10.f});
+    FuelBar.setOrigin({0.f, 5.f});
+    EnergyBar.setOrigin({0.f, 5.f});
+    OreBar.setOrigin({0.f, 5.f});
+
+    float sizex=window.getSize().x;
+    float sizey=window.getSize().y;
+
+    FuelBar.setPosition({sizex/3, sizey-125.f});
+    EnergyBar.setPosition({sizex/3, sizey-100.f});
+    OreBar.setPosition({sizex/3, sizey-75.f});
+
+    FuelBarback.setOrigin({0.f, 5.f});
+    EnergyBarback.setOrigin({0.f, 5.f});
+    OreBarback.setOrigin({0.f, 5.f});
+
+    FuelBarback.setPosition({sizex/3, sizey-125.f});
+    EnergyBarback.setPosition({sizex/3, sizey-100.f});
+    OreBarback.setPosition({sizex/3, sizey-75.f});
+
+    window.draw(FuelBarback);
+    window.draw(EnergyBarback);
+    window.draw(OreBarback);
+    window.draw(FuelBar);
+    window.draw(EnergyBar);
+    window.draw(OreBar);
+}
+
 void GUI::DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
     window.setView(arrowView);
 

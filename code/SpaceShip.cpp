@@ -5,6 +5,10 @@
 #include "Bullet.h"
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
+
+#include <iostream>
+#include <X11/Xlibint.h>
+
 #include "Collider.h"
 #include "Exceptions.h"
 
@@ -50,6 +54,7 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
 void SpaceShip::ShootBullet() {
+    energy-=10;
     Pair shipPos = physics.getPosition();
     float angleRad = triangle.getRotation().asRadians();
     angleRad -= 3.14159265f / 2.f;
@@ -69,14 +74,18 @@ void SpaceShip::InputCheck(sf::Time dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
         triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up)) {
-        upPressed = true;
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && fuel > 0) {
         ShipMove();
         ExhaustMove();
-    }else{
+        fuel -= dt.asSeconds();
+        fuel = max(0.f, fuel);
+        upPressed = true;
+    } else {
         upPressed = false;
     }
+
     exhaust.setEmitting(upPressed);
+
 }
 void SpaceShip::alignToPlanet(const Physics& planetPhys) {
     Pair shipPos = physics.getPosition();
@@ -90,12 +99,24 @@ void SpaceShip::alignToPlanet(const Physics& planetPhys) {
 
 }
 void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect) {
+    energy+=dt.asSeconds()*5.f;
+    energy=min(energy,matscap);
     for (long unsigned int i=0;i<bullets.size();i++) {
         bullets[i].Update(dt,getPhysics().getPosition(),window,viewRect);
         if (bullets[i].getLifetime()<0) {
             bullets.erase(bullets.begin()+i);
         }
     }
+}
+
+float SpaceShip::getFuel() const {
+    return fuel;
+}
+float SpaceShip::getEnergy() const {
+    return energy;
+}
+float SpaceShip::getOre() const {
+    return ore;
 }
 Collider SpaceShip::getCollider() {
     return collider;
@@ -112,7 +133,10 @@ float SpaceShip::getCap() const {
 ParticleSystem& SpaceShip::getExhaust() {
     return exhaust;
 }
-
+void SpaceShip::addOre(float value) {
+    ore+=value;
+    ore=min(ore,matscap);
+}
 std::vector<Bullet> &SpaceShip::getBullets() {
     return bullets;
 }

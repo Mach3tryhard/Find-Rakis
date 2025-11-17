@@ -46,8 +46,8 @@ public:
         shape.setFillColor(sf::Color::Blue);
     }
     bool ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect);
-    void CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind);
-    void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind);
+    void CheckHit(std::vector<Bullet> &bullet, std::vector<Celestial *> &celestials, int ind, SpaceShip &player);
+    void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind, SpaceShip &player);
     Collider &getCollider();
     double getRadius();
     void computeGravity(SpaceShip& player);

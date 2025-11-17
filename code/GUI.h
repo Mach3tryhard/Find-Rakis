@@ -23,6 +23,14 @@ private:
 
     sf::RectangleShape arrowbox;
     sf::View arrowView;
+
+    sf::RectangleShape FuelBar;
+    sf::RectangleShape EnergyBar;
+    sf::RectangleShape OreBar;
+
+    sf::RectangleShape FuelBarback;
+    sf::RectangleShape EnergyBarback;
+    sf::RectangleShape OreBarback;
 public:
     GUI() : debugText(font) {
         this->font = sf::Font("fonts/jetbrains.ttf");
@@ -59,12 +67,26 @@ public:
         arrowbox.setFillColor(sf::Color(0,0,0,10));
         arrowbox.setOutlineColor(sf::Color::White);
         arrowbox.setOutlineThickness(2.f);
+
+        FuelBar.setSize({100.f, 10.f});
+        FuelBar.setFillColor(sf::Color::Blue);
+        EnergyBar.setSize({100.f, 10.f});
+        EnergyBar.setFillColor(sf::Color::Green);
+        OreBar.setSize({100.f, 10.f});
+        OreBar.setFillColor(sf::Color::Yellow);
+        FuelBarback.setSize({100.f, 10.f});
+        EnergyBarback.setSize({100.f, 10.f});
+        OreBarback.setSize({100.f, 10.f});
+        FuelBarback.setFillColor(sf::Color(255,255,255,100));
+        EnergyBarback.setFillColor(sf::Color(255,255,255,100));
+        OreBarback.setFillColor(sf::Color(255,255,255,100));
     }
     void Initialize(sf::Window &window);
     sf::Text& getText();
     void DrawText(SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
     void DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player);
+    void DrawBars(sf::RenderWindow& window,SpaceShip& player);
 };
 
 #endif //OOP_GUI_H

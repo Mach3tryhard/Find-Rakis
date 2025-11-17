@@ -33,7 +33,7 @@ int main() {
 
         /// CREATE PLAYER
         Physics playerphysics{5};
-        SpaceShip player{playerphysics,10,100,100,100};
+        SpaceShip player{playerphysics,10,100,100,0};
         player.getShape().setPosition({center.x,center.y});
 
         /// CREATE UNIVERSE
@@ -74,7 +74,8 @@ int main() {
                             shouldExit = true;
                         }
                         if(keyPressed->code == sf::Keyboard::Key::C) {
-                            player.ShootBullet();
+                            if (player.getEnergy()>10)
+                                player.ShootBullet();
                         }
                     }
             }
@@ -99,6 +100,7 @@ int main() {
             gui.DrawText(player);
             gui.DrawArrowHUD(window, player);
             gui.DrawMiniMap(window,universe,player);
+            gui.DrawBars(window,player);
             window.draw(gui.getText());
             window.display();
         }

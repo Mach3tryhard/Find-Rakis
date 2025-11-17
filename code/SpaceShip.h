@@ -14,11 +14,12 @@ private:
     Physics physics;
     Collider collider;
     double fuel,energy,ore;
+    const double matscap=100;
     const float thrust = 120.0f;
     const float cap=350;
     bool upPressed=false;
 public:
-    SpaceShip(const Physics& physics,double radius, double fuel, double energy, double ore):collider(radius) {
+    SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius) {
         this->triangle.setRadius(radius);
         this->triangle.setPointCount(3);
         this->triangle.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
@@ -32,6 +33,10 @@ public:
     float getCap() const;
     ParticleSystem& getExhaust();
     std::vector<Bullet>& getBullets();
+    void addOre(float value);
+    float getFuel() const;
+    float getEnergy() const;
+    float getOre() const;
     void ShipMove();
     void ExhaustMove();
     void ShootBullet();
