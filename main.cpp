@@ -112,6 +112,7 @@ int main() {
             gui.DrawBars(window,player);
 
             window.display();
+            /// TODO: FIX ACCELERATION DISPLAY NOT WORKING
         }
     }
     catch (const ResourceLoadException& e) {
