@@ -96,7 +96,14 @@ int main() {
             player.UpdateData(dt,player.getPhysics().getPosition());
             player.UpdateBullets(dt,window,viewRect);
             player.InputCheck(dt);
-            player.getPhysics().UpdatePhysics(player.getCap(),dt);
+            if (player.getHyper()==true) {
+                player.EnterHyper();
+                player.getPhysics().UpdatePosition(dt);
+            }
+            else {
+                player.ExitHyper();
+                player.getPhysics().UpdatePhysics(player.getCap(),dt);
+            }
             window.draw(player.getShape());
             /// DRAW GUI
             gui.DrawText(window,player);

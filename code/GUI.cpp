@@ -7,10 +7,6 @@
 #include "SpaceShip.h"
 #include "SolarSystem.h"
 
-sf::Text& GUI::getText() {
-    return this->debugText;
-}
-
 void GUI::Initialize(sf::Window &window) {
     float left = 10.f / window.getSize().x;
     float bottom = 10.f / window.getSize().y;

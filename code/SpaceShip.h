@@ -18,7 +18,8 @@ private:
     double fuel,energy,ore;
     double timer,distance_travelled;
     const double matscap=100;
-    const float thrust = 120.0f,hyper_thrust=400.0f;
+    bool inHyper=false;
+    const float thrust = 120.0f,hyper_thrust=1000.0f;
     const float cap=350;
     bool upPressed=false;
 public:
@@ -44,13 +45,16 @@ public:
     float getEnergy() const;
     float getOre() const;
     double getTimer() const;
+    bool getHyper() const{return inHyper;}
     double getDistance_travelled() const;
     void ShipMove();
     void ExhaustMove();
     void ShootBullet();
     void InputCheck(sf::Time dt);
     Collider getCollider();
-
+    void EnterHyper();
+    void ExitHyper();
+    void DoHyper(sf::Time dt);
     void UpdateData(sf::Time dt,Pair newpos);
     void computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);

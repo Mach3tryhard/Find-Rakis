@@ -72,12 +72,33 @@ void SpaceShip::ShootBullet() {
     Bullet newbullet(bulletPhysics);
     bullets.push_back(newbullet);
 }
+void SpaceShip::EnterHyper() {
+    if (!inHyper) {
+        float angleRad = triangle.getRotation().asRadians();
+        angleRad -= 3.14159265f / 2.f;
+        Pair direction{std::cos(angleRad) * hyper_thrust, std::sin(angleRad) * hyper_thrust};
+        physics.setVelocity(direction);
+    }
+    inHyper=true;
+}
+void SpaceShip::ExitHyper() {
+    if (inHyper==true) {
+        physics.setVelocity({0,0});
+    }
+    inHyper=false;
+}
 void SpaceShip::InputCheck(sf::Time dt) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !inHyper) {
         triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right)){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && !inHyper){
         triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::V)){
+        EnterHyper();
+    }
+    else {
+        ExitHyper();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && fuel > 0) {
         ShipMove();
