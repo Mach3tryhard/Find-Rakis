@@ -36,16 +36,16 @@ void Celestial::Display(Pair player,sf::RenderWindow& window,sf::FloatRect& view
 void Celestial::computeGravity(SpaceShip& player) {
     player.computeGravity(physics.getPosition(),physics.getMass(),2000);
 }
-void Celestial::CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& celestials,int ind,SpaceShip& player) {
+void Celestial::CheckHit(std::vector<Bullet>& bullet,SpaceShip& player) {
     for (long unsigned int i=0;i<bullet.size();i++) {
         if (collider.isCollidingWith(physics,bullet[i].getPhysics(),bullet[i].getCollider())) {
-            LoseHealth(bullet[i].getDamage(),celestials,ind,player);
+            LoseHealth(bullet[i].getDamage(),player);
             bullet.erase(bullet.begin()+i);
             i--;
         }
     }
 }
-void Celestial::LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind,SpaceShip& player) {
+void Celestial::LoseHealth(float damage,SpaceShip& player) {
     health-=damage;
     if (health<=0) {
         player.addOre(getRadius()/5);
