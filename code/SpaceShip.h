@@ -18,7 +18,7 @@ private:
     double fuel,energy,ore;
     double timer,distance_travelled;
     const double matscap=100;
-    const float thrust = 120.0f;
+    const float thrust = 120.0f,hyper_thrust=400.0f;
     const float cap=350;
     bool upPressed=false;
 public:

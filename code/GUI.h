@@ -102,7 +102,7 @@ public:
     void DrawText(sf::RenderWindow& window,SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
     void DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player);
-    void DrawBars(sf::RenderWindow& window,SpaceShip& player);
+    void DrawBars(sf::RenderWindow& window,const SpaceShip& player);
 };
 
 #endif //OOP_GUI_H

@@ -10,7 +10,7 @@ void Star::initialize(std::mt19937& gen) {
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
-    health = 2000;
+    health = 500;
 
     shape.setRadius(radius);
     shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
