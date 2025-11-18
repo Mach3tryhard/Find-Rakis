@@ -31,17 +31,32 @@ private:
     sf::RectangleShape FuelBarback;
     sf::RectangleShape EnergyBarback;
     sf::RectangleShape OreBarback;
+
+    sf::Text barsText;
+
+    sf::Text dataText;
 public:
-    GUI() : debugText(font) {
+    GUI() : debugText(font), barsText(font), dataText(font) {
         this->font = sf::Font("fonts/jetbrains.ttf");
+
         this->debugText = sf::Text(font);
         this->debugText.setFont(font);
         this->debugText.setCharacterSize(18);
         this->debugText.setFillColor(sf::Color::White);
 
+        this->barsText = sf::Text(font);
+        this->barsText.setFont(font);
+        this->barsText.setCharacterSize(18);
+        this->barsText.setFillColor(sf::Color::White);
+
+        this->dataText = sf::Text(font);
+        this->dataText.setFont(font);
+        this->dataText.setCharacterSize(18);
+        this->dataText.setFillColor(sf::Color::White);
+
         minimapView = sf::View(sf::Vector2f(0.f, 0.f), sf::Vector2f(21600.f, 21600.f));
         minimapBox.setSize({minimapSize, minimapSize});
-        minimapBox.setFillColor(sf::Color(0,0,0,10));
+        minimapBox.setFillColor(sf::Color(0, 0, 0, 10));
         minimapBox.setOutlineColor(sf::Color::White);
         minimapBox.setOutlineThickness(2.f);
 
@@ -64,7 +79,7 @@ public:
         directionTip.setFillColor(sf::Color::Red);
 
         arrowbox.setSize({minimapSize, minimapSize});
-        arrowbox.setFillColor(sf::Color(0,0,0,10));
+        arrowbox.setFillColor(sf::Color(0, 0, 0, 10));
         arrowbox.setOutlineColor(sf::Color::White);
         arrowbox.setOutlineThickness(2.f);
 
@@ -77,16 +92,17 @@ public:
         FuelBarback.setSize({100.f, 10.f});
         EnergyBarback.setSize({100.f, 10.f});
         OreBarback.setSize({100.f, 10.f});
-        FuelBarback.setFillColor(sf::Color(255,255,255,100));
-        EnergyBarback.setFillColor(sf::Color(255,255,255,100));
-        OreBarback.setFillColor(sf::Color(255,255,255,100));
+        FuelBarback.setFillColor(sf::Color(255, 255, 255, 100));
+        EnergyBarback.setFillColor(sf::Color(255, 255, 255, 100));
+        OreBarback.setFillColor(sf::Color(255, 255, 255, 100));
     }
+
     void Initialize(sf::Window &window);
     sf::Text& getText();
-    void DrawText(SpaceShip& player);
+    void DrawText(sf::RenderWindow& window,SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
     void DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player);
-    void DrawBars(sf::RenderWindow& window, const SpaceShip& player);
+    void DrawBars(sf::RenderWindow& window,SpaceShip& player);
 };
 
 #endif //OOP_GUI_H

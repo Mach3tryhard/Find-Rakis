@@ -32,6 +32,12 @@ void SpaceShip::ExhaustMove() {
     exhaust.setDirection(angleRad + 3.14159265f);
 }
 
+void SpaceShip::UpdateData(sf::Time dt,Pair newpos) {
+    timer+=dt.asSeconds();
+    distance_travelled+=sqrtf(pow(newpos.x-lastpos.x,2)+pow(newpos.y-lastpos.y,2));
+    lastpos=newpos;
+}
+
 void SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
     const double G = 1000.0;
 
@@ -121,6 +127,12 @@ Collider SpaceShip::getCollider() {
 }
 sf::CircleShape& SpaceShip::getShape() {
     return triangle;
+}
+double SpaceShip::getTimer() const {
+    return timer;
+}
+double SpaceShip::getDistance_travelled() const{
+    return distance_travelled;
 }
 Physics& SpaceShip::getPhysics() {
     return physics;

@@ -70,7 +70,7 @@ The game relies a lot on its atmosphere since the gameplay is simple.
 - [x] cât mai multe `const`
 - [x] funcții *de nivel înalt*, de eliminat cât mai mulți getters/setters/funcții low-level
 - [x] minim 75-80% din codul propriu să fie C++
-- [ ] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate** din aceeași ierarhie
+- [x] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate** din aceeași ierarhie
   - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou
   - noua derivată va fi integrată în codul existent (adică va fi folosită, nu adăugată doar ca să fie)
 - [x] tag de `git` pe commit cu **toate bifele**: de exemplu `v0.2`

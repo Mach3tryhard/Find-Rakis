@@ -19,13 +19,16 @@ void GUI::Initialize(sf::Window &window) {
     minimapView.setViewport(sf::FloatRect({left, 1.f - height - bottom}, {width, height}));
     minimapBox.setPosition({10.f, window.getSize().y - minimapSize-10.f});
 
-    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-200.f,window.getSize().y -100.f});
+    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-150.f,window.getSize().y -100.f});
+    barsText.setPosition({static_cast<float>(window.getSize().x/3)-300.f,window.getSize().y -75.f});
 
-    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -50.f});
-    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -30.f});
+    dataText.setPosition({(window.getSize().x/3-50.f),window.getSize().y -100.f});
+
+    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -63.f});
+    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -37.f});
     OreBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
-    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -50.f});
-    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -30.f});
+    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -63.f});
+    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -37.f});
     OreBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
 
     float right = 10.f / window.getSize().x;
@@ -35,15 +38,24 @@ void GUI::Initialize(sf::Window &window) {
     arrowbox.setPosition({window.getSize().x - minimapSize-10.f, window.getSize().y - minimapSize-10.f});
 }
 
-void GUI::DrawText(SpaceShip& player) {
+void GUI::DrawText(sf::RenderWindow& window,SpaceShip& player){
     std::string posText ="position:     x: " + std::to_string(player.getPhysics().getPosition().x)
     +" y: " + std::to_string(player.getPhysics().getPosition().y)
-    + "\ndirection:    d: "+ std::to_string(player.getShape().getRotation().asDegrees())
     + "\nvelocity:     x: " + std::to_string(player.getPhysics().getVelocity().x)
     +" y: " + std::to_string(player.getPhysics().getVelocity().y)
     + "\nacceleration: x: " + std::to_string(player.getPhysics().getAcceleration().x)
-    +" y: " + std::to_string(player.getPhysics().getAcceleration().y);
+    +" y: " + std::to_string(player.getPhysics().getAcceleration().y)
+    + "\ndirection:    d: "+ std::to_string(player.getShape().getRotation().asDegrees());
     debugText.setString(posText);
+    window.draw(debugText);
+
+    std::string datatext="hours:   "+std::to_string(static_cast<int>( player.getTimer())/3600)+
+    "\nminutes: "+std::to_string(static_cast<int>(player.getTimer())/60%60)+
+    "\nseconds: "+std::to_string(static_cast<int>(player.getTimer())%60)+
+    "\ndistance:"+std::to_string(player.getDistance_travelled());
+    dataText.setString(datatext);
+
+    window.draw(dataText);
 }
 
 void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& player) {
@@ -69,7 +81,7 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
     window.draw(minimapBox);
 }
 
-void GUI::DrawBars(sf::RenderWindow& window, const SpaceShip& player) {
+void GUI::DrawBars(sf::RenderWindow& window,SpaceShip& player) {
     FuelBar.setSize({player.getFuel(),10.f});
     EnergyBar.setSize({player.getEnergy(),10.f});
     OreBar.setSize({player.getOre(),10.f});
@@ -80,6 +92,10 @@ void GUI::DrawBars(sf::RenderWindow& window, const SpaceShip& player) {
     FuelBarback.setOrigin({0.f, 5.f});
     EnergyBarback.setOrigin({0.f, 5.f});
     OreBarback.setOrigin({0.f, 5.f});
+
+    std::string text ="fuel:  \nenergy:\nore:    ";
+    barsText.setString(text);
+    window.draw(barsText);
 
     window.draw(FuelBarback);
     window.draw(EnergyBarback);

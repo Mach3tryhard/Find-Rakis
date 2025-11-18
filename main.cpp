@@ -86,22 +86,24 @@ int main() {
             }
 
             window.clear();
+
             /// UNIVERSE STUFF
             universe.Update(player,window,viewRect,noise.getTexture());
             /// PARTICLE STUFF
             player.getExhaust().update(dt);
             window.draw(player.getExhaust());
             /// PLAYER STUFF
+            player.UpdateData(dt,player.getPhysics().getPosition());
             player.UpdateBullets(dt,window,viewRect);
             player.InputCheck(dt);
             player.getPhysics().UpdatePhysics(player.getCap(),dt);
             window.draw(player.getShape());
             /// DRAW GUI
-            gui.DrawText(player);
+            gui.DrawText(window,player);
             gui.DrawArrowHUD(window, player);
             gui.DrawMiniMap(window,universe,player);
             gui.DrawBars(window,player);
-            window.draw(gui.getText());
+
             window.display();
         }
     }
