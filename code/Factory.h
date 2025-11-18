@@ -1,6 +1,7 @@
 #ifndef OOP_FACTORY_H
 #define OOP_FACTORY_H
 #include "Asteroid.h"
+#include "Blackhole.h"
 #include "Celestial.h"
 #include "Planet.h"
 #include "Star.h"
@@ -10,7 +11,8 @@ public:
     enum class CelestialType {
         Star,
         Planet,
-        Asteroid
+        Asteroid,
+        Blackhole
     };
     static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen){
         Celestial* body = nullptr;
@@ -25,6 +27,9 @@ public:
             case CelestialType::Asteroid:
                 body = new Asteroid(physics);
                 break;
+            case CelestialType::Blackhole:
+                body = new Blackhole(physics);
+                break;
         }
 
         if (body) body->initialize(gen);
@@ -33,6 +38,7 @@ public:
     static void Create(int i,std::vector<Celestial*>& bodies,const Physics& newphysics,std::mt19937& gen) {
         CelestialType type;
         if (i == 0) type = CelestialType::Star;
+        if (i == -1) type = CelestialType::Blackhole;
         else if (i == 3) type = CelestialType::Asteroid;
         else type = CelestialType::Planet;
         bodies.push_back(CelestialFactory(type, newphysics, gen));

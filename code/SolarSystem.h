@@ -28,15 +28,20 @@ public:
         for (int i=0; i<n_stars+n_planets; i++) {
             std::uniform_int_distribution<> distrib_orbit(400, 640);
             std::uniform_real_distribution<> distrib(-r, r);
+            std::uniform_real_distribution<> distribBlackHole(0, 100);
 
             double posx=distrib(gen);
+            double spawnHole = distribBlackHole(gen);
             double posy= sqrt(r*r-posx*posx);
             if (n_planets%2==0) posy=-posy;
 
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
 
-            Factory::Create(i,bodies,newphysics,gen);
+            if (spawnHole<10)
+                Factory::Create(-1,bodies,newphysics,gen);
+            else
+                Factory::Create(i,bodies,newphysics,gen);
 
             r+=distrib_orbit(gen);
         }

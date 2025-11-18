@@ -88,6 +88,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Generator.h
         code/Exceptions.h
         code/Factory.h
+        code/Blackhole.cpp
+        code/Blackhole.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
