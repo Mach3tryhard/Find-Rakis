@@ -37,10 +37,14 @@ public:
     }
     static void Create(int i,std::vector<Celestial*>& bodies,const Physics& newphysics,std::mt19937& gen) {
         CelestialType type;
-        if (i == 0) type = CelestialType::Star;
-        if (i == -1) type = CelestialType::Blackhole;
-        else if (i == 3) type = CelestialType::Asteroid;
-        else type = CelestialType::Planet;
+        if (i == -1)
+            type = CelestialType::Blackhole;
+        else if (i == 0)
+            type = CelestialType::Star;
+        else if (i == 3)
+            type = CelestialType::Asteroid;
+        else
+            type = CelestialType::Planet;
         bodies.push_back(CelestialFactory(type, newphysics, gen));
     }
 };
