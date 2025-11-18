@@ -87,6 +87,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Generator.cpp
         code/Generator.h
         code/Exceptions.h
+        code/Factory.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

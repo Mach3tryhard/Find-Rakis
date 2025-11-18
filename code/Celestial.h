@@ -16,13 +16,13 @@ protected:
     int health,color;
     bool solid;
     Collider collider;
+    bool deleted=false;
 public:
     enum class CelestialType {
         Star,
         Planet,
         Asteroid
     };
-    static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen);
     Celestial(const Physics& physics,sf::Color color) : collider(0) {
         ///RANDOMLY GENERATED CELESTIAL NOT DONE YET
         this->physics = physics;
@@ -50,6 +50,7 @@ public:
     void LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind, SpaceShip &player);
     Collider &getCollider();
     double getRadius();
+    int getHealth() const { return health; }
     void computeGravity(SpaceShip& player);
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
     sf::CircleShape& getShape();

@@ -10,6 +10,7 @@
 #include "Star.h"
 #include "Asteroid.h"
 #include "SpaceShip.h"
+#include "Factory.h"
 
 class SolarSystem {
 private:
@@ -24,7 +25,6 @@ public:
 
         /// Generating planets positions
         int r=0;
-        Celestial::CelestialType type;
         for (int i=0; i<n_stars+n_planets; i++) {
             std::uniform_int_distribution<> distrib_orbit(400, 640);
             std::uniform_real_distribution<> distrib(-r, r);
@@ -36,11 +36,7 @@ public:
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
 
-            if (i == 0) type = Celestial::CelestialType::Star;
-            else if (i == 3) type = Celestial::CelestialType::Asteroid;
-            else type = Celestial::CelestialType::Planet;
-
-            bodies.push_back(Celestial::CelestialFactory(type, newphysics, gen));
+            Factory::Create(i,bodies,newphysics,gen);
 
             r+=distrib_orbit(gen);
         }
@@ -52,19 +48,12 @@ public:
         for (const auto* b : other.bodies)
             bodies.push_back(b->clone());
     }
-    SolarSystem& operator=(const SolarSystem& other) {
-        if (this != &other) {
-            // delete existing bodies
-            for (const auto* b : bodies) delete b;
-            bodies.clear();
-
-            physics = other.physics;
-            for (const auto* b : other.bodies)
-                bodies.push_back(b->clone());
-        }
+    SolarSystem& operator=(SolarSystem other) {  // note: pass-by-value!
+        swap(*this, other);
         return *this;
     }
-    SolarSystem(SolarSystem&& other):physics(other.physics),bodies(other.bodies){
+    friend void swap(SolarSystem& a, SolarSystem& b) noexcept;
+    SolarSystem(SolarSystem&& other) noexcept :physics(other.physics),bodies(other.bodies){
         other.bodies.clear();
     }
 

@@ -8,24 +8,6 @@
 #include "SpaceShip.h"
 #include "Star.h"
 
-Celestial* Celestial::CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen){
-    Celestial* body = nullptr;
-
-    switch(type) {
-        case Celestial::CelestialType::Star:
-            body = new Star(physics);
-            break;
-        case Celestial::CelestialType::Planet:
-            body = new Planet(physics);
-            break;
-        case Celestial::CelestialType::Asteroid:
-            body = new Asteroid(physics);
-            break;
-    }
-
-    if (body) body->initialize(gen);
-    return body;
-}
 bool Celestial::ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect) {
     if (viewRect.contains({screenX - radius, screenY - radius})
         || viewRect.contains({screenX + radius, screenY + radius})
@@ -66,7 +48,6 @@ void Celestial::CheckHit(std::vector<Bullet>& bullet,std::vector<Celestial*>& ce
 void Celestial::LoseHealth(float damage,std::vector<Celestial*>& celestials,int ind,SpaceShip& player) {
     health-=damage;
     if (health<=0) {
-        celestials.erase(celestials.begin()+ind);
         player.addOre(getRadius()/5);
     }
 }

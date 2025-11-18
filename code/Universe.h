@@ -28,8 +28,7 @@ public:
             }
             Pair system_position = {newpos.x,newpos.y};
             Physics newphysics(system_position);
-            SolarSystem newsystem(newphysics,gen);
-            systems.push_back(newsystem);
+            systems.push_back(SolarSystem{newphysics, gen});
         }
     }
     explicit Universe(const std::vector<SolarSystem>& systems) {

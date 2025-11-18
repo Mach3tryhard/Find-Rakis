@@ -19,7 +19,14 @@ void GUI::Initialize(sf::Window &window) {
     minimapView.setViewport(sf::FloatRect({left, 1.f - height - bottom}, {width, height}));
     minimapBox.setPosition({10.f, window.getSize().y - minimapSize-10.f});
 
-    debugText.setPosition({static_cast<float>(window.getSize().x/2)-200.f,window.getSize().y -100.f});
+    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-200.f,window.getSize().y -100.f});
+
+    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -50.f});
+    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -30.f});
+    OreBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
+    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -50.f});
+    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -30.f});
+    OreBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
 
     float right = 10.f / window.getSize().x;
     arrowView.setViewport(sf::FloatRect({1.f - width - right, 1.f - height - bottom},{width, height}));
@@ -70,20 +77,9 @@ void GUI::DrawBars(sf::RenderWindow& window, const SpaceShip& player) {
     EnergyBar.setOrigin({0.f, 5.f});
     OreBar.setOrigin({0.f, 5.f});
 
-    float sizex=window.getSize().x;
-    float sizey=window.getSize().y;
-
-    FuelBar.setPosition({sizex/3, sizey-125.f});
-    EnergyBar.setPosition({sizex/3, sizey-100.f});
-    OreBar.setPosition({sizex/3, sizey-75.f});
-
     FuelBarback.setOrigin({0.f, 5.f});
     EnergyBarback.setOrigin({0.f, 5.f});
     OreBarback.setOrigin({0.f, 5.f});
-
-    FuelBarback.setPosition({sizex/3, sizey-125.f});
-    EnergyBarback.setPosition({sizex/3, sizey-100.f});
-    OreBarback.setPosition({sizex/3, sizey-75.f});
 
     window.draw(FuelBarback);
     window.draw(EnergyBarback);
