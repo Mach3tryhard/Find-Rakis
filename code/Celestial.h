@@ -58,7 +58,7 @@ public:
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
 
-    virtual void RefuelCheck(SpaceShip &player){}
+    virtual void RefuelCheck(SpaceShip &player){(void)player;}
     virtual void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) = 0;
     virtual ~Celestial() = default;
     virtual Celestial* clone() const = 0;
