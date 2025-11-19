@@ -72,30 +72,97 @@ void SpaceShip::ShootBullet() {
     Bullet newbullet(bulletPhysics);
     bullets.push_back(newbullet);
 }
-void SpaceShip::EnterHyper() {
+void SpaceShip::EnterHyper(sf::Time dt) {
     if (!inHyper) {
+        hyperStartPos = physics.getPosition();
+        showHyperTrail = true;
         float angleRad = triangle.getRotation().asRadians();
         angleRad -= 3.14159265f / 2.f;
         Pair direction{std::cos(angleRad) * hyper_thrust, std::sin(angleRad) * hyper_thrust};
         physics.setVelocity(direction);
     }
+    ore-=10.f*dt.asSeconds();
+    ore=std::max(0.f,static_cast<float>(ore));
     inHyper=true;
 }
 void SpaceShip::ExitHyper() {
     if (inHyper==true) {
+        showHyperTrail = false;
         physics.setVelocity({0,0});
     }
     inHyper=false;
 }
-void SpaceShip::InputCheck(sf::Time dt) {
+sf::Vector2f SpaceShip::SpaceToScreen(Pair world, Pair player, sf::RenderWindow& window) {
+    const sf::Vector2f center = { window.getSize().x / 2.f, window.getSize().y / 2.f };
+    return { center.x + (float)(world.x - player.x),
+             center.y + (float)(world.y - player.y) };
+}
+void SpaceShip::UpdateHyperTrail() {
+    if (!showHyperTrail) return;
+
+    Pair shipPos = physics.getPosition();
+
+    float dx = shipPos.x - hyperStartPos.x;
+    float dy = shipPos.y - hyperStartPos.y;
+
+    float length = std::sqrt(dx*dx + dy*dy);
+
+    hyperTrail.setSize({ length, 6 });
+
+    float angle = std::atan2(dy, dx) * 180.f / 3.14159265f;
+
+    hyperTrail.setRotation(sf::degrees(angle));
+    hyperTrail.setPosition({ (float)hyperStartPos.x, (float)hyperStartPos.y });
+}
+void SpaceShip::HyperLogic(sf::Time dt,sf::RenderWindow& window) {
+    if (getHyper()==true && getOre()>0) {
+        EnterHyper(dt);
+        getPhysics().UpdatePosition(dt);
+    }
+    else {
+        ExitHyper();
+        getPhysics().UpdatePhysics(getCap(),dt);
+    }
+    UpdateHyperTrail();
+
+    if (showHyperTrail) {
+        sf::Vector2f screenStart = SpaceToScreen(hyperStartPos, getPhysics().getPosition(), window);
+        hyperTrail.setPosition(screenStart);
+        window.draw(hyperTrail);
+    }
+}
+void SpaceShip::RefuelLogic(sf::Time dt,sf::RenderWindow& window) {
+    fuel+=dt.asSeconds()*5.f;
+    fuel = std::min(matscap,fuel);
+
+    sf::Vector2f shipScreenPos = SpaceToScreen(physics.getPosition(), physics.getPosition(), window);
+    sf::Vector2f starScreenPos = SpaceToScreen(StarPosrefuel, physics.getPosition(), window);
+
+    sf::Vector2f delta = starScreenPos - shipScreenPos;
+    float length = std::sqrt(delta.x * delta.x + delta.y * delta.y);
+    float angle = std::atan2(delta.y, delta.x) * 180.f / 3.14159265f;
+
+    sf::RectangleShape fuelLine;
+    fuelLine.setSize({length, 4.f});
+    fuelLine.setOrigin({0.f, 2.f});
+    fuelLine.setPosition(shipScreenPos);
+    fuelLine.setRotation(sf::degrees(angle));
+    fuelLine.setFillColor(sf::Color(0, 0, 255, 150));
+
+    window.draw(fuelLine);
+}
+void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !inHyper) {
         triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && !inHyper){
         triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::V)){
-        EnterHyper();
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z) && refuelpossible){
+        RefuelLogic(dt, window);
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::V) && ore>0.1f){
+        EnterHyper(dt);
     }
     else {
         ExitHyper();

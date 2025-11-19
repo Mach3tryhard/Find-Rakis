@@ -33,7 +33,7 @@ int main() {
 
         /// CREATE PLAYER
         Physics playerphysics{5};
-        SpaceShip player{playerphysics,10,100,100,0};
+        SpaceShip player{playerphysics,10,100,100,100};
         player.getShape().setPosition({center.x,center.y});
 
         /// CREATE UNIVERSE
@@ -87,6 +87,7 @@ int main() {
 
             window.clear();
 
+            player.SetRefuel(false,{0,0},0);
             /// UNIVERSE STUFF
             universe.Update(player,window,viewRect,noise.getTexture());
             /// PARTICLE STUFF
@@ -95,15 +96,8 @@ int main() {
             /// PLAYER STUFF
             player.UpdateData(dt,player.getPhysics().getPosition());
             player.UpdateBullets(dt,window,viewRect);
-            player.InputCheck(dt);
-            if (player.getHyper()==true) {
-                player.EnterHyper();
-                player.getPhysics().UpdatePosition(dt);
-            }
-            else {
-                player.ExitHyper();
-                player.getPhysics().UpdatePhysics(player.getCap(),dt);
-            }
+            player.InputCheck(dt, window);
+            player.HyperLogic(dt,window);
             window.draw(player.getShape());
             /// DRAW GUI
             gui.DrawText(window,player);

@@ -66,3 +66,9 @@ void Star::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect
     window.draw(triangle3);
     window.draw(triangle4);
 }
+void Star::RefuelCheck(SpaceShip& player) {
+    double dist = sqrtf(pow(physics.getPosition().x-player.getPhysics().getPosition().x,2)+pow(physics.getPosition().y-player.getPhysics().getPosition().y,2));
+    if (dist<200.f + getRadius()) {
+        player.SetRefuel(true,physics.getPosition(),getRadius());
+    }
+}

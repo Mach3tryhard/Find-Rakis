@@ -53,10 +53,12 @@ public:
     int getHealth() const { return health; }
     void computeGravity(SpaceShip& player);
     void Display(Pair player, sf::RenderWindow &window, sf::FloatRect &viewRect, sf::Texture &texture);
+
     sf::CircleShape& getShape();
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
 
+    virtual void RefuelCheck(SpaceShip &player){}
     virtual void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) = 0;
     virtual ~Celestial() = default;
     virtual Celestial* clone() const = 0;

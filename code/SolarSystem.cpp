@@ -17,8 +17,9 @@ void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRec
             player.alignToPlanet(bodies[i]->getPhysics());
             player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider().getRadius()));
         }
+        bodies[i]->RefuelCheck(player);
     }
-    /// fix memory leak
+
     for(auto i = 0ull; i < bodies.size(); i++)
         if(bodies[i]->getHealth() <= 0) {
             delete bodies[i];

@@ -18,12 +18,24 @@ private:
     double fuel,energy,ore;
     double timer,distance_travelled;
     const double matscap=100;
-    bool inHyper=false;
-    const float thrust = 120.0f,hyper_thrust=1000.0f;
+    const float thrust = 120.0f;
     const float cap=350;
     bool upPressed=false;
+
+    const float hyper_thrust=1000.0f;
+    bool inHyper=false;
+    sf::RectangleShape hyperTrail;
+    bool showHyperTrail = false;
+    Pair hyperStartPos;
+
+    bool refuelpossible=false;
+    Pair StarPosrefuel;
+    double StarRadius;
 public:
     SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius/2) {
+        hyperTrail.setFillColor(sf::Color(255, 255, 255, 200));
+        hyperTrail.setSize({0, 3});
+        hyperTrail.setOrigin({0, 1.5f});
         this->triangle.setRadius(radius);
         this->triangle.setPointCount(3);
         this->triangle.setOrigin({radius, radius});
@@ -50,12 +62,21 @@ public:
     void ShipMove();
     void ExhaustMove();
     void ShootBullet();
-    void InputCheck(sf::Time dt);
+    void InputCheck(sf::Time dt, sf::RenderWindow &window);
     Collider getCollider();
-    void EnterHyper();
+    void EnterHyper(sf::Time dt);
     void ExitHyper();
-    void DoHyper(sf::Time dt);
+    void HyperLogic(sf::Time dt, sf::RenderWindow &window);
+    void UpdateHyperTrail();
+
+    void RefuelLogic(sf::Time dt, sf::RenderWindow &window);
+    void SetRefuel(bool canrefuel,Pair NewStarPos,double newStarRadius) {
+        refuelpossible=canrefuel;
+        StarPosrefuel=NewStarPos;
+        StarRadius=newStarRadius;
+    }
     void UpdateData(sf::Time dt,Pair newpos);
+    sf::Vector2f SpaceToScreen(Pair world, Pair player, sf::RenderWindow& window);
     void computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);
