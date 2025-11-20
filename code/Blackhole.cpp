@@ -3,9 +3,8 @@
 const std::vector<sf::Color> Blackhole::possibleColors= {sf::Color(0x000000FF)};
 
 void Blackhole::initialize(std::mt19937& gen) {
-    std::uniform_real_distribution<> distrib_radius(50.0, 100.0);
+    std::uniform_real_distribution<> distrib_radius(100.0, 150.0);
     std::uniform_real_distribution<> distrib_mass(5000.0, 7000.0);
-    std::uniform_int_distribution<> distrib_color(0, 1);
 
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
@@ -14,7 +13,7 @@ void Blackhole::initialize(std::mt19937& gen) {
 
     shape.setRadius(radius);
     shape.setOrigin({static_cast<float>(radius), static_cast<float>(radius)});
-    shape.setFillColor(possibleColors[distrib_color(gen)]);
+    shape.setFillColor(possibleColors[0]);
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
@@ -26,7 +25,7 @@ void Blackhole::CelestialEffects(sf::RenderWindow& window, Pair player, sf::Floa
 
     float radius = getRadius();
 
-    if (!ToDisplay(screenX, screenY, radius + 100.f, viewRect)) return;
+    if (!ToDisplay(screenX, screenY, radius*3.f, viewRect)) return;
 
     rotationAngle += 0.01f;
     if (rotationAngle >= 360.f) rotationAngle -= 360.f;
@@ -63,7 +62,7 @@ void Blackhole::CelestialEffects(sf::RenderWindow& window, Pair player, sf::Floa
 
     window.draw(inner);
 
-    float pulseSpeed = 0.01f;
+    float pulseSpeed = 0.1f;
     pulseTimer += pulseSpeed;
     if (pulseTimer>radius)
         pulseTimer = 0;

@@ -13,6 +13,7 @@
 #include "code/ParticleSystem.h"
 #include "code/Universe.h"
 #include "code/Generator.h"
+#include "code/Starfield.h"
 
 int main() {
     try {
@@ -35,6 +36,7 @@ int main() {
         Physics playerphysics{5};
         SpaceShip player{playerphysics,10,100,100,100};
         player.getShape().setPosition({center.x,center.y});
+        Starfield starfield(200, window.getSize());
 
         /// CREATE UNIVERSE
         Universe universe(25,gen);
@@ -87,26 +89,26 @@ int main() {
 
             window.clear();
 
-            player.SetRefuel(false,{0,0},0);
+            player.SetRefuel(false,{0,0},0,sf::Color::White);
             /// UNIVERSE STUFF
+            starfield.Update(dt,window,player);
             universe.Update(player,window,viewRect,noise.getTexture());
             /// PARTICLE STUFF
             player.getExhaust().update(dt);
             window.draw(player.getExhaust());
+            /// DRAW GUI
+            gui.DrawText(window,player);
+            gui.DrawArrowHUD(window, player);
+            gui.DrawMiniMap(window,universe,player);
+            gui.DrawBars(window,player);
             /// PLAYER STUFF
             player.UpdateData(dt,player.getPhysics().getPosition());
             player.UpdateBullets(dt,window,viewRect);
             player.InputCheck(dt, window);
             player.HyperLogic(dt,window);
             window.draw(player.getShape());
-            /// DRAW GUI
-            gui.DrawText(window,player);
-            gui.DrawArrowHUD(window, player);
-            gui.DrawMiniMap(window,universe,player);
-            gui.DrawBars(window,player);
 
             window.display();
-            /// TODO: FIX ACCELERATION DISPLAY NOT WORKING
         }
     }
     catch (const ResourceLoadException& e) {

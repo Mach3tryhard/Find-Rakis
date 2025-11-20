@@ -13,7 +13,7 @@ private:
     sf::CircleShape triangle;
     std::vector<Bullet> bullets;
     Physics physics;
-    Pair lastpos;
+    Pair lastpos{};
     Collider collider;
     double fuel,energy,ore;
     double timer,distance_travelled;
@@ -26,11 +26,12 @@ private:
     bool inHyper=false;
     sf::RectangleShape hyperTrail;
     bool showHyperTrail = false;
-    Pair hyperStartPos;
+    Pair hyperStartPos{};
 
-    bool refuelpossible=false;
-    Pair StarPosrefuel;
+    bool refuelpossible;
+    Pair StarPosrefuel{};
     double StarRadius;
+    sf::Color refuelStarColor;
 public:
     SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius/2) {
         hyperTrail.setFillColor(sf::Color(255, 255, 255, 200));
@@ -46,6 +47,12 @@ public:
         this->timer = 0;
         this->distance_travelled = 0;
         this->lastpos = {0,0};
+        hyperStartPos={0,0};
+
+        refuelpossible=false;
+        StarPosrefuel={0,0};
+        StarRadius=0;
+        refuelStarColor=sf::Color(255, 255, 255, 150);
     }
     sf::CircleShape& getShape();
     Physics& getPhysics();
@@ -70,10 +77,11 @@ public:
     void UpdateHyperTrail();
 
     void RefuelLogic(sf::Time dt, sf::RenderWindow &window);
-    void SetRefuel(bool canrefuel,Pair NewStarPos,double newStarRadius) {
+    void SetRefuel(bool canrefuel,Pair NewStarPos,double newStarRadius,sf::Color color) {
         refuelpossible=canrefuel;
         StarPosrefuel=NewStarPos;
         StarRadius=newStarRadius;
+        refuelStarColor=color;
     }
     void UpdateData(sf::Time dt,Pair newpos);
     sf::Vector2f SpaceToScreen(Pair world, Pair player, sf::RenderWindow& window);

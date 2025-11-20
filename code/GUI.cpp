@@ -15,7 +15,7 @@ void GUI::Initialize(sf::Window &window) {
     minimapView.setViewport(sf::FloatRect({left, 1.f - height - bottom}, {width, height}));
     minimapBox.setPosition({10.f, window.getSize().y - minimapSize-10.f});
 
-    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-150.f,window.getSize().y -100.f});
+    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-175.f,window.getSize().y -100.f});
     barsText.setPosition({static_cast<float>(window.getSize().x/3)-300.f,window.getSize().y -75.f});
 
     dataText.setPosition({(window.getSize().x/3-50.f),window.getSize().y -100.f});

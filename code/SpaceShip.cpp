@@ -59,7 +59,7 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
 }
 
 void SpaceShip::ShootBullet() {
-    energy-=10;
+    energy-=7.5;
     Pair shipPos = physics.getPosition();
     float angleRad = triangle.getRotation().asRadians();
     angleRad -= 3.14159265f / 2.f;
@@ -147,7 +147,7 @@ void SpaceShip::RefuelLogic(sf::Time dt,sf::RenderWindow& window) {
     fuelLine.setOrigin({0.f, 2.f});
     fuelLine.setPosition(shipScreenPos);
     fuelLine.setRotation(sf::degrees(angle));
-    fuelLine.setFillColor(sf::Color(0, 0, 255, 150));
+    fuelLine.setFillColor(refuelStarColor);
 
     window.draw(fuelLine);
 }
@@ -161,7 +161,7 @@ void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z) && refuelpossible){
         RefuelLogic(dt, window);
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::V) && ore>0.1f){
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::X) && ore>0.1f){
         EnterHyper(dt);
     }
     else {

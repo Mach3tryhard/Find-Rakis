@@ -19,14 +19,14 @@ private:
 public:
     explicit SolarSystem(const Physics& physics,std::mt19937& gen) {
         this->physics = physics;
-        std::uniform_int_distribution<> d_planets(4, 7);
+        std::uniform_int_distribution<> d_planets(4, 10);
         int n_planets = d_planets(gen);
         int n_stars = 1;
 
         /// Generating planets positions
         int r=0;
         for (int i=0; i<n_stars+n_planets; i++) {
-            std::uniform_int_distribution<> distrib_orbit(400, 640);
+            std::uniform_int_distribution<> distrib_orbit(400, 500);
             std::uniform_real_distribution<> distrib(-r, r);
             std::uniform_real_distribution<> distribBlackHole(0, 100);
 
@@ -38,7 +38,7 @@ public:
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
 
-            if (spawnHole<10)
+            if (spawnHole<25 && i==0)
                 Factory::Create(-1,bodies,newphysics,gen);
             else
                 Factory::Create(i,bodies,newphysics,gen);
@@ -53,7 +53,7 @@ public:
         for (const auto* b : other.bodies)
             bodies.push_back(b->clone());
     }
-    SolarSystem& operator=(SolarSystem other) {  // note: pass-by-value!
+    SolarSystem& operator=(SolarSystem other) {
         swap(*this, other);
         return *this;
     }

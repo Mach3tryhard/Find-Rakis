@@ -9,8 +9,8 @@
 
 void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
     for (long unsigned int i=0;i<bodies.size();i++) {
-        bodies[i]->Display(player.getPhysics().getPosition(),window,viewRect,texture);
         bodies[i]->computeGravity(player);
+        bodies[i]->Display(player.getPhysics().getPosition(),window,viewRect,texture);
         bodies[i]->CelestialEffects(window,player.getPhysics().getPosition(),viewRect);
         bodies[i]->CheckHit(player.getBullets(), player);
         if (player.getCollider().isCollidingWith(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider())) {

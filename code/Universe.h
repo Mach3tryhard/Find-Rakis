@@ -7,8 +7,8 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 class Universe {
 private:
-    const int constaint = 10800;
-    const int min_dist = 2000;
+    const int constaint = 1e7;
+    const int min_dist = 6000;
     std::vector<SolarSystem> systems;
 public:
     explicit Universe(int number,std::mt19937& gen) {
