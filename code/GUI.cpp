@@ -54,13 +54,6 @@ void GUI::DrawText(sf::RenderWindow& window,SpaceShip& player){
     window.draw(dataText);
 }
 
-sf::Vector2f GUI::WorldToMiniMap(Pair worldPos, int constraint, sf::Vector2f minimapSize)
-{
-    float nx = (worldPos.x + constraint) / (2.f * constraint);
-    float ny = (worldPos.y + constraint) / (2.f * constraint);
-    return { nx * minimapSize.x, ny * minimapSize.y };
-}
-
 void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& player)
 {
     sf::RectangleShape minimapBackground(minimapBox.getSize());

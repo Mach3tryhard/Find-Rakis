@@ -15,7 +15,7 @@ public:
             int min = -constraint,max = constraint;
             std::uniform_real_distribution<> distrib(min, max);
             Pair newpos={0,0};
-            int gasit=false;
+            bool gasit=false;
             int incercari=0;
             while (gasit==false && incercari++<1000) {
                 newpos = {distrib(gen), distrib(gen)};

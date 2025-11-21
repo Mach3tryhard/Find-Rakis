@@ -2,10 +2,7 @@
 #define OOP_STARFIELD_H
 #include <vector>
 
-#include "SFML/Graphics/Color.hpp"
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/RenderWindow.hpp"
-#include "SFML/System/Vector2.hpp"
+#include <SFML/Graphics.hpp>
 #include "SpaceShip.h"
 
 class Starfield {
@@ -33,7 +30,7 @@ public:
             stars.push_back(s);
         }
     }
-    void update(sf::Vector2f playerVel, float dt,SpaceShip& player);
+    void update(sf::Vector2f playerVel, float dt, const SpaceShip& player);
     void draw(sf::RenderWindow& win);
     void Update(sf::Time dt,sf::RenderWindow& window,SpaceShip& player);
 };

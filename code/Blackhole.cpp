@@ -2,14 +2,14 @@
 
 const std::vector<sf::Color> Blackhole::possibleColors= {sf::Color(0x000000FF)};
 
-void Blackhole::initialize(std::mt19937& gen,float orbitRadius) {
+void Blackhole::initialize(std::mt19937& gen,float _orbitRadius) {
     std::uniform_real_distribution<> distrib_radius(100.0, 150.0);
     std::uniform_real_distribution<> distrib_mass(5000.0, 7000.0);
 
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
-    this->orbitRadius = orbitRadius;
+    this->orbitRadius = _orbitRadius;
     health = 20000;
 
     shape.setRadius(radius);

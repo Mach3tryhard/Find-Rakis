@@ -71,7 +71,7 @@ public:
         }
         return *this;
     }
-    std::vector<Celestial*> getBodies() {
+    std::vector<Celestial*> getBodies() const{
         return bodies;
     }
     void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture,sf::Time dt);
