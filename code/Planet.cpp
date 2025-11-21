@@ -2,7 +2,7 @@
 
 const std::vector<sf::Color> Planet::possibleColors= {sf::Color(0Xc0a480FF),sf::Color(0Xc26d5cFF),sf::Color(0Xbfaf9bFF),sf::Color(0X426b8fFF),sf::Color(0Xf4dbc4FF),sf::Color(0Xd9b292FF),sf::Color(0X7bb368FF)};
 
-void Planet::initialize(std::mt19937& gen) {
+void Planet::initialize(std::mt19937& gen,float orbitRadius) {
     std::uniform_real_distribution<> distrib_radius(100.0, 150.0);
     std::uniform_real_distribution<> distrib_mass(1000.0, 1500.0);
     std::uniform_int_distribution<> distrib_color(0, 6);
@@ -10,6 +10,7 @@ void Planet::initialize(std::mt19937& gen) {
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
+    this->orbitRadius = orbitRadius;
     health = 250;
 
     shape.setRadius(radius);

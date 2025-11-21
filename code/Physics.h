@@ -37,9 +37,10 @@ public:
         this->mass = state.mass;
         return *this;
     }
+
+    void OrbitBody(const Pair &center, sf::Time dt);
     void UpdatePhysics(float cap,sf::Time dt);
     void UpdatePosition(sf::Time dt);
-    void FlickPhysics(Pair bulletspeed,Pair startacceleration,sf::Time dt);
 
     Pair getPosition() const;
     Pair getVelocity() const;

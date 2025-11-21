@@ -21,8 +21,10 @@ public:
           debugShape(debug_shape) {
     }
     ~Collider() = default;
-    bool isCollidingWith(const Physics& thisf, const Physics& thatf,Collider& collider);
+
+    bool isCollidingWith(const Physics &thisf, const Physics &thatf, Collider &other);
     double getRadius();
+
     //void drawDebug(sf::RenderWindow& window, const Physics& physics);
     Physics resolveCollision(const Physics& shipPhys, const Physics& planetPhys, double planetRadius)  const;
 };

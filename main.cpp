@@ -54,21 +54,26 @@ int main() {
                 else
                     if (event->is<sf::Event::Resized>()) {
                         const auto* resize = event->getIf<sf::Event::Resized>();
-                        view.setSize({1920.f, 1008.f});
-                        view.setCenter({static_cast<float>(player.getPhysics().getPosition().x),static_cast<float>(player.getPhysics().getPosition().y)});
-                        float windowAspect = static_cast<float>(resize->size.x) / static_cast<float>(resize->size.y);
-                        float worldAspect = 1920.f / 1008.f;
+                        float aspect = 1920.f / 1008.f;
+                        float windowAspect = static_cast<float>(resize->size.x) / resize->size.y;
 
-                        if (windowAspect > worldAspect) {
-                            float width = 1008.f * windowAspect;
-                            view.setViewport(sf::FloatRect({(resize->size.x - width)/2.f / resize->size.x, 0.f},{ width / resize->size.x, 1.f}));
+                        float viewWidth, viewHeight;
+                        if (windowAspect >= aspect) {
+                            viewHeight = 1008.f;
+                            viewWidth = 1008.f * windowAspect;
                         } else {
-                            float height = 1920.f / windowAspect;
-                            view.setViewport(sf::FloatRect({0.f, (resize->size.y - height)/2.f / resize->size.y} ,{ 1.f, height / resize->size.y}));
+                            viewWidth = 1920.f;
+                            viewHeight = 1920.f / windowAspect;
                         }
 
+                        view.setSize({viewWidth, viewHeight});
+                        sf::Vector2f newCenter = {static_cast<float>(player.getPhysics().getPosition().x),static_cast<float>(player.getPhysics().getPosition().y)};
+                        view.setCenter(newCenter);
+                        sf::FloatRect newRect = {{0.f,0.f}, {1.f,1.f}};
+                        view.setViewport(newRect); // simple full-screen view
                         window.setView(view);
                     }
+
                     else if (event->is<sf::Event::KeyPressed>()) {
                         const auto* keyPressed = event->getIf<sf::Event::KeyPressed>();
 
@@ -92,7 +97,7 @@ int main() {
             player.SetRefuel(false,{0,0},0,sf::Color::White);
             /// UNIVERSE STUFF
             starfield.Update(dt,window,player);
-            universe.Update(player,window,viewRect,noise.getTexture());
+            universe.Update(player,window,viewRect,noise.getTexture(),dt);
             /// PARTICLE STUFF
             player.getExhaust().update(dt);
             window.draw(player.getExhaust());

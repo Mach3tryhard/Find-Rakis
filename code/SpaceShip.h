@@ -84,7 +84,7 @@ public:
         refuelStarColor=color;
     }
     void UpdateData(sf::Time dt,Pair newpos);
-    sf::Vector2f SpaceToScreen(Pair world, Pair player, sf::RenderWindow& window);
+    sf::Vector2f SpaceToScreen(Pair world,Pair player, sf::RenderWindow& window);
     void computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);

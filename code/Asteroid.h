@@ -28,7 +28,7 @@ public:
 
     void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) override;
 
-    void initialize(std::mt19937& gen) override;
+    void initialize(std::mt19937 &gen, float orbitRadius) override;
     Asteroid* clone() const override { return new Asteroid(*this); }
 };
 

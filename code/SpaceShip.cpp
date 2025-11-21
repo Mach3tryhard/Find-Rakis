@@ -57,7 +57,6 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     }
     physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
-
 void SpaceShip::ShootBullet() {
     energy-=7.5;
     Pair shipPos = physics.getPosition();

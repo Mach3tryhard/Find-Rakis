@@ -2,7 +2,7 @@
 
 const std::vector<sf::Color> Asteroid::possibleColors= {sf::Color(0x5a554cFF),sf::Color(0x767676FF),sf::Color(0x93928cFF)};
 
-void Asteroid::initialize(std::mt19937& gen) {
+void Asteroid::initialize(std::mt19937& gen,float orbitRadius) {
     std::uniform_real_distribution<> distrib_radius(50.0, 70.0);
     std::uniform_real_distribution<> distrib_mass(100.0, 500.0);
     std::uniform_int_distribution<> distrib_color(0, 2);
@@ -10,6 +10,7 @@ void Asteroid::initialize(std::mt19937& gen) {
     double radius = distrib_radius(gen);
     this->getPhysics().setMass(distrib_mass(gen));
     this->collider = Collider(radius);
+    this->orbitRadius = orbitRadius;
     health = 100;
 
     shape.setRadius(radius);

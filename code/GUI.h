@@ -54,7 +54,7 @@ public:
         this->dataText.setCharacterSize(18);
         this->dataText.setFillColor(sf::Color::White);
 
-        minimapView = sf::View(sf::Vector2f(0.f, 0.f), sf::Vector2f(21600.f, 21600.f));
+        minimapView = sf::View(sf::Vector2f(0.f, 0.f), sf::Vector2f(40000.f, 40000.f));
         minimapBox.setSize({minimapSize, minimapSize});
         minimapBox.setFillColor(sf::Color(0, 0, 0, 10));
         minimapBox.setOutlineColor(sf::Color::White);
@@ -99,6 +99,7 @@ public:
 
     void Initialize(sf::Window &window);
     sf::Text& getText();
+    static sf::Vector2f WorldToMiniMap(Pair worldPos, int constraint, sf::Vector2f minimapSize);
     void DrawText(sf::RenderWindow& window,SpaceShip& player);
     void DrawMiniMap(sf::RenderWindow& window,Universe& universe,SpaceShip& player);
     void DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player);

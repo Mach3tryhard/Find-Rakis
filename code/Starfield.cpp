@@ -1,6 +1,8 @@
 #include "Starfield.h"
 #include "SpaceShip.h"
 
+const std::vector<sf::Color> Starfield::possibleColors = {sf::Color::White,sf::Color(0XFAEDCBFF),sf::Color(0XC9E4DEFF),sf::Color(0XC6DEF1FF),sf::Color(0XDBCDF0FF),sf::Color(0XF2C6DEFF),sf::Color(0XF7D9C4FF)};
+
 void Starfield::update(sf::Vector2f playerVel, float dt,SpaceShip& player) {
     for (auto& s : stars) {
         if (player.getHyper())
@@ -8,7 +10,6 @@ void Starfield::update(sf::Vector2f playerVel, float dt,SpaceShip& player) {
         else
             s.pos -= playerVel * s.depth * speed * dt/200.f;
 
-        // wrap around screen
         if (s.pos.x < 0) s.pos.x += screen.x;
         if (s.pos.x >= screen.x) s.pos.x -= screen.x;
         if (s.pos.y < 0) s.pos.y += screen.y;

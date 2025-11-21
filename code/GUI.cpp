@@ -54,7 +54,58 @@ void GUI::DrawText(sf::RenderWindow& window,SpaceShip& player){
     window.draw(dataText);
 }
 
-void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& player) {
+sf::Vector2f GUI::WorldToMiniMap(Pair worldPos, int constraint, sf::Vector2f minimapSize)
+{
+    float nx = (worldPos.x + constraint) / (2.f * constraint);
+    float ny = (worldPos.y + constraint) / (2.f * constraint);
+    return { nx * minimapSize.x, ny * minimapSize.y };
+}
+
+void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& player)
+{
+    sf::RectangleShape minimapBackground(minimapBox.getSize());
+    minimapBackground.setPosition(minimapBox.getPosition());
+    minimapBackground.setFillColor(sf::Color(20, 20, 20, 255));
+    window.draw(minimapBackground);
+
+    window.setView(minimapView);
+
+    for (auto& system : universe.getSystems()) {
+        for (auto& body: system.getBodies()) {
+            sf::CircleShape dot1(200.f);
+            dot1.setOrigin({100.f, 100.f});
+            dot1.setFillColor(sf::Color::White);
+            auto pos = body->getPhysics().getPosition();
+            dot1.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
+            window.draw(dot1);
+        }
+        sf::CircleShape dot(300.f);
+        dot.setOrigin({150.f, 150.f});
+        dot.setFillColor(sf::Color::Yellow);
+
+        auto pos = system.getPhysics().getPosition();
+        dot.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
+        window.draw(dot);
+    }
+
+    sf::CircleShape playerDot(200.f);
+    playerDot.setOrigin({100.f, 100.f});
+    playerDot.setFillColor(sf::Color::Cyan);
+
+    auto p = player.getPhysics().getPosition();
+    playerDot.setPosition({static_cast<float>(p.x), static_cast<float>(p.y)});
+    window.draw(playerDot);
+
+    // Restore normal view
+    window.setView(window.getDefaultView());
+
+    // Draw minimap frame overlay
+    window.draw(minimapBox);
+}
+
+
+
+/*void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& player) {
     window.setView(minimapView);
 
     for (auto& system : universe.getSystems()) {
@@ -75,7 +126,7 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
 
     window.setView(window.getDefaultView());
     window.draw(minimapBox);
-}
+}*/
 
 void GUI::DrawBars(sf::RenderWindow& window,const SpaceShip& player) {
     FuelBar.setSize({player.getFuel(),10.f});
@@ -102,6 +153,11 @@ void GUI::DrawBars(sf::RenderWindow& window,const SpaceShip& player) {
 }
 
 void GUI::DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
+    sf::RectangleShape arrowBackground(arrowbox.getSize());
+    arrowBackground.setPosition(arrowbox.getPosition());
+    arrowBackground.setFillColor(sf::Color(20, 20, 20, 255));
+    window.draw(arrowBackground);
+
     window.setView(arrowView);
 
     sf::Vector2f velocity = {static_cast<float>(player.getPhysics().getVelocity().x), static_cast<float>(player.getPhysics().getVelocity().y)};

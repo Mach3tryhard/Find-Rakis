@@ -2,9 +2,9 @@
 #include <functional>
 #include "SpaceShip.h"
 
-void Universe::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
+void Universe::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture,sf::Time dt) {
     for (long unsigned int i = 0; i < systems.size(); i++) {
-        systems[i].Update(player,window,viewRect,texture);
+        systems[i].Update(player,window,viewRect,texture,dt);
     }
 }
 

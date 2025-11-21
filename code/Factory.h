@@ -14,7 +14,7 @@ public:
         Asteroid,
         Blackhole
     };
-    static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen){
+    static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen,float orbitRadius){
         Celestial* body = nullptr;
 
         switch(type) {
@@ -32,10 +32,10 @@ public:
                 break;
         }
 
-        if (body) body->initialize(gen);
+        if (body) body->initialize(gen,orbitRadius);
         return body;
     }
-    static void Create(int i,std::vector<Celestial*>& bodies,const Physics& newphysics,std::mt19937& gen) {
+    static void Create(int i,std::vector<Celestial*>& bodies,const Physics& newphysics,std::mt19937& gen,float orbitRadius) {
         CelestialType type;
         if (i == -1)
             type = CelestialType::Blackhole;
@@ -45,7 +45,7 @@ public:
             type = CelestialType::Asteroid;
         else
             type = CelestialType::Planet;
-        bodies.push_back(CelestialFactory(type, newphysics, gen));
+        bodies.push_back(CelestialFactory(type, newphysics, gen,orbitRadius));
     }
 };
 

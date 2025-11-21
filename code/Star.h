@@ -13,7 +13,7 @@ public:
 
     void RefuelCheck(SpaceShip &player) override;
 
-    void initialize(std::mt19937& gen) override;
+    void initialize(std::mt19937 &gen, float orbitRadius) override;
     Star* clone() const override { return new Star(*this); }
 };
 

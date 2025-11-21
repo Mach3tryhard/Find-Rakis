@@ -26,7 +26,7 @@ public:
         /// Generating planets positions
         int r=0;
         for (int i=0; i<n_stars+n_planets; i++) {
-            std::uniform_int_distribution<> distrib_orbit(400, 500);
+            std::uniform_int_distribution<> distrib_orbit(600, 700);
             std::uniform_real_distribution<> distrib(-r, r);
             std::uniform_real_distribution<> distribBlackHole(0, 100);
 
@@ -39,9 +39,9 @@ public:
             Physics newphysics(object_position);
 
             if (spawnHole<25 && i==0)
-                Factory::Create(-1,bodies,newphysics,gen);
+                Factory::Create(-1,bodies,newphysics,gen,r);
             else
-                Factory::Create(i,bodies,newphysics,gen);
+                Factory::Create(i,bodies,newphysics,gen,r);
 
             r+=distrib_orbit(gen);
         }
@@ -71,8 +71,10 @@ public:
         }
         return *this;
     }
-
-    void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture);
+    std::vector<Celestial*> getBodies() {
+        return bodies;
+    }
+    void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture,sf::Time dt);
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);
 };

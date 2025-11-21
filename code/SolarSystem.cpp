@@ -7,7 +7,7 @@
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
 
-void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture) {
+void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture,sf::Time dt) {
     for (long unsigned int i=0;i<bodies.size();i++) {
         bodies[i]->computeGravity(player);
         bodies[i]->Display(player.getPhysics().getPosition(),window,viewRect,texture);
@@ -18,6 +18,7 @@ void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRec
             player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider().getRadius()));
         }
         bodies[i]->RefuelCheck(player);
+        bodies[i]->getPhysics().OrbitBody(getPhysics().getPosition(),dt);
     }
 
     for(auto i = 0ull; i < bodies.size(); i++)

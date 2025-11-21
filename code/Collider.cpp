@@ -11,43 +11,53 @@ double Collider::getRadius() {
     return radius;
 }
 
-Physics Collider::resolveCollision(const Physics& shipPhys, const Physics& planetPhys, double planetRadius) const {
+Physics Collider::resolveCollision(const Physics& shipPhys,const Physics& planetPhys,double planetRadius) const{
     Pair shipPos = shipPhys.getPosition();
     Pair planetPos = planetPhys.getPosition();
-    Pair vel = shipPhys.getVelocity();
+    Pair shipVel = shipPhys.getVelocity();
+    Pair planetVel = planetPhys.getVelocity();
 
     double dx = shipPos.x - planetPos.x;
     double dy = shipPos.y - planetPos.y;
-    double dist = std::sqrt(dx * dx + dy * dy);
-    if (dist == 0) return shipPhys; // safety
+    double dist = std::sqrt(dx*dx + dy*dy);
 
-    Pair normal = {dx / dist, dy / dist};
-    double overlap = (radius + planetRadius) - dist;
+    double target = radius + planetRadius;
 
     Physics result = shipPhys;
 
-    // repara pozitia
-    if (overlap > 0) {
+    if (dist == 0) {
+        result.setPosition({ planetPos.x + target, planetPos.y });
+        result.setVelocity(planetVel);
+        return result;
+    }
+
+    Pair n = { dx / dist, dy / dist };
+
+    if (dist < target) {
+        double overlap = target - dist;
+
+        double push = overlap * 0.8;
         result.setPosition({
-            shipPos.x + normal.x * overlap,
-            shipPos.y + normal.y * overlap
+            shipPos.x + n.x * push,
+            shipPos.y + n.y * push
         });
     }
 
-    // sterge velocity de la planeta
-    double dot = vel.x * normal.x + vel.y * normal.y;
-    if (dot < 0) {
-        vel.x -= dot * normal.x;
-        vel.y -= dot * normal.y;
+    Pair rel = { shipVel.x - planetVel.x, shipVel.y - planetVel.y };
+    double relNormal = rel.x * n.x + rel.y * n.y;
+    Pair newRelVel = rel;
+    if (relNormal < 0.0) {
+        newRelVel.x -= relNormal * n.x;
+        newRelVel.y -= relNormal * n.y;
     }
-    // damping
-    vel.x *= 0;
-    vel.y *= 0;
-    result.setVelocity(vel);
+
+    const double damping = 0.20;
+    newRelVel.x *= (1.0 - damping);
+    newRelVel.y *= (1.0 - damping);
+
+    result.setVelocity({
+        planetVel.x + newRelVel.x,
+        planetVel.y + newRelVel.y
+    });
     return result;
 }
-/*void Collider::drawDebug(sf::RenderWindow& window, const Physics& physics) {
-    Pair pos = physics.getPosition();
-    debugShape.setPosition({(float)pos.x, (float)pos.y});
-    window.draw(debugShape);
-}*/

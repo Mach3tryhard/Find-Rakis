@@ -2,8 +2,32 @@
 #include "Pair.h"
 #include <cmath>
 #include <SFML/Graphics.hpp>
-
 #include "Exceptions.h"
+
+void Physics::OrbitBody(const Pair& center, sf::Time dt) {
+    double dx = position.x - center.x;
+    double dy = position.y - center.y;
+
+    double radius = std::sqrt(dx*dx + dy*dy);
+    if (radius < 0.0001) return;
+
+    double angle = std::atan2(dy, dx);
+
+    double angularVel = 100.0 / radius;
+
+    double newAngle = angle + angularVel * dt.asSeconds();
+
+    double newX = center.x + radius * std::cos(newAngle);
+    double newY = center.y + radius * std::sin(newAngle);
+
+    double velX = (newX - position.x) / dt.asSeconds();
+    double velY = (newY - position.y) / dt.asSeconds();
+
+    position.x = newX;
+    position.y = newY;
+    velocity = { velX, velY };
+}
+
 
 void Physics::UpdatePhysics(float cap,sf::Time dt) {
     float delta = dt.asSeconds();
