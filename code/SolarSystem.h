@@ -71,9 +71,7 @@ public:
         }
         return *this;
     }
-    std::vector<Celestial*> getBodies() const{
-        return bodies;
-    }
+    std::vector<Celestial*>& getBodies() { return bodies; }
     void Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRect& viewRect,sf::Texture &texture,sf::Time dt);
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const SolarSystem& system);
