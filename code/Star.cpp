@@ -19,6 +19,9 @@ void Star::initialize(std::mt19937& gen,float _orbitRadius) {
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
+void isCrashed(SpaceShip& player) {
+
+}
 void Star::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     float r = getRadius();
 

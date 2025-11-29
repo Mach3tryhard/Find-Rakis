@@ -63,6 +63,7 @@ public:
     virtual void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) = 0;
     virtual ~Celestial() = default;
     virtual Celestial* clone() const = 0;
+    //virtual void isCrashed(SpaceShip &player) = 0;
     virtual void initialize(std::mt19937 &gen, float orbitRadius) = 0;
 };
 #endif //OOP_CELESTIAL_H
