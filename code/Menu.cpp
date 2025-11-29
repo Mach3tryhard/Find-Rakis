@@ -1,7 +1,7 @@
 #include "Menu.h"
 
 Button::Button(float x, float y, const std::string& str, sf::Font& font, Command* cmd)
-    : text(font,str,24), command(cmd), idleColor(70, 70, 70), hoverColor(150, 150, 150) {
+    : text(font,str,24),idleColor(70, 70, 70), hoverColor(150, 150, 150), command(cmd)  {
     text.setFillColor(sf::Color::White);
 
     CenterOrigin(text);
