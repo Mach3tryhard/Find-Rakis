@@ -92,6 +92,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Blackhole.h
         code/Starfield.cpp
         code/Starfield.h
+        code/Menu.cpp
+        code/Menu.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
