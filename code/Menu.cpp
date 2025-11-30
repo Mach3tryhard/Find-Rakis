@@ -45,7 +45,7 @@ void Button::Draw(sf::RenderWindow& window) {
     window.draw(text);
 }
 
-Menu::Menu(float width, float height,std::string text) : title(font, text,60) {
+Menu::Menu(float width, float height,const std::string& text) : title(font, text,60) {
     if (!font.openFromFile("fonts/jetbrains.ttf")) {
         std::cerr << "Font error\n";
     }
