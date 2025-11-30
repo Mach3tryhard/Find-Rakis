@@ -53,7 +53,7 @@ public:
 
     void addAcceleration(Pair accelerationtoadd);
     void setPhysics(const Physics& newPhysics);
-    void setAcceleration(Pair accelerationtoadd);
+    void setAcceleration(Pair Accel) {acceleration.x=Accel.x;acceleration.y=Accel.y;}
     friend std::ostream& operator<<(std::ostream& out,const Physics& state);
 };
 #endif //OOP_PHYSICS_H

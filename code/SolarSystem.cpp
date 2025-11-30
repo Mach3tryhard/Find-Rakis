@@ -14,7 +14,7 @@ void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRec
         bodies[i]->CelestialEffects(window,player.getPhysics().getPosition(),viewRect);
         bodies[i]->CheckHit(player.getBullets(), player);
         if (player.getCollider().isCollidingWith(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider())) {
-
+            bodies[i]->isCrashed(player);
             player.alignToPlanet(bodies[i]->getPhysics());
             player.getPhysics().setPhysics(player.getCollider().resolveCollision(player.getPhysics(),bodies[i]->getPhysics(),bodies[i]->getCollider().getRadius()));
         }

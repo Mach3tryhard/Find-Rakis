@@ -19,6 +19,16 @@ void Asteroid::initialize(std::mt19937& gen,float _orbitRadius) {
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
+void Asteroid::isCrashed(SpaceShip& player) {
+    Pair velocity = player.getPhysics().getVelocity();
+    Pair velocity2= getPhysics().getVelocity();
+
+    float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    float speed2= std::sqrt(velocity2.x * velocity2.x + velocity2.y * velocity2.y);
+    if (speed-speed2 > 50.0f) {
+        player.setDead(true);
+    }
+}
 void Asteroid::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     Pair pos = physics.getPosition();
     const sf::Vector2f screenCenter = { window.getSize().x / 2.f, window.getSize().y / 2.f };

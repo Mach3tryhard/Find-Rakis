@@ -19,6 +19,16 @@ void Planet::initialize(std::mt19937& gen,float _orbitRadius) {
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
 }
+void Planet::isCrashed(SpaceShip& player) {
+    Pair velocity = player.getPhysics().getVelocity();
+    Pair velocity2= getPhysics().getVelocity();
+
+    float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+    float speed2= std::sqrt(velocity2.x * velocity2.x + velocity2.y * velocity2.y);
+    if (speed-speed2 > 50.0f) {
+        player.setDead(true);
+    }
+}
 void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     float r = getRadius();
 

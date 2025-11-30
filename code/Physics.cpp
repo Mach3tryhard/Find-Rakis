@@ -31,13 +31,16 @@ void Physics::OrbitBody(const Pair& center, sf::Time dt) {
 
 void Physics::UpdatePhysics(float cap,sf::Time dt) {
     float delta = dt.asSeconds();
+    if (std::isnan(velocity.x) || std::isnan(velocity.y)) {
+        return;
+    }
     this->velocity.x += this->acceleration.x * delta;
     this->velocity.y += this->acceleration.y * delta;
 
     float len = sqrtf(velocity.x*velocity.x + velocity.y*velocity.y);
-    if (len > cap) {
-        this->velocity.x = velocity.x / len * cap;
-        this->velocity.y = velocity.y / len * cap;
+    if (len > cap && len > 0.0001f) {
+        this->velocity.x = (velocity.x / len) * cap;
+        this->velocity.y = (velocity.y / len) * cap;
     }
     this->position.x += this->velocity.x * delta;
     this->position.y += this->velocity.y * delta;

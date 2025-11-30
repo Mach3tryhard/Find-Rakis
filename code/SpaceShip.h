@@ -20,7 +20,7 @@ private:
     const double matscap=100;
     const float thrust = 120.0f;
     const float cap=350;
-    bool upPressed=false;
+    bool upPressed=false,DEAD=false;
 
     const float hyper_thrust=1000.0f;
     bool inHyper=false;
@@ -48,6 +48,7 @@ public:
         this->distance_travelled = 0;
         this->lastpos = {0,0};
         hyperStartPos={0,0};
+        this->DEAD=false;
 
         refuelpossible=false;
         StarPosrefuel={0,0};
@@ -84,11 +85,36 @@ public:
         refuelStarColor=color;
     }
     void UpdateData(sf::Time dt,Pair newpos);
+    void setDead(bool _dead) {
+        DEAD=_dead;
+    }
+    bool getDead() {
+        return DEAD;
+    }
     sf::Vector2f SpaceToScreen(Pair world,Pair player, sf::RenderWindow& window);
     void computeGravity(Pair position,double mass, double influenceRadius);
     friend std::ostream& operator<<(std::ostream& out,const SpaceShip& ship);
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);
     void alignToPlanet(const Physics& planetPhys);
+
+    void setFuel(int i) {
+        fuel=i;
+    }
+    void setEnergy(int i) {
+        energy=i;
+    }
+    void setOre(int i) {
+        ore=i;
+    }
+    void setTimer(int i) {
+        timer=i;
+    }
+    void setLast(Pair position) {
+        lastpos=position;
+    }
+    void setDistance_travelled(int i) {
+        distance_travelled=i;
+    }
 };
 
 #endif //OOP_SPACESHIP_H

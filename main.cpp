@@ -45,26 +45,57 @@ int main() {
         /// CREATE TEXTURES
         Generator noise(1000,sf::Color::White,0);
 
+        auto ResetGame = [&](SpaceShip& p) {
+            p.getPhysics().setPosition({center.x, center.y});
+            p.setLast({center.x, center.y});
+            p.getPhysics().setVelocity({0, 0});
+            p.getPhysics().setAcceleration({0, 0});
+
+            p.setFuel(100);
+            p.setDead(false);
+            p.setEnergy(100);
+            p.setOre(100);
+            p.setTimer(0);
+            p.setDistance_travelled(0);
+        };
+
         // MENUS SETUP
         bool inMenu = true;
         bool isPaused = false;
 
         Menu mainMenu(window.getSize().x, window.getSize().y);
-        mainMenu.AddButton<bool>("PLAY", 450.f, &inMenu, [](bool* val){ *val = false; });
-        mainMenu.AddButton<sf::RenderWindow>("EXIT", 550.f, &window, [](sf::RenderWindow* win){ win->close(); });
+        mainMenu.AddButton<bool>("PLAY", 450.f, &inMenu, [](bool* val) {
+            *val = false;
+        });
+        mainMenu.AddButton<sf::RenderWindow>("EXIT", 550.f, &window, [](sf::RenderWindow* win) {
+            win->close();
+        });
 
         Menu pauseMenu(window.getSize().x, window.getSize().y);
-        pauseMenu.AddButton<bool>("RESUME", 450.f, &isPaused, [](bool* val){ *val = false; });
+        pauseMenu.AddButton<bool>("RESUME", 450.f, &isPaused, [](bool* val) {
+            *val = false;
+        });
         pauseMenu.AddButton<bool>("QUIT", 550.f, &inMenu, [&](bool* val){
             *val = true;
             isPaused = false;
+            ResetGame(player);
+        });
+
+        Menu deathMenu(window.getSize().x, window.getSize().y);
+        deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [&](SpaceShip* p) {
+            ResetGame(*p);
+        });
+        deathMenu.AddButton<bool>("COWAR", 550.f, &inMenu, [&](bool* val) {
+            *val = true;
+            ResetGame(player);
         });
 
         sf::Clock clock;
+
         while(window.isOpen()) {
             sf::Time dt = clock.restart();
 
-            if (isPaused) {
+            if (isPaused || player.getDead()) {
                 dt = sf::Time::Zero;
             }
 
@@ -73,6 +104,9 @@ int main() {
                     window.close();
                 if (inMenu) {
                     mainMenu.HandleInput(*event, window);
+                }
+                else if (player.getDead()) {
+                    deathMenu.HandleInput(*event, window);
                 }
                 else if (isPaused) {
                     pauseMenu.HandleInput(*event, window);
@@ -146,6 +180,17 @@ int main() {
                 player.HyperLogic(dt,window);
                 window.draw(player.getShape());
 
+                if (player.getDead()) {
+                    window.setView(window.getDefaultView());
+
+                    sf::RectangleShape redScreen(sf::Vector2f(window.getSize()));
+                    redScreen.setFillColor(sf::Color(100, 0, 0, 150));
+                    window.draw(redScreen);
+
+                    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                    deathMenu.Update(mousePos);
+                    deathMenu.Draw(window);
+                }
                 if (isPaused) {
                     window.setView(window.getDefaultView());
 

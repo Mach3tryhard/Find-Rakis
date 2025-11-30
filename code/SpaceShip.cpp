@@ -34,14 +34,20 @@ void SpaceShip::ExhaustMove() {
 
 void SpaceShip::UpdateData(sf::Time dt,Pair newpos) {
     timer+=dt.asSeconds();
-    distance_travelled+=sqrtf(pow(newpos.x-lastpos.x,2)+pow(newpos.y-lastpos.y,2));
-    lastpos=newpos;
+    if (!std::isnan(getPhysics().getPosition().x) && !std::isnan(newpos.x)) {
+        distance_travelled+=sqrtf(pow(newpos.x-lastpos.x,2)+pow(newpos.y-lastpos.y,2));
+        lastpos=newpos;
+    }
 }
 
 void SpaceShip::computeGravity(Pair position, double mass, double influenceRadius) {
     const double G = 1000.0;
-
     Pair shipPos = this->getPhysics().getPosition();
+
+    if (std::isnan(shipPos.x) || std::isnan(shipPos.y)) {
+        return;
+    }
+
     double dx = position.x - shipPos.x;
     double dy = position.y - shipPos.y;
 
