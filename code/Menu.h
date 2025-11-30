@@ -63,7 +63,7 @@ private:
     sf::Text title;
 
 public:
-    explicit Menu(float width, float height);
+    explicit Menu(float width, float height,std::string text);
     ~Menu();
 
     template <typename T>

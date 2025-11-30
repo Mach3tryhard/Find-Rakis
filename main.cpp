@@ -37,10 +37,9 @@ int main() {
         Physics playerphysics{5};
         SpaceShip player{playerphysics,10,100,100,100};
         player.getShape().setPosition({center.x,center.y});
-        Starfield starfield(200, window.getSize());
 
-        /// CREATE UNIVERSE
-        Universe universe(25,gen);
+        Starfield* starfield = new Starfield(250, window.getSize());
+        Universe* universe = new Universe(25, gen);
 
         /// CREATE TEXTURES
         Generator noise(1000,sf::Color::White,0);
@@ -63,15 +62,26 @@ int main() {
         bool inMenu = true;
         bool isPaused = false;
 
-        Menu mainMenu(window.getSize().x, window.getSize().y);
+        Menu mainMenu(window.getSize().x, window.getSize().y,"FIND RAKIS");
         mainMenu.AddButton<bool>("PLAY", 450.f, &inMenu, [](bool* val) {
             *val = false;
         });
-        mainMenu.AddButton<sf::RenderWindow>("EXIT", 550.f, &window, [](sf::RenderWindow* win) {
+        mainMenu.AddButton<bool>("REGENERATE", 550.f, &isPaused, [&](bool* val){
+            delete universe;
+            delete starfield;
+
+            universe = new Universe(25, gen);
+            starfield = new Starfield(200, window.getSize());
+
+            ResetGame(player);
+
+            *val = false;
+        });
+        mainMenu.AddButton<sf::RenderWindow>("EXIT", 650.f, &window, [](sf::RenderWindow* win) {
             win->close();
         });
 
-        Menu pauseMenu(window.getSize().x, window.getSize().y);
+        Menu pauseMenu(window.getSize().x, window.getSize().y,"PAUSED");
         pauseMenu.AddButton<bool>("RESUME", 450.f, &isPaused, [](bool* val) {
             *val = false;
         });
@@ -81,11 +91,11 @@ int main() {
             ResetGame(player);
         });
 
-        Menu deathMenu(window.getSize().x, window.getSize().y);
+        Menu deathMenu(window.getSize().x, window.getSize().y,"YOU DIED");
         deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [&](SpaceShip* p) {
             ResetGame(*p);
         });
-        deathMenu.AddButton<bool>("COWAR", 550.f, &inMenu, [&](bool* val) {
+        deathMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [&](bool* val) {
             *val = true;
             ResetGame(player);
         });
@@ -159,19 +169,20 @@ int main() {
                 sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                 mainMenu.Update(mousePos);
                 mainMenu.Draw(window);
+                starfield->Update(dt,window,player);
             }
             else {
                 player.SetRefuel(false,{0,0},0,sf::Color::White);
                 /// UNIVERSE STUFF
-                starfield.Update(dt,window,player);
-                universe.Update(player,window,viewRect,noise.getTexture(),dt);
+                starfield->Update(dt,window,player);
+                universe->Update(player,window,viewRect,noise.getTexture(),dt);
                 /// PARTICLE STUFF
                 player.getExhaust().update(dt);
                 window.draw(player.getExhaust());
                 /// DRAW GUI
                 gui.DrawText(window,player);
                 gui.DrawArrowHUD(window, player);
-                gui.DrawMiniMap(window,universe,player);
+                gui.DrawMiniMap(window,*universe,player);
                 gui.DrawBars(window,player);
                 /// PLAYER STUFF
                 player.UpdateData(dt,player.getPhysics().getPosition());
@@ -206,7 +217,10 @@ int main() {
 
             window.display();
         }
+        delete universe;
+        delete starfield;
     }
+
     catch (const ResourceLoadException& e) {
         std::cerr << e.what() << "\n";
         return 1;

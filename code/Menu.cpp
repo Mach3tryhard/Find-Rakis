@@ -45,12 +45,12 @@ void Button::Draw(sf::RenderWindow& window) {
     window.draw(text);
 }
 
-Menu::Menu(float width, float height) : title(font, "FIND RAKIS",60) {
+Menu::Menu(float width, float height,std::string text) : title(font, text,60) {
     if (!font.openFromFile("fonts/jetbrains.ttf")) {
         std::cerr << "Font error\n";
     }
 
-    title.setFillColor(sf::Color(254, 159, 35));
+    title.setFillColor(sf::Color(255, 255, 255));
     title.setStyle(sf::Text::Bold);
 
     CenterOrigin(title);
