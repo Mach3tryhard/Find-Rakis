@@ -6,6 +6,7 @@
 #include "Physics.h"
 #include "SpaceShip.h"
 #include "SolarSystem.h"
+#include "Rakis.h"
 
 void GUI::Initialize(sf::Window &window) {
     float left = 10.f / window.getSize().x;
@@ -67,6 +68,9 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
         for (auto& body: system.getBodies()) {
             sf::CircleShape dot1(200.f);
             dot1.setOrigin({100.f, 100.f});
+            if (body->isRakis()) {
+                dot1.setFillColor(sf::Color(0XFF9900FF));
+            }
             dot1.setFillColor(sf::Color::White);
             auto pos = body->getPhysics().getPosition();
             dot1.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});

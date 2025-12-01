@@ -14,6 +14,9 @@ public:
     void RefuelCheck(SpaceShip &player) override;
     void isCrashed(SpaceShip& player) override;
     void initialize(std::mt19937 &gen, float orbitRadius) override;
+
+    bool isRakis()override {return false;}
+
     Star* clone() const override { return new Star(*this); }
 };
 
