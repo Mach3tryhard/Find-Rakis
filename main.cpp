@@ -71,7 +71,7 @@ int main() {
             delete starfield;
 
             universe = new Universe(25, gen);
-            starfield = new Starfield(200, window.getSize());
+            starfield = new Starfield(250, window.getSize());
 
             ResetGame(player);
 
@@ -94,10 +94,20 @@ int main() {
         Menu deathMenu(window.getSize().x, window.getSize().y,"YOU DIED");
         deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [&](SpaceShip* p) {
             ResetGame(*p);
+            delete universe;
+            delete starfield;
+
+            universe = new Universe(25, gen);
+            starfield = new Starfield(250, window.getSize());
         });
         deathMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [&](bool* val) {
             *val = true;
             ResetGame(player);
+            delete universe;
+            delete starfield;
+
+            universe = new Universe(25, gen);
+            starfield = new Starfield(250, window.getSize());
         });
 
         sf::Clock clock;
@@ -184,18 +194,19 @@ int main() {
                 gui.DrawArrowHUD(window, player);
                 gui.DrawMiniMap(window,*universe,player);
                 gui.DrawBars(window,player);
-                /// PLAYER STUFF
-                player.UpdateData(dt,player.getPhysics().getPosition());
-                player.UpdateBullets(dt,window,viewRect);
-                player.InputCheck(dt, window);
-                player.HyperLogic(dt,window);
-                window.draw(player.getShape());
-
+                if (!player.getDead() && !isPaused) {
+                    /// PLAYER STUFF
+                    player.UpdateData(dt,player.getPhysics().getPosition());
+                    player.UpdateBullets(dt,window,viewRect);
+                    player.InputCheck(dt, window);
+                    player.HyperLogic(dt,window);
+                    window.draw(player.getShape());
+                }
                 if (player.getDead()) {
                     window.setView(window.getDefaultView());
 
                     sf::RectangleShape redScreen(sf::Vector2f(window.getSize()));
-                    redScreen.setFillColor(sf::Color(100, 0, 0, 150));
+                    redScreen.setFillColor(sf::Color(200, 200, 200, 150));
                     window.draw(redScreen);
 
                     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
@@ -212,6 +223,7 @@ int main() {
                     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                     pauseMenu.Update(mousePos);
                     pauseMenu.Draw(window);
+                    window.draw(player.getShape());
                 }
             }
 

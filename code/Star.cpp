@@ -21,6 +21,7 @@ void Star::initialize(std::mt19937& gen,float _orbitRadius) {
 }
 void Star::isCrashed(SpaceShip& player) {
     player.setDead(true);
+    player.playExplosion();
 }
 void Star::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     float r = getRadius();

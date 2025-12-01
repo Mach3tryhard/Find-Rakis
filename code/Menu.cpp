@@ -1,8 +1,9 @@
 #include "Menu.h"
 
 Button::Button(float x, float y, const std::string& str, sf::Font& font, Command* cmd)
-    : text(font,str,24),idleColor(70, 70, 70), hoverColor(150, 150, 150), command(cmd)  {
+    : text(font, str, 24), idleColor(70, 70, 70), hoverColor(150, 150, 150), command(cmd), Audio(buffer) {
     text.setFillColor(sf::Color::White);
+    if (!buffer.loadFromFile("audio/button.wav")) {std::cerr << "COULD NOT LOAD BUTTON SOUND";}
 
     CenterOrigin(text);
     text.setPosition({x, y});
@@ -31,9 +32,10 @@ void Button::Update(const sf::Vector2f& mousePos) {
 bool Button::IsClicked(const sf::Event& event, const sf::Vector2f& mousePos) {
     if (shape.getGlobalBounds().contains(mousePos)) {
         if (event.is<sf::Event::MouseButtonPressed>()) {
-             if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
-                 if (command) command->Execute();
-                 return true;
+            if (event.getIf<sf::Event::MouseButtonPressed>()->button == sf::Mouse::Button::Left) {
+                if (command) command->Execute();
+                Audio.play();
+                return true;
              }
         }
     }

@@ -6,6 +6,8 @@
 #include <functional>
 #include <string>
 #include <iostream>
+#include <SFML/Audio.hpp>
+#include "SFML/Audio/SoundBuffer.hpp"
 
 template <typename T>
 void CenterOrigin(T& drawable) {
@@ -46,6 +48,9 @@ private:
     sf::Color idleColor;
     sf::Color hoverColor;
     Command* command;
+
+    sf::SoundBuffer buffer;
+    sf::Sound Audio;
 
 public:
     Button(float x, float y, const std::string& str, sf::Font& font, Command* cmd);

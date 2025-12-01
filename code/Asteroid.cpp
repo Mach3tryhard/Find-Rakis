@@ -25,8 +25,9 @@ void Asteroid::isCrashed(SpaceShip& player) {
 
     float speed = std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
     float speed2= std::sqrt(velocity2.x * velocity2.x + velocity2.y * velocity2.y);
-    if (speed-speed2 > 50.0f) {
+    if (speed-speed2 > 60.0f) {
         player.setDead(true);
+        player.playExplosion();
     }
 }
 void Asteroid::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {

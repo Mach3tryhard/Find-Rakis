@@ -64,6 +64,10 @@ void SpaceShip::computeGravity(Pair position, double mass, double influenceRadiu
     physics.addAcceleration({ (dx / dist) * accel, (dy / dist) * accel });
 }
 void SpaceShip::ShootBullet() {
+    float pitch = 0.9f + static_cast<float>(rand() % 20) / 100.f;
+    laserSound.setPitch(pitch);
+    laserSound.play();
+
     energy-=7.5;
     Pair shipPos = physics.getPosition();
     float angleRad = triangle.getRotation().asRadians();
@@ -165,21 +169,35 @@ void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z) && refuelpossible){
         RefuelLogic(dt, window);
+        if (refuelSound.getStatus()!=sf::Sound::Status::Playing)
+            refuelSound.play();
+    }
+    else {
+        refuelSound.stop();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::X) && ore>0.1f){
         EnterHyper(dt);
+        if (hyperSound.getStatus()!=sf::Sound::Status::Playing)
+            hyperSound.play();
     }
     else {
         ExitHyper();
+        hyperSound.stop();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && fuel > 0) {
         ShipMove();
         ExhaustMove();
-        fuel -= dt.asSeconds();
+        fuel -= dt.asSeconds()*2.f;
         fuel = std::max(0.f, static_cast<float>(fuel));
         upPressed = true;
+        if (engineSound.getStatus() != sf::Sound::Status::Playing) {
+            engineSound.play();
+        }
     } else {
         upPressed = false;
+        if (engineSound.getStatus() == sf::Sound::Status::Playing) {
+            engineSound.stop();
+        }
     }
 
     exhaust.setEmitting(upPressed);

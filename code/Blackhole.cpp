@@ -20,6 +20,7 @@ void Blackhole::initialize(std::mt19937& gen,float _orbitRadius) {
 }
 void Blackhole::isCrashed(SpaceShip& player) {
     player.setDead(true);
+    player.playExplosion();
 }
 void Blackhole::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) {
     Pair pos = physics.getPosition();

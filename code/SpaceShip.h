@@ -1,11 +1,13 @@
 #ifndef OOP_SPACESHIP_H
 #define OOP_SPACESHIP_H
+#include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Bullet.h"
 #include "ParticleSystem.h"
 #include "Physics.h"
 #include "Collider.h"
 #include "Pair.h"
+#include <SFML/Audio.hpp>
 
 class SpaceShip {
 private:
@@ -19,7 +21,7 @@ private:
     double timer,distance_travelled;
     const double matscap=100;
     const float thrust = 120.0f;
-    const float cap=350;
+    const float cap=450;
     bool upPressed=false,DEAD=false;
 
     const float hyper_thrust=1000.0f;
@@ -32,8 +34,36 @@ private:
     Pair StarPosrefuel{};
     double StarRadius;
     sf::Color refuelStarColor;
+
+    sf::SoundBuffer engineBuffer;
+    sf::SoundBuffer laserBuffer;
+    sf::SoundBuffer refuelBuffer;
+    sf::SoundBuffer hyperBuffer;
+    sf::SoundBuffer explosionBuffer;
+    sf::Sound engineSound;
+    sf::Sound laserSound;
+    sf::Sound refuelSound;
+    sf::Sound hyperSound;
+    sf::Sound explosionSound;
 public:
-    SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore):collider(radius/2) {
+    SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore)
+        : collider(radius / 2), engineSound(engineBuffer), laserSound(laserBuffer), refuelSound(refuelBuffer),
+          hyperSound(hyperBuffer), explosionSound(explosionBuffer) {
+        if (!engineBuffer.loadFromFile("audio/engine3.wav")) {std::cerr << "COULD NOT LOAD ENGINE SOUND";}
+        if (!laserBuffer.loadFromFile("audio/laser.wav")) {std::cerr << "COULD NOT LOAD LASER SOUND";}
+        if (!refuelBuffer.loadFromFile("audio/refuel.wav")) {std::cerr << "COULD NOT LOAD REFUEL SOUND";}
+        if (!refuelBuffer.loadFromFile("audio/refuel.wav")) {std::cerr << "COULD NOT LOAD REFUEL SOUND";}
+        if (!hyperBuffer.loadFromFile("audio/powerUp.wav")) {std::cerr << "COULD NOT LOAD HYPER SOUND";}
+        if (!explosionBuffer.loadFromFile("audio/explosion.wav")) {std::cerr << "COULD NOT LOAD EXPLOSION SOUND";}
+        laserSound.setBuffer(laserBuffer);
+        laserSound.setVolume(40.f);
+        laserSound.setPitch(1.0f);
+        refuelSound.setBuffer(refuelBuffer);
+        refuelSound.setVolume(20.f);
+        refuelSound.setPitch(2.0f);
+        hyperSound.setBuffer(hyperBuffer);
+        hyperSound.setVolume(20.f);
+
         hyperTrail.setFillColor(sf::Color(255, 255, 255, 200));
         hyperTrail.setSize({0, 3});
         hyperTrail.setOrigin({0, 1.5f});
@@ -46,15 +76,16 @@ public:
         this->ore = ore;
         this->timer = 0;
         this->distance_travelled = 0;
-        this->lastpos = {0,0};
-        hyperStartPos={0,0};
-        this->DEAD=false;
+        this->lastpos = {0, 0};
+        hyperStartPos = {0, 0};
+        this->DEAD = false;
 
-        refuelpossible=false;
-        StarPosrefuel={0,0};
-        StarRadius=0;
-        refuelStarColor=sf::Color(255, 255, 255, 150);
+        refuelpossible = false;
+        StarPosrefuel = {0, 0};
+        StarRadius = 0;
+        refuelStarColor = sf::Color(255, 255, 255, 150);
     }
+
     sf::CircleShape& getShape();
     Physics& getPhysics();
     float getCap() const;
@@ -97,6 +128,9 @@ public:
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);
     void alignToPlanet(const Physics& planetPhys);
 
+    void playExplosion() {
+        explosionSound.play();
+    }
     void setFuel(int i) {
         fuel=i;
     }
