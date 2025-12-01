@@ -22,7 +22,7 @@ private:
     const double matscap=100;
     const float thrust = 120.0f;
     const float cap=450;
-    bool upPressed=false,DEAD=false;
+    bool upPressed=false,DEAD=false,WON=false;
 
     const float hyper_thrust=1000.0f;
     bool inHyper=false;
@@ -109,6 +109,12 @@ public:
     void UpdateHyperTrail();
 
     void RefuelLogic(sf::Time dt, sf::RenderWindow &window);
+    void StopAudio() {
+        engineSound.pause();
+        laserSound.pause();
+        refuelSound.pause();
+        hyperSound.pause();
+    }
     void SetRefuel(bool canrefuel,Pair NewStarPos,double newStarRadius,sf::Color color) {
         refuelpossible=canrefuel;
         StarPosrefuel=NewStarPos;
@@ -121,6 +127,12 @@ public:
     }
     bool getDead() {
         return DEAD;
+    }
+    void setWon(bool _won) {
+        WON=_won;
+    }
+    bool getWon() {
+        return WON;
     }
     sf::Vector2f SpaceToScreen(Pair world,Pair player, sf::RenderWindow& window);
     void computeGravity(Pair position,double mass, double influenceRadius);

@@ -208,6 +208,7 @@ int main() {
                     sf::RectangleShape redScreen(sf::Vector2f(window.getSize()));
                     redScreen.setFillColor(sf::Color(200, 200, 200, 150));
                     window.draw(redScreen);
+                    player.StopAudio();
 
                     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                     deathMenu.Update(mousePos);

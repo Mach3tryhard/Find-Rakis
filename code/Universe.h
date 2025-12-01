@@ -29,7 +29,7 @@ public:
             if (gasit==true) {
                 Pair system_position = {newpos.x,newpos.y};
                 Physics newphysics(system_position);
-                systems.push_back(SolarSystem{newphysics, gen});
+                systems.push_back(SolarSystem{newphysics, gen,i});
             }
         }
     }

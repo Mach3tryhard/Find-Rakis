@@ -17,7 +17,7 @@ private:
     Physics physics;
     std::vector<Celestial*> bodies;
 public:
-    explicit SolarSystem(const Physics& physics,std::mt19937& gen) {
+    explicit SolarSystem(const Physics& physics,std::mt19937& gen,int number) {
         this->physics = physics;
         std::uniform_int_distribution<> d_planets(4, 10);
         int n_planets = d_planets(gen);
@@ -38,7 +38,10 @@ public:
             Pair object_position = {posx+physics.getPosition().x,posy+physics.getPosition().y};
             Physics newphysics(object_position);
 
-            if (spawnHole<25 && i==0)
+            if (number==1 && i==2) {
+                Factory::Create(-2,bodies,newphysics,gen,r);
+            }
+            else if (spawnHole<25 && i==0)
                 Factory::Create(-1,bodies,newphysics,gen,r);
             else
                 Factory::Create(i,bodies,newphysics,gen,r);

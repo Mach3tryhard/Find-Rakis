@@ -5,6 +5,7 @@
 #include "Celestial.h"
 #include "Planet.h"
 #include "Star.h"
+#include "Rakis.h"
 
 class Factory {
 public:
@@ -12,7 +13,8 @@ public:
         Star,
         Planet,
         Asteroid,
-        Blackhole
+        Blackhole,
+        Rakis
     };
     static Celestial* CelestialFactory(CelestialType type, const Physics& physics, std::mt19937& gen,float orbitRadius){
         Celestial* body = nullptr;
@@ -30,6 +32,9 @@ public:
             case CelestialType::Blackhole:
                 body = new Blackhole(physics);
                 break;
+            case CelestialType::Rakis:
+                body = new Rakis(physics);
+                break;
         }
 
         if (body) body->initialize(gen,orbitRadius);
@@ -41,6 +46,8 @@ public:
             type = CelestialType::Blackhole;
         else if (i == 0)
             type = CelestialType::Star;
+        else if (i == -2)
+            type = CelestialType::Rakis;
         else if (i == 3)
             type = CelestialType::Asteroid;
         else
