@@ -50,14 +50,24 @@ private:
 
     sf::SoundBuffer soundtrackBuffer;
     sf::Sound OSTSound;
+
+    sf::Font gameFont;
+    sf::Text scoreText;
 public:
     void resetGame();
     void Run();
     GameManager() : player(playerphysics, 12.5f, 100, 100, 100), noise(1000, sf::Color::White, 0),
                     mainMenu(SCR_WIDTH, SCR_HEIGHT, "FIND RAKIS"),
                     pauseMenu(SCR_WIDTH, SCR_HEIGHT, "PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT, "YOU DIED"),
-                    winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer) {
-        if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")){std::cerr << "COULD NOT LOAD OST SOUND";}
+                    winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer), scoreText(gameFont) {
+        if (!gameFont.openFromFile("fonts/jetbrains.ttf")) {
+            std::cerr << "Failed to load font\n";
+        }
+        scoreText.setFont(gameFont);
+        scoreText.setCharacterSize(35);
+        scoreText.setFillColor(sf::Color::White);
+
+        if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")) { std::cerr << "COULD NOT LOAD OST SOUND"; }
         OSTSound.setBuffer(soundtrackBuffer);
         OSTSound.setVolume(20.f);
         OSTSound.setPitch(1.0f);
@@ -130,7 +140,7 @@ public:
             starfield = new Starfield(250, window.getSize());
         });
 
-        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [this](SpaceShip *) {
+        winMenu.AddButton<SpaceShip>("RESTART", 750.f, &player, [this](SpaceShip *) {
             this->resetGame();
             delete universe;
             delete starfield;
@@ -138,7 +148,7 @@ public:
             universe = new Universe(25, gen);
             starfield = new Starfield(250, window.getSize());
         });
-        winMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool *val) {
+        winMenu.AddButton<bool>("EXIT", 850.f, &inMenu, [this](bool *val) {
             *val = true;
             this->resetGame();
             delete universe;

@@ -112,9 +112,26 @@ void GameManager::Run() {
                 window.setView(window.getDefaultView());
 
                 sf::RectangleShape ScreenWIN(sf::Vector2f(window.getSize()));
-                ScreenWIN.setFillColor(sf::Color(200, 200, 200, 150));
+                ScreenWIN.setFillColor(sf::Color(200, 200, 200, 100));
                 window.draw(ScreenWIN);
                 player.StopAudio();
+
+                int timeScore = 5000 - (int)player.getTimer();
+                if (timeScore < 0) timeScore = 0;
+                int oreScore = (int)player.getOre() * 100;
+                int fuelScore = (int)player.getFuel() * 50;
+                int totalScore = timeScore + oreScore + fuelScore;
+                std::string stats = "MISSION ACCOMPLISHED\n\n"
+                                    "Time Taken: " + std::to_string((int)player.getTimer()) + "s\n" +
+                                    "Distance:   " + std::to_string((int)player.getDistance_travelled()) + " u\n" +
+                                    "Ore Bonus:  " + std::to_string(oreScore) + "\n" +
+                                    "TOTAL SCORE: " + std::to_string(totalScore);
+
+                scoreText.setString(stats);
+                sf::FloatRect bounds = scoreText.getLocalBounds();
+                scoreText.setOrigin({bounds.size.x / 2.f, bounds.size.y / 2.f});
+                scoreText.setPosition({window.getSize().x / 2.f, window.getSize().y * 0.5f});
+                window.draw(scoreText);
 
                 sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                 winMenu.Update(mousePos);

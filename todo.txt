@@ -1,2 +1,1 @@
-- add more arrows to the GUI
 - add score to win screen
