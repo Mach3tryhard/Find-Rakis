@@ -6,9 +6,9 @@ const std::vector<sf::Color> Starfield::possibleColors = {sf::Color::White,sf::C
 void Starfield::update(sf::Vector2f playerVel, float dt, const SpaceShip& player) {
     for (auto& s : stars) {
         if (player.getHyper())
-            s.pos-=playerVel * s.depth * speed * dt/75.f;
+            s.pos-=playerVel * s.depth * speed * dt/50.f;
         else
-            s.pos -= playerVel * s.depth * speed * dt/200.f;
+            s.pos -= playerVel * s.depth * speed * dt/150.f;
 
         if (s.pos.x < 0) s.pos.x += screen.x;
         if (s.pos.x >= screen.x) s.pos.x -= screen.x;

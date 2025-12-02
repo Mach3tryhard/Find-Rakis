@@ -20,8 +20,8 @@
 
 class GameManager {
 private:
-    const float SCR_WIDTH = 1920;
-    const float SCR_HEIGHT = 1008;
+    const float SCR_WIDTH = 1280;
+    const float SCR_HEIGHT = 960;
 
     sf::RenderWindow window;
     sf::View view;
@@ -54,9 +54,9 @@ public:
                     pauseMenu(SCR_WIDTH, SCR_HEIGHT,"PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT,"YOU DIED"),
                     winMenu(SCR_WIDTH, SCR_HEIGHT,"YOU WIN") {
 
-        window.create(sf::VideoMode({1920, 1008}), "Find Rakis", sf::Style::Default);
+        window.create(sf::VideoMode({1280, 960}), "Find Rakis", sf::Style::Titlebar | sf::Style::Close);
         window.setVerticalSyncEnabled(true);
-        view=sf::View(sf::FloatRect({0, 0}, {1920, 1008}));
+        view=sf::View(sf::FloatRect({0, 0}, {1280, 960}));
         window.setView(view);
 
         center = view.getCenter();

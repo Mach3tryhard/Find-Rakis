@@ -87,6 +87,7 @@ void GameManager::Run() {
             starfield->Update(dt,window,player);
         }
         else {
+
             player.SetRefuel(false,{0,0},0,sf::Color::White);
             /// UNIVERSE STUFF
             starfield->Update(dt,window,player);
@@ -132,6 +133,9 @@ void GameManager::Run() {
                 deathMenu.Draw(window);
             }
             if (isPaused) {
+                /// DONT FORGET
+                window.draw(player.getShape());
+
                 window.setView(window.getDefaultView());
 
                 sf::RectangleShape dark(sf::Vector2f(window.getSize()));
@@ -141,7 +145,6 @@ void GameManager::Run() {
                 sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
                 pauseMenu.Update(mousePos);
                 pauseMenu.Draw(window);
-                window.draw(player.getShape());
             }
         }
         window.display();

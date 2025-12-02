@@ -1,0 +1,5 @@
+- icon
+- audio for planet destroy
+- audio for ambiental
+- fix audio bug when dying in sun
+- add more arrows to the GUI

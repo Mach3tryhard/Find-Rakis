@@ -35,6 +35,8 @@ private:
     sf::Text barsText;
 
     sf::Text dataText;
+
+    sf::RectangleShape infoBox;
 public:
     GUI() : debugText(font), barsText(font), dataText(font) {
         this->font = sf::Font("fonts/jetbrains.ttf");

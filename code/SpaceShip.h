@@ -12,7 +12,7 @@
 class SpaceShip {
 private:
     ParticleSystem exhaust{1000};
-    sf::CircleShape triangle;
+    sf::ConvexShape triangle;
     std::vector<Bullet> bullets;
     Physics physics;
     Pair lastpos{};
@@ -67,9 +67,12 @@ public:
         hyperTrail.setFillColor(sf::Color(255, 255, 255, 200));
         hyperTrail.setSize({0, 3});
         hyperTrail.setOrigin({0, 1.5f});
-        this->triangle.setRadius(radius);
-        this->triangle.setPointCount(3);
-        this->triangle.setOrigin({radius, radius});
+        triangle.setPointCount(3);
+        float size = 10.f;
+        triangle.setPoint(0, sf::Vector2f(0.f, -size));      // Nose (Up)
+        triangle.setPoint(1, sf::Vector2f(-size/1.5f, size)); // Bottom Left
+        triangle.setPoint(2, sf::Vector2f(size/1.5f, size));  // Bottom Right
+        triangle.setFillColor(sf::Color::White);
         this->physics = physics;
         this->fuel = fuel;
         this->energy = energy;
@@ -86,7 +89,10 @@ public:
         refuelStarColor = sf::Color(255, 255, 255, 150);
     }
 
-    sf::CircleShape& getShape();
+    //sf::CircleShape& getShape(){return triangle;}
+    sf::ConvexShape& getShape() {
+        return triangle;
+    }
     Physics& getPhysics();
     float getCap() const;
     ParticleSystem& getExhaust();

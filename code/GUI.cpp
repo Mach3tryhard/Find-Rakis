@@ -16,26 +16,38 @@ void GUI::Initialize(sf::Window &window) {
     minimapView.setViewport(sf::FloatRect({left, 1.f - height - bottom}, {width, height}));
     minimapBox.setPosition({10.f, window.getSize().y - minimapSize-10.f});
 
-    debugText.setPosition({static_cast<float>(window.getSize().x*2/3)-175.f,window.getSize().y -100.f});
-    barsText.setPosition({static_cast<float>(window.getSize().x/3)-300.f,window.getSize().y -75.f});
+    debugText.setPosition({static_cast<float>(window.getSize().x/3),window.getSize().y -115.f});
+    barsText.setPosition({static_cast<float>(window.getSize().x/3),window.getSize().y -205.f});
 
-    dataText.setPosition({(window.getSize().x/3-50.f),window.getSize().y -100.f});
+    dataText.setPosition({(window.getSize().x-550.f),window.getSize().y -215.f});
 
-    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -63.f});
-    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -37.f});
-    OreBar.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
-    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -63.f});
-    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -37.f});
-    OreBarback.setPosition({static_cast<float>(window.getSize().x/3)-200.f,window.getSize().y -10.f});
+    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -198.f});
+    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -172.f});
+    OreBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -145.f});
+    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -198.f});
+    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -172.f});
+    OreBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -145.f});
 
     float right = 10.f / window.getSize().x;
     arrowView.setViewport(sf::FloatRect({1.f - width - right, 1.f - height - bottom},{width, height}));
     arrowView.setCenter({0.f, 0.f});
     arrowView.setSize({minimapSize, minimapSize});
     arrowbox.setPosition({window.getSize().x - minimapSize-10.f, window.getSize().y - minimapSize-10.f});
+
+    float boxWidth = 600.f;
+    float boxHeight = 220.f;
+    float boxX = (window.getSize().x / 2.f) - (boxWidth / 2.f); // Center horizontally
+    float boxY = window.getSize().y - 230.f; // Place near bottom
+
+    infoBox.setSize({boxWidth, boxHeight});
+    infoBox.setPosition({boxX, boxY});
+    infoBox.setFillColor(sf::Color(20, 20, 20, 100)); // Same transparent gray as others
+    infoBox.setOutlineColor(sf::Color::White);
+    infoBox.setOutlineThickness(2.f); // Optional border to match theme
 }
 
 void GUI::DrawText(sf::RenderWindow& window,SpaceShip& player){
+    window.draw(infoBox);
     std::string posText ="position:     x: " + std::to_string(player.getPhysics().getPosition().x)
     +" y: " + std::to_string(player.getPhysics().getPosition().y)
     + "\nvelocity:     x: " + std::to_string(player.getPhysics().getVelocity().x)
@@ -49,7 +61,7 @@ void GUI::DrawText(sf::RenderWindow& window,SpaceShip& player){
     std::string datatext="hours:   "+std::to_string(static_cast<int>( player.getTimer())/3600)+
     "\nminutes: "+std::to_string(static_cast<int>(player.getTimer())/60%60)+
     "\nseconds: "+std::to_string(static_cast<int>(player.getTimer())%60)+
-    "\ndistance:"+std::to_string(player.getDistance_travelled());
+    "\ndistance:"+std::to_string((int)player.getDistance_travelled());
     dataText.setString(datatext);
 
     window.draw(dataText);
@@ -59,7 +71,7 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
 {
     sf::RectangleShape minimapBackground(minimapBox.getSize());
     minimapBackground.setPosition(minimapBox.getPosition());
-    minimapBackground.setFillColor(sf::Color(20, 20, 20, 255));
+    minimapBackground.setFillColor(sf::Color(20, 20, 20, 100));
     window.draw(minimapBackground);
 
     window.setView(minimapView);
@@ -152,7 +164,7 @@ void GUI::DrawBars(sf::RenderWindow& window,const SpaceShip& player) {
 void GUI::DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
     sf::RectangleShape arrowBackground(arrowbox.getSize());
     arrowBackground.setPosition(arrowbox.getPosition());
-    arrowBackground.setFillColor(sf::Color(20, 20, 20, 255));
+    arrowBackground.setFillColor(sf::Color(20, 20, 20, 100));
     window.draw(arrowBackground);
 
     window.setView(arrowView);
@@ -162,7 +174,7 @@ void GUI::DrawArrowHUD(sf::RenderWindow& window,SpaceShip& player) {
     if (length < 1.f) length = 1.f;
     float angleRad = std::atan2(velocity.y, velocity.x);
     float maxLength = minimapSize * 0.4f;
-    float scaledLength = std::min(length * 0.5f, maxLength);
+    float scaledLength = std::min(length * 120.f/player.getCap(), maxLength);
 
     sf::Vector2f center(0.f, 0.f);
     velocityLine.setSize({scaledLength, 5.f});

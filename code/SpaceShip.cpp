@@ -20,11 +20,11 @@ void SpaceShip::ExhaustMove() {
     float angleRad = triangle.getRotation().asRadians() - 3.14159265f / 2.f;
     sf::Vector2f shipPos = triangle.getPosition();
 
-    float backOffsetDist = triangle.getRadius() * 0.5f;
+    float backOffsetDist = 10.f * 0.5f;
     sf::Vector2f offset(-std::cos(angleRad) * backOffsetDist,
                         -std::sin(angleRad) * backOffsetDist);
 
-    float lateralOffset = triangle.getRadius() * 0.01f;
+    float lateralOffset = 10.f * 0.01f;
     sf::Vector2f lateral(-std::sin(angleRad) * lateralOffset,
                           std::cos(angleRad) * lateralOffset);
 
@@ -235,9 +235,6 @@ float SpaceShip::getOre() const {
 }
 Collider SpaceShip::getCollider() {
     return collider;
-}
-sf::CircleShape& SpaceShip::getShape() {
-    return triangle;
 }
 double SpaceShip::getTimer() const {
     return timer;
