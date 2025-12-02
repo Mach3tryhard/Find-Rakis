@@ -99,7 +99,7 @@ public:
             this->resetGame();
         });
 
-        deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [this](SpaceShip* p) {
+        deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [this](SpaceShip*) {
             this->resetGame();
             delete universe;
             delete starfield;
@@ -117,7 +117,7 @@ public:
             starfield = new Starfield(250, window.getSize());
         });
 
-        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [this](SpaceShip* p) {
+        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [this](SpaceShip*) {
             this->resetGame();
             delete universe;
             delete starfield;
