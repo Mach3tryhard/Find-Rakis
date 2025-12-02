@@ -47,34 +47,48 @@ private:
     Menu winMenu;
 
     sf::Clock clock;
+
+    sf::SoundBuffer soundtrackBuffer;
+    sf::Sound OSTSound;
 public:
     void resetGame();
     void Run();
-    GameManager() : player(playerphysics,10,100,100,100), noise(1000,sf::Color::White,0), mainMenu(SCR_WIDTH, SCR_HEIGHT,"FIND RAKIS"),
-                    pauseMenu(SCR_WIDTH, SCR_HEIGHT,"PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT,"YOU DIED"),
-                    winMenu(SCR_WIDTH, SCR_HEIGHT,"YOU WIN") {
-
+    GameManager() : player(playerphysics, 12.5f, 100, 100, 100), noise(1000, sf::Color::White, 0),
+                    mainMenu(SCR_WIDTH, SCR_HEIGHT, "FIND RAKIS"),
+                    pauseMenu(SCR_WIDTH, SCR_HEIGHT, "PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT, "YOU DIED"),
+                    winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer) {
+        if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")){std::cerr << "COULD NOT LOAD OST SOUND";}
+        OSTSound.setBuffer(soundtrackBuffer);
+        OSTSound.setVolume(20.f);
+        OSTSound.setPitch(1.0f);
+        OSTSound.setLooping(true);
+        OSTSound.play();
         window.create(sf::VideoMode({1280, 960}), "Find Rakis", sf::Style::Titlebar | sf::Style::Close);
         window.setVerticalSyncEnabled(true);
-        view=sf::View(sf::FloatRect({0, 0}, {1280, 960}));
+        view = sf::View(sf::FloatRect({0, 0}, {1280, 960}));
         window.setView(view);
+
+        sf::Image icon;
+        if (icon.loadFromFile("textures/icon2.png")) {
+            window.setIcon({icon.getSize().x, icon.getSize().y}, icon.getPixelsPtr());
+        }
 
         center = view.getCenter();
         size = view.getSize();
-        viewRect=sf::FloatRect({center.x - size.x/2.f, center.y - size.y/2.f}, {size.x, size.y});
-        gen=std::mt19937(std::random_device{}());
+        viewRect = sf::FloatRect({center.x - size.x / 2.f, center.y - size.y / 2.f}, {size.x, size.y});
+        gen = std::mt19937(std::random_device{}());
 
         gui.Initialize(window);
 
-        player.getShape().setPosition({center.x,center.y});
+        player.getShape().setPosition({center.x, center.y});
 
         starfield = new Starfield(250, window.getSize());
         universe = new Universe(25, gen);
 
-        mainMenu.AddButton<bool>("PLAY", 450.f, &inMenu, [](bool* val) {
+        mainMenu.AddButton<bool>("PLAY", 450.f, &inMenu, [](bool *val) {
             *val = false;
         });
-        mainMenu.AddButton<bool>("REGENERATE", 550.f, &isPaused, [this](bool* val){
+        mainMenu.AddButton<bool>("REGENERATE", 550.f, &isPaused, [this](bool *val) {
             delete universe;
             delete starfield;
 
@@ -85,20 +99,20 @@ public:
 
             *val = false;
         });
-        mainMenu.AddButton<sf::RenderWindow>("EXIT", 650.f, &window, [](sf::RenderWindow* win) {
+        mainMenu.AddButton<sf::RenderWindow>("EXIT", 650.f, &window, [](sf::RenderWindow *win) {
             win->close();
         });
 
-        pauseMenu.AddButton<bool>("RESUME", 450.f, &isPaused, [](bool* val) {
-           *val = false;
-       });
-        pauseMenu.AddButton<bool>("QUIT", 550.f, &inMenu, [this](bool* val){
+        pauseMenu.AddButton<bool>("RESUME", 450.f, &isPaused, [](bool *val) {
+            *val = false;
+        });
+        pauseMenu.AddButton<bool>("QUIT", 550.f, &inMenu, [this](bool *val) {
             *val = true;
             isPaused = false;
             this->resetGame();
         });
 
-        deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [this](SpaceShip*) {
+        deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [this](SpaceShip *) {
             this->resetGame();
             delete universe;
             delete starfield;
@@ -106,7 +120,7 @@ public:
             universe = new Universe(25, gen);
             starfield = new Starfield(250, window.getSize());
         });
-        deathMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool* val) {
+        deathMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool *val) {
             *val = true;
             this->resetGame();
             delete universe;
@@ -116,7 +130,7 @@ public:
             starfield = new Starfield(250, window.getSize());
         });
 
-        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [this](SpaceShip*) {
+        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [this](SpaceShip *) {
             this->resetGame();
             delete universe;
             delete starfield;
@@ -124,7 +138,7 @@ public:
             universe = new Universe(25, gen);
             starfield = new Starfield(250, window.getSize());
         });
-        winMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool* val) {
+        winMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool *val) {
             *val = true;
             this->resetGame();
             delete universe;
@@ -134,6 +148,7 @@ public:
             starfield = new Starfield(250, window.getSize());
         });
     }
+
     GameManager(const GameManager&) = delete;
     GameManager& operator=(const GameManager&) = delete;
     ~GameManager() {

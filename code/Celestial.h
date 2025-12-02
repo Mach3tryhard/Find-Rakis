@@ -18,13 +18,14 @@ protected:
     Collider collider;
     bool deleted=false;
     float orbitRadius=0;
+
 public:
     enum class CelestialType {
         Star,
         Planet,
         Asteroid
     };
-    Celestial(const Physics& physics,sf::Color color) : collider(0) {
+    Celestial(const Physics& physics,sf::Color color) : collider(0){
         ///RANDOMLY GENERATED CELESTIAL NOT DONE YET
         this->physics = physics;
         this->health = 10;
@@ -35,7 +36,8 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
     }
-    Celestial(const Physics& physics,int health,double radius,int color,bool solid) : collider(radius) {
+
+    Celestial(const Physics& physics,int health,double radius,int color,bool solid) : collider(radius){
         this->physics = physics;
         this->health = health;
         this->color = color;
@@ -46,6 +48,7 @@ public:
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(sf::Color::Blue);
     }
+
     bool ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect);
     void CheckHit(std::vector<Bullet> &bullet, SpaceShip &player);
     void LoseHealth(float damage, SpaceShip &player);

@@ -20,7 +20,7 @@ public:
         std::uniform_real_distribution<float> dist(-200.f, 200.f);
         std::uniform_real_distribution<float> velDist(-0.02f, 0.02f);
 
-        for (int i = 0; i < 20; ++i) {
+        for (int i = 0; i < 40; ++i) {
             dustParticles.push_back({
                 {dist(gen), dist(gen)},
                 {velDist(gen), velDist(gen)}

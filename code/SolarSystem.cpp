@@ -24,6 +24,7 @@ void SolarSystem::Update(SpaceShip& player,sf::RenderWindow& window,sf::FloatRec
 
     for(auto i = 0ull; i < bodies.size(); i++)
         if(bodies[i]->getHealth() <= 0) {
+            explosionSound.play();
             delete bodies[i];
             bodies[i] = nullptr;
         }

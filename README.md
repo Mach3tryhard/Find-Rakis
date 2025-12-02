@@ -91,3 +91,5 @@ The game relies a lot on its atmosphere since the gameplay is simple.
 
 - [SFML](https://github.com/SFML/SFML/tree/3.0.2) (Zlib)
 - [Implementare particule SFML](https://www.sfml-dev.org/tutorials/3.0/graphics/vertex-array/#example-particle-system)
+- [Soundtrack](https://pixabay.com/music/ambient-space-ambient-cinematic-442834/)
+- [Sound Effects](https://sfxr.me/)

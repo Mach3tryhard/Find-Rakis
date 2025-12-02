@@ -120,6 +120,8 @@ void SpaceShip::UpdateHyperTrail() {
 
     float angle = std::atan2(dy, dx) * 180.f / 3.14159265f;
 
+    hyperTrail.setOrigin({0.f, 6.f / 2.f});
+
     hyperTrail.setRotation(sf::degrees(angle));
     hyperTrail.setPosition({ (float)hyperStartPos.x, (float)hyperStartPos.y });
 }
