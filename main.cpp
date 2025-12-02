@@ -26,7 +26,7 @@ int main() {
         sf::Vector2f center = view.getCenter();
         sf::Vector2f size = view.getSize();
         sf::FloatRect viewRect({center.x - size.x/2.f, center.y - size.y/2.f}, {size.x, size.y});
-        std::cout << "Fereastra a fost creată\n";
+        std::cout << "Fereastra creată\n";
         std::mt19937 gen(std::random_device{}());
 
         /// CREATE GUI
