@@ -50,7 +50,6 @@ private:
 public:
     void resetGame();
     void Run();
-
     GameManager() : player(playerphysics,10,100,100,100), noise(1000,sf::Color::White,0), mainMenu(SCR_WIDTH, SCR_HEIGHT,"FIND RAKIS"),
                     pauseMenu(SCR_WIDTH, SCR_HEIGHT,"PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT,"YOU DIED"),
                     winMenu(SCR_WIDTH, SCR_HEIGHT,"YOU WIN") {
@@ -135,6 +134,8 @@ public:
             starfield = new Starfield(250, window.getSize());
         });
     }
+    GameManager(const GameManager&) = delete;
+    GameManager& operator=(const GameManager&) = delete;
     ~GameManager() {
         delete universe;
         delete starfield;
