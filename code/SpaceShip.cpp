@@ -162,50 +162,63 @@ void SpaceShip::RefuelLogic(sf::Time dt,sf::RenderWindow& window) {
 
     window.draw(fuelLine);
 }
+void SpaceShip::InputCheck(sf::Time dt, sf::RenderWindow& window, ShipComputer& computer) {
 
-void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window,ShipComputer& computer) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !inHyper) {
-        computer.AddLog("ROTATING LEFT",sf::Color::Green);
-        triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
+    bool isLeft = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left);
+    if (isLeft && !inHyper) {
+        if (!wasRotatingLeft) {
+            computer.AddLog("ROTATING LEFT", sf::Color::Green);
+        }
+        triangle.rotate(sf::degrees(-250.f * dt.asSeconds()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && !inHyper){
-        computer.AddLog("ROTATING RIGHT",sf::Color::Green);
-        triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
+    wasRotatingLeft = isLeft;
+
+    bool isRight = sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right);
+    if (isRight && !inHyper) {
+        if (!wasRotatingRight) {
+            computer.AddLog("ROTATING RIGHT", sf::Color::Green);
+        }
+        triangle.rotate(sf::degrees(250.f * dt.asSeconds()));
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z) && refuelpossible){
-        computer.AddLog("REFUELING SHIP",sf::Color::Yellow);
+    wasRotatingRight = isRight;
+
+    bool isRefuel = sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z);
+    if (isRefuel && refuelpossible) {
+        if (!wasRefueling) {
+            computer.AddLog("REFUELING SHIP", sf::Color::Yellow);
+        }
         RefuelLogic(dt, window);
-        if (refuelSound.getStatus()!=sf::Sound::Status::Playing)
-            refuelSound.play();
-    }
-    else {
+        if (refuelSound.getStatus() != sf::Sound::Status::Playing) refuelSound.play();
+    } else {
         refuelSound.stop();
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::X) && ore>0.1f){
-        computer.AddLog("HYPERDRIVE ENGAGED",sf::Color::White);
-        EnterHyper(dt);
-        if (hyperSound.getStatus()!=sf::Sound::Status::Playing)
-            hyperSound.play();
-    }
-    else {
-        ExitHyper();
-        hyperSound.stop();
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && fuel > 0) {
-        computer.AddLog("THRUSTERS ENGAGED",sf::Color::Cyan);
+    wasRefueling = isRefuel;
+
+    bool isUp = sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up);
+    if (isUp && fuel > 0) {
+        if (!wasThrusting) {
+            computer.AddLog("THRUSTERS ENGAGED", sf::Color::Cyan);
+        }
         ShipMove();
         ExhaustMove();
-        fuel -= dt.asSeconds()*2.f;
+        fuel -= dt.asSeconds() * 2.f;
         fuel = std::max(0.f, static_cast<float>(fuel));
+
         upPressed = true;
-        if (engineSound.getStatus() != sf::Sound::Status::Playing) {
-            engineSound.play();
-        }
+        if (engineSound.getStatus() != sf::Sound::Status::Playing) engineSound.play();
     } else {
         upPressed = false;
-        if (engineSound.getStatus() == sf::Sound::Status::Playing) {
-            engineSound.stop();
-        }
+        if (engineSound.getStatus() == sf::Sound::Status::Playing) engineSound.stop();
+    }
+    wasThrusting = isUp;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::X) && ore > 0.1f) {
+        if (!inHyper) computer.AddLog("HYPERDRIVE ENGAGED", sf::Color::White);
+        EnterHyper(dt);
+        if (hyperSound.getStatus() != sf::Sound::Status::Playing) hyperSound.play();
+    } else {
+        ExitHyper();
+        hyperSound.stop();
     }
 
     exhaust.setEmitting(upPressed);
