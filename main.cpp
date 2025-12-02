@@ -56,6 +56,7 @@ int main() {
             p.setOre(100);
             p.setTimer(0);
             p.setDistance_travelled(0);
+            p.setWon(false);
         };
 
         // MENUS SETUP
@@ -110,20 +111,38 @@ int main() {
             starfield = new Starfield(250, window.getSize());
         });
 
+        Menu winMenu(window.getSize().x, window.getSize().y,"YOU WIN");
+        winMenu.AddButton<SpaceShip>("RESTART", 450.f, &player, [&](SpaceShip* p) {
+            ResetGame(*p);
+            delete universe;
+            delete starfield;
+
+            universe = new Universe(25, gen);
+            starfield = new Starfield(250, window.getSize());
+        });
+        winMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [&](bool* val) {
+            *val = true;
+            ResetGame(player);
+            delete universe;
+            delete starfield;
+
+            universe = new Universe(25, gen);
+            starfield = new Starfield(250, window.getSize());
+        });
+
         sf::Clock clock;
 
         while(window.isOpen()) {
             sf::Time dt = clock.restart();
-
-            if (isPaused || player.getDead()) {
-                dt = sf::Time::Zero;
-            }
 
             while(const std::optional event = window.pollEvent()) {
                 if (event->is<sf::Event::Closed>())
                     window.close();
                 if (inMenu) {
                     mainMenu.HandleInput(*event, window);
+                }
+                else if (player.getWon()) {
+                    winMenu.HandleInput(*event, window);
                 }
                 else if (player.getDead()) {
                     deathMenu.HandleInput(*event, window);
@@ -173,7 +192,9 @@ int main() {
             }
 
             window.clear();
-
+            if (isPaused || player.getDead() || player.getWon()) {
+                dt = sf::Time::Zero;
+            }
             if (inMenu) {
                 window.setView(window.getDefaultView());
                 sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
@@ -194,7 +215,7 @@ int main() {
                 gui.DrawArrowHUD(window, player);
                 gui.DrawMiniMap(window,*universe,player);
                 gui.DrawBars(window,player);
-                if (!player.getDead() && !isPaused) {
+                if (!player.getDead() && !isPaused && !player.getWon()) {
                     /// PLAYER STUFF
                     player.UpdateData(dt,player.getPhysics().getPosition());
                     player.UpdateBullets(dt,window,viewRect);
@@ -202,12 +223,24 @@ int main() {
                     player.HyperLogic(dt,window);
                     window.draw(player.getShape());
                 }
+                if (player.getWon()) {
+                    window.setView(window.getDefaultView());
+
+                    sf::RectangleShape ScreenWIN(sf::Vector2f(window.getSize()));
+                    ScreenWIN.setFillColor(sf::Color(200, 200, 200, 150));
+                    window.draw(ScreenWIN);
+                    player.StopAudio();
+
+                    sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));
+                    winMenu.Update(mousePos);
+                    winMenu.Draw(window);
+                }
                 if (player.getDead()) {
                     window.setView(window.getDefaultView());
 
-                    sf::RectangleShape redScreen(sf::Vector2f(window.getSize()));
-                    redScreen.setFillColor(sf::Color(200, 200, 200, 150));
-                    window.draw(redScreen);
+                    sf::RectangleShape Screen(sf::Vector2f(window.getSize()));
+                    Screen.setFillColor(sf::Color(200, 200, 200, 150));
+                    window.draw(Screen);
                     player.StopAudio();
 
                     sf::Vector2f mousePos = window.mapPixelToCoords(sf::Mouse::getPosition(window));

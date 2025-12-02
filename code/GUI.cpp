@@ -68,10 +68,10 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
         for (auto& body: system.getBodies()) {
             sf::CircleShape dot1(200.f);
             dot1.setOrigin({100.f, 100.f});
-            if (body->isRakis()) {
+            if (body->isRakis())
                 dot1.setFillColor(sf::Color(0XFF9900FF));
-            }
-            dot1.setFillColor(sf::Color::White);
+            else
+                dot1.setFillColor(sf::Color::White);
             auto pos = body->getPhysics().getPosition();
             dot1.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
             window.draw(dot1);

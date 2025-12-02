@@ -40,17 +40,15 @@ void Rakis::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRec
         sf::CircleShape dust(3.f);
         dust.setOrigin({3.f, 3.f});
         dust.setPosition({screenX + p.offset.x, screenY + p.offset.y});
-        dust.setFillColor(possibleColors[2]);
+        dust.setFillColor(possibleColors[1]);
 
         window.draw(dust);
     }
 
-    float r = getRadius();
-
     pulseCounter += 0.001f;
     if (pulseCounter >= 2 * 3.14159f) pulseCounter -= 2 * 3.14159f;
 
-    float pulseRadius = r + r/3.6f * (pow(std::sin(pulseCounter),2)+1);
+    float pulseRadius = radius + radius/3.6f * (pow(std::sin(pulseCounter),2)+1);
 
     if (!ToDisplay(screenX, screenY, pulseRadius, viewRect)) return;
 
@@ -61,4 +59,6 @@ void Rakis::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRec
     atmosphere.setOrigin({pulseRadius, pulseRadius});
     atmosphere.setPosition({screenX, screenY});
     atmosphere.setFillColor(atmosphereColor);
+
+    window.draw(atmosphere);
 }
