@@ -14,6 +14,7 @@ void GameManager::resetGame(){
     player.setTimer(0);
     player.setDistance_travelled(0);
     player.setWon(false);
+    computer.ClearLog();
 }
 
 void GameManager::Run() {
@@ -68,8 +69,10 @@ void GameManager::Run() {
                         isPaused = true;
                     }
                     if(keyPressed->code == sf::Keyboard::Key::C) {
-                        if (player.getEnergy()>10)
+                        if (player.getEnergy()>10) {
+                            computer.AddLog("WEAPONS FIRED",sf::Color::Red);
                             player.ShootBullet();
+                        }
                     }
                 }
             }
@@ -100,11 +103,14 @@ void GameManager::Run() {
             gui.DrawArrowHUD(window, player);
             gui.DrawMiniMap(window,*universe,player);
             gui.DrawBars(window,player);
+            computer.Update(dt);
+            computer.Draw(window);
+
             if (!player.getDead() && !isPaused && !player.getWon()) {
                 /// PLAYER STUFF
                 player.UpdateData(dt,player.getPhysics().getPosition());
                 player.UpdateBullets(dt,window,viewRect);
-                player.InputCheck(dt, window);
+                player.InputCheck(dt, window,computer);
                 player.HyperLogic(dt,window);
                 window.draw(player.getShape());
             }

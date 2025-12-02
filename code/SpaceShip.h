@@ -9,6 +9,8 @@
 #include "Pair.h"
 #include <SFML/Audio.hpp>
 
+#include "ShipComputer.h"
+
 class SpaceShip {
 private:
     ParticleSystem exhaust{1000};
@@ -107,7 +109,7 @@ public:
     void ShipMove();
     void ExhaustMove();
     void ShootBullet();
-    void InputCheck(sf::Time dt, sf::RenderWindow &window);
+    void InputCheck(sf::Time dt, sf::RenderWindow &window, ShipComputer &computer);
     Collider getCollider();
     void EnterHyper(sf::Time dt);
     void ExitHyper();

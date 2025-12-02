@@ -43,17 +43,17 @@ public:
 
         this->debugText = sf::Text(font);
         this->debugText.setFont(font);
-        this->debugText.setCharacterSize(18);
+        this->debugText.setCharacterSize(15);
         this->debugText.setFillColor(sf::Color::White);
 
         this->barsText = sf::Text(font);
         this->barsText.setFont(font);
-        this->barsText.setCharacterSize(18);
+        this->barsText.setCharacterSize(15);
         this->barsText.setFillColor(sf::Color::White);
 
         this->dataText = sf::Text(font);
         this->dataText.setFont(font);
-        this->dataText.setCharacterSize(18);
+        this->dataText.setCharacterSize(15);
         this->dataText.setFillColor(sf::Color::White);
 
         minimapView = sf::View(sf::Vector2f(0.f, 0.f), sf::Vector2f(40000.f, 40000.f));

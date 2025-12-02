@@ -5,7 +5,7 @@
 #include "Bullet.h"
 #include "ParticleSystem.h"
 #include "SpaceShip.h"
-
+#include "ShipComputer.h"
 #include <iostream>
 #include "Collider.h"
 #include "Exceptions.h"
@@ -162,14 +162,17 @@ void SpaceShip::RefuelLogic(sf::Time dt,sf::RenderWindow& window) {
 
     window.draw(fuelLine);
 }
-void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
+void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window,ShipComputer& computer) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !inHyper) {
+        computer.AddLog("ROTATING LEFT",sf::Color::Green);
         triangle.rotate(sf::degrees(-250.f*dt.asSeconds()));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Right) && !inHyper){
+        computer.AddLog("ROTATING RIGHT",sf::Color::Green);
         triangle.rotate(sf::degrees(250.f*dt.asSeconds()));
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::Z) && refuelpossible){
+        computer.AddLog("REFUELING SHIP",sf::Color::Yellow);
         RefuelLogic(dt, window);
         if (refuelSound.getStatus()!=sf::Sound::Status::Playing)
             refuelSound.play();
@@ -178,6 +181,7 @@ void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
         refuelSound.stop();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Scan::X) && ore>0.1f){
+        computer.AddLog("HYPERDRIVE ENGAGED",sf::Color::White);
         EnterHyper(dt);
         if (hyperSound.getStatus()!=sf::Sound::Status::Playing)
             hyperSound.play();
@@ -187,6 +191,7 @@ void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
         hyperSound.stop();
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Up) && fuel > 0) {
+        computer.AddLog("THRUSTERS ENGAGED",sf::Color::Cyan);
         ShipMove();
         ExhaustMove();
         fuel -= dt.asSeconds()*2.f;
@@ -203,7 +208,6 @@ void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window) {
     }
 
     exhaust.setEmitting(upPressed);
-
 }
 void SpaceShip::alignToPlanet(const Physics& planetPhys) {
     Pair shipPos = physics.getPosition();

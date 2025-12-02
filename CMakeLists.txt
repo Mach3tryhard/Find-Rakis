@@ -98,6 +98,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Rakis.h
         code/GameManager.cpp
         code/GameManager.h
+        code/ShipComputer.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

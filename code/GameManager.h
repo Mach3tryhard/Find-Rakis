@@ -17,6 +17,7 @@
 #include "Generator.h"
 #include "Starfield.h"
 #include "Menu.h"
+#include "ShipComputer.h"
 
 class GameManager {
 private:
@@ -37,6 +38,7 @@ private:
     Starfield*starfield = nullptr;
     Universe*universe = nullptr;
     Generator noise;
+    ShipComputer computer;
 
     bool inMenu = true;
     bool isPaused = false;
@@ -56,7 +58,7 @@ private:
 public:
     void resetGame();
     void Run();
-    GameManager() : player(playerphysics, 12.5f, 100, 100, 100), noise(1000, sf::Color::White, 0),
+    GameManager() : player(playerphysics, 15.f, 100, 100, 100), noise(1000, sf::Color::White, 0), computer(SCR_WIDTH,SCR_HEIGHT),
                     mainMenu(SCR_WIDTH, SCR_HEIGHT, "FIND RAKIS"),
                     pauseMenu(SCR_WIDTH, SCR_HEIGHT, "PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT, "YOU DIED"),
                     winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer), scoreText(gameFont) {

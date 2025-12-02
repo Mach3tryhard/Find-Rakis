@@ -16,17 +16,17 @@ void GUI::Initialize(sf::Window &window) {
     minimapView.setViewport(sf::FloatRect({left, 1.f - height - bottom}, {width, height}));
     minimapBox.setPosition({10.f, window.getSize().y - minimapSize-10.f});
 
-    debugText.setPosition({static_cast<float>(window.getSize().x/3),window.getSize().y -115.f});
-    barsText.setPosition({static_cast<float>(window.getSize().x/3),window.getSize().y -205.f});
+    debugText.setPosition({static_cast<float>(window.getSize().x)-925.f,window.getSize().y -115.f});
+    barsText.setPosition({static_cast<float>(window.getSize().x)-925.f,window.getSize().y -205.f});
 
-    dataText.setPosition({(window.getSize().x-550.f),window.getSize().y -215.f});
+    dataText.setPosition({(window.getSize().x-675.f),window.getSize().y -215.f});
 
-    FuelBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -198.f});
-    EnergyBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -172.f});
-    OreBar.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -145.f});
-    FuelBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -198.f});
-    EnergyBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -172.f});
-    OreBarback.setPosition({static_cast<float>(window.getSize().x/3)+100.f,window.getSize().y -145.f});
+    FuelBar.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -198.f});
+    EnergyBar.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -172.f});
+    OreBar.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -145.f});
+    FuelBarback.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -198.f});
+    EnergyBarback.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -172.f});
+    OreBarback.setPosition({static_cast<float>(window.getSize().x)-825.f,window.getSize().y -145.f});
 
     float right = 10.f / window.getSize().x;
     arrowView.setViewport(sf::FloatRect({1.f - width - right, 1.f - height - bottom},{width, height}));
