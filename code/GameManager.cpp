@@ -2,8 +2,6 @@
 #include "SpaceShip.h"
 
 void GameManager::resetGame(){
-    sf::Vector2f center = {SCR_WIDTH/2.f, SCR_HEIGHT/2.f};
-
     player.getPhysics().setPosition({center.x, center.y});
     player.setLast({center.x, center.y});
     player.getPhysics().setVelocity({0, 0});
