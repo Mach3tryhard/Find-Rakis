@@ -96,6 +96,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/Menu.h
         code/Rakis.cpp
         code/Rakis.h
+        code/GameManager.cpp
+        code/GameManager.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )
