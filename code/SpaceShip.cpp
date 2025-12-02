@@ -162,6 +162,7 @@ void SpaceShip::RefuelLogic(sf::Time dt,sf::RenderWindow& window) {
 
     window.draw(fuelLine);
 }
+
 void SpaceShip::InputCheck(sf::Time dt,sf::RenderWindow& window,ShipComputer& computer) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Left) && !inHyper) {
         computer.AddLog("ROTATING LEFT",sf::Color::Green);

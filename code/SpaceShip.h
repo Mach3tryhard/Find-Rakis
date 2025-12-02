@@ -47,6 +47,12 @@ private:
     sf::Sound refuelSound;
     sf::Sound hyperSound;
     sf::Sound explosionSound;
+
+    bool wasRotatingLeft = false;
+    bool wasRotatingRight = false;
+    bool wasThrusting = false;
+    bool wasRefueling = false;
+    bool wasHypering = false;
 public:
     SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore)
         : collider(radius / 2), engineSound(engineBuffer), laserSound(laserBuffer), refuelSound(refuelBuffer),
