@@ -128,6 +128,40 @@ void Explosion::initSpiralExplosion(sf::Vector2f position, std::mt19937& rng) {
     }
 }
 
+void Explosion::initImplosion(sf::Vector2f position, std::mt19937& rng) {
+    std::uniform_real_distribution angleDist(0.f, 2.f * 3.14159265f);
+    std::uniform_real_distribution radiusDist(100.f, 200.f);
+    std::uniform_real_distribution speedDist(100.f, 200.f);
+
+    for (std::size_t i = 0; i < m_particles.size(); ++i) {
+        float angle = angleDist(rng);
+        float startRadius = radiusDist(rng);
+        float speed = speedDist(rng);
+
+        sf::Vector2f offset = {
+            std::cos(angle) * startRadius,
+            std::sin(angle) * startRadius
+        };
+        m_particles[i].position = position + offset;
+
+        sf::Vector2f direction = -offset;
+
+        float len = std::sqrt(direction.x*direction.x + direction.y*direction.y);
+        if (len != 0) direction /= len;
+
+        m_particles[i].velocity = direction * speed;
+
+        float timeToCenter = startRadius / speed;
+        m_particles[i].maxLifetime = sf::seconds(timeToCenter);
+        m_particles[i].lifetime = m_particles[i].maxLifetime;
+
+        m_particles[i].color = sf::Color(50, 255, 50);
+
+        m_vertices[i].position = m_particles[i].position;
+        m_vertices[i].color = m_particles[i].color;
+    }
+}
+
 bool Explosion::update(sf::Time dt) {
     if (m_finished) return false;
 

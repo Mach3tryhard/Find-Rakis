@@ -153,7 +153,7 @@ void GameManager::Run() {
             }
             if (player.getDead()) {
                 if (!isplayerexploding) {
-                    explosions.push_back(std::make_unique<Explosion>(player.getShape().getPosition(), Explosion::Type::Ship));
+                    explosions.push_back(std::make_unique<Explosion>(player.getShape().getPosition(), Explosion::Type::Celestial));
                     isplayerexploding=true;
                 }
                 window.setView(window.getDefaultView());

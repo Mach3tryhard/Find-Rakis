@@ -82,7 +82,7 @@ The game relies a lot on its atmosphere since the gameplay is simple.
 - [x] 2 șabloane de proiectare (design patterns)
 - [x] o clasă șablon cu sens; minim **2 instanțieri**
   - [x] preferabil și o funcție șablon (template) cu sens; minim 2 instanțieri
-- [ ] minim 85% din codul propriu să fie C++
+- [x] minim 85% din codul propriu să fie C++
 <!-- - [x] o specializare pe funcție/clasă șablon -->
 - [x] tag de `git` pe commit cu **toate bifele**: de exemplu `v0.3` sau `v1.0`
 - [ ] code review #3 2 proiecte
