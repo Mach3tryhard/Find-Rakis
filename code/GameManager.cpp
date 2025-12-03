@@ -69,6 +69,7 @@ void GameManager::Run() {
 
                     if(keyPressed->scancode == sf::Keyboard::Scancode::Escape) {
                         isPaused = true;
+                        EscSound.play();
                     }
                     if(keyPressed->code == sf::Keyboard::Key::C) {
                         if (player.getEnergy()>10) {

@@ -53,6 +53,8 @@ private:
 
     sf::SoundBuffer soundtrackBuffer;
     sf::Sound OSTSound;
+    sf::SoundBuffer EscBuffer;
+    sf::Sound EscSound;
 
     sf::Font gameFont;
     sf::Text scoreText;
@@ -62,16 +64,23 @@ private:
 public:
     void resetGame();
     void Run();
-    GameManager() : player(playerphysics, 15.f, 100, 100, 100), noise(1000, sf::Color::White, 0), computer(SCR_WIDTH,SCR_HEIGHT),
+    GameManager() : player(playerphysics, 15.f, 100, 100, 100), noise(1000, sf::Color::White, 0),
+                    computer(SCR_WIDTH, SCR_HEIGHT),
                     mainMenu(SCR_WIDTH, SCR_HEIGHT, "FIND RAKIS"),
                     pauseMenu(SCR_WIDTH, SCR_HEIGHT, "PAUSED"), deathMenu(SCR_WIDTH, SCR_HEIGHT, "YOU DIED"),
-                    winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer), scoreText(gameFont) {
+                    winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer), EscSound(EscBuffer),
+                    scoreText(gameFont) {
         if (!gameFont.openFromFile("fonts/jetbrains.ttf")) {
             std::cerr << "Failed to load font\n";
         }
         scoreText.setFont(gameFont);
         scoreText.setCharacterSize(35);
         scoreText.setFillColor(sf::Color::White);
+
+        if (!EscBuffer.loadFromFile("audio/button.wav")) { std::cerr << "COULD NOT LOAD BUTTON ESC SOUND"; }
+        EscSound.setBuffer(EscBuffer);
+        EscSound.setVolume(40.f);
+        EscSound.setPitch(1.0f);
 
         if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")) { std::cerr << "COULD NOT LOAD OST SOUND"; }
         OSTSound.setBuffer(soundtrackBuffer);
