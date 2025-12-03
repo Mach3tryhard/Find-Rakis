@@ -30,6 +30,8 @@ public:
     void initShipExplosion(sf::Vector2f position, std::mt19937& rng);
     void initCelestialExplosion(sf::Vector2f position, std::mt19937& rng);
     void initImpactExplosion(sf::Vector2f position, std::mt19937& rng);
+    void initShockwaveExplosion(sf::Vector2f position, std::mt19937& rng);
+    void initSpiralExplosion(sf::Vector2f position, std::mt19937& rng);
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
     Explosion(sf::Vector2f position, Type type) {
