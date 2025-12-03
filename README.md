@@ -1,95 +1,71 @@
 # Find Rakis
 
-You are a ship in a randomly generated universe. The universe has multiple solar systems. You must use your three tools to travel: the hyperdrive, the thrusters, the gun and the extractor.
-- Using your gun you can destroy asteroids to harvest special fuel for your hyperdrive.
-- Using your extractor you can get normal fuel from stars and gas giants.
-- Using your thrusters you can traverse solar systems.
-- Using your hyperdrive you can move between solar systems.
+# FIND RAKIS (ENG)
 
-Controls :
-- You move forward using the up key.
-- You rotate left using the left key.
-- You rotate right using the right key.
-- You interact using the c button.
-- You switch between interactions using the down key.
+A procedural space exploration and survival simulation where you pilot a lone spaceship through a vast, randomly generated universe.
+Your mission is to locate the legendary planet **Rakis** while managing critical resources and surviving the harsh physics of deep space.
+You must balance your fuel reserves, energy levels, and ore collection while navigating gravitational wells of stars, asteroids, and black holes.
+The universe is finite and dangerous—every run creates a unique galaxy layout.
 
-You balance your different types of fuels while looking for the planet desert orange planet rakis.
-When you find it, you will be notified of the time it took for you to find it and distance traveled.
+## CONTROLS
 
-You have limited fuel and using your knowledge of space travel, you must find the planet Rakis, so you can get the spice.
-The game relies a lot on its atmosphere since the gameplay is simple.
+* **UP Arrow**: Engage Main Thrusters (Consumes Fuel).
+* **Left / Right Arrows**: Rotate Ship.
+* **C**: Fire Weapons (Consumes Energy).
+* **Z**: Refuel (Hold near a Star).
+* **X**: Engage Hyperdrive (Consumes Ore, requires momentum).
+* **ESC**: Pause Game / Open Menu.
 
-### Tema 0
+## RESOURCES USED IN THE PROJECT
 
-- [x] Nume proiect (poate fi schimbat ulterior)
-- [x] Scurtă descriere a temei alese, ce v-ați propus să implementați
+### 1. Visuals & Textures
 
-## Tema 1
+**Procedural Generation:**
+Unlike traditional games using sprite sheets, most of the visuals in *Find Rakis* are generated procedurally via C++ code:
+* **Planets:** Generated using Perlin Noise and Dithering algorithms (implemented in `Generator.cpp`) to create unique surface textures for every celestial body.
+* **Spaceship:** Rendered using `sf::ConvexShape` geometry calculations to allow for dynamic rotation and scaling without pixelation.
+* **Starfield:** A dynamic, multi-layered parallax system (`Starfield.cpp`) that simulates depth and movement speed.
 
-#### Cerințe
-- [x] definirea a minim **3-4 clase** folosind compunere cu clasele definite de voi; moștenirile nu se iau în considerare aici
-- [x] constructori de inițializare cu parametri pentru fiecare clasă
-- [x] pentru o aceeași (singură) clasă: constructor de copiere, `operator=` de copiere, destructor
-<!-- - [x] pentru o altă clasă: constructor de mutare, `operator=` de mutare, destructor -->
-<!-- - [x] pentru o altă clasă: toate cele 5 funcții membru speciale -->
-- [x] `operator<<` pentru **toate** clasele pentru afișare (`std::ostream`) folosind compunere de apeluri cu `operator<<`
-- [x] cât mai multe `const` (unde este cazul) și funcții `private`
-- [x] implementarea a minim 3 funcții membru publice pentru funcționalități netriviale specifice temei alese, dintre care cel puțin 1-2 funcții mai complexe
-  - nu doar citiri/afișări sau adăugat/șters elemente într-un/dintr-un vector
-- [x] scenariu de utilizare **cu sens** a claselor definite:
-  - crearea de obiecte și apelarea tuturor funcțiilor membru publice în main
-  - vor fi adăugate în fișierul `tastatura.txt` DOAR exemple de date de intrare de la tastatură (dacă există); dacă aveți nevoie de date din fișiere, creați alte fișiere separat
-- [x] minim 50-55% din codul propriu să fie C++, `.gitattributes` configurat corect
-- [x] tag de `git`: de exemplu `v0.1`
-- [x] serviciu de integrare continuă (CI) cu **toate bifele**; exemplu: GitHub Actions
-- [x] code review #1 2 proiecte
+**Static Assets:**
+* **Window Icon:** `icon.png` (Screenshot from game)
 
-## Tema 2
+### 2. Audio Effects
 
-#### Cerințe
-- [x] separarea codului din clase în `.h` (sau `.hpp`) și `.cpp`
-- [x] moșteniri:
-  - minim o clasă de bază și **3 clase derivate** din aceeași ierarhie
-  - ierarhia trebuie să fie cu bază proprie, nu derivată dintr-o clasă predefinită
-  - [x] funcții virtuale (pure) apelate prin pointeri de bază din clasa care conține atributul de tip pointer de bază
-    - minim o funcție virtuală va fi **specifică temei** (i.e. nu simple citiri/afișări sau preluate din biblioteci i.e. draw/update/render)
-    - constructori virtuali (clone): sunt necesari, dar nu se consideră funcții specifice temei
-    - afișare virtuală, interfață non-virtuală
-  - [x] apelarea constructorului din clasa de bază din constructori din derivate
-  - [x] clasă cu atribut de tip pointer la o clasă de bază cu derivate; aici apelați funcțiile virtuale prin pointer de bază, eventual prin interfața non-virtuală din bază
-    - [x] suprascris cc/op= pentru copieri/atribuiri corecte, copy and swap
-    - [x] `dynamic_cast`/`std::dynamic_pointer_cast` pentru downcast cu sens
-    - [x] smart pointers (recomandat, opțional)
-- [x] excepții
-  - [x] ierarhie proprie cu baza `std::exception` sau derivată din `std::exception`; minim **3** clase pentru erori specifice distincte
-    - clasele de excepții trebuie să trateze categorii de erori distincte (exemplu de erori echivalente: citire fișiere cu diverse extensii)
-  - [x] utilizare cu sens: de exemplu, `throw` în constructor (sau funcție care întoarce un obiect), `try`/`catch` în `main`
-  - această ierarhie va fi complet independentă de ierarhia cu funcții virtuale
-- [x] funcții și atribute `static`
-- [x] STL
-- [x] cât mai multe `const`
-- [x] funcții *de nivel înalt*, de eliminat cât mai mulți getters/setters/funcții low-level
-- [x] minim 75-80% din codul propriu să fie C++
-- [x] la sfârșit: commit separat cu adăugarea unei noi clase derivate fără a modifica restul codului, **pe lângă cele 3 derivate deja adăugate** din aceeași ierarhie
-  - noua derivată nu poate fi una existentă care a fost ștearsă și adăugată din nou
-  - noua derivată va fi integrată în codul existent (adică va fi folosită, nu adăugată doar ca să fie)
-- [x] tag de `git` pe commit cu **toate bifele**: de exemplu `v0.2`
-- [ ] code review #2 2 proiecte
+* Thruster Sound (`engine3.wav`): [https://sfxr.me/]
+* Hyperdrive Sound (`powerUp.wav`): [https://sfxr.me/]
+* Laser Fire (`laser.wav`): [https://sfxr.me/]
+* Explosion (`explosion3.wav`): [https://sfxr.me/]
+* Refueling (`refuel.wav`): [https://sfxr.me/]
+* Soundtrack (`ambient.mp3`): [https://pixabay.com/music/ambient-space-ambient-cinematic-442834/]
 
-## Tema 3
+### 3. Fonts
 
-#### Cerințe
-- [x] 2 șabloane de proiectare (design patterns)
-- [x] o clasă șablon cu sens; minim **2 instanțieri**
-  - [x] preferabil și o funcție șablon (template) cu sens; minim 2 instanțieri
-- [x] minim 85% din codul propriu să fie C++
-<!-- - [x] o specializare pe funcție/clasă șablon -->
-- [x] tag de `git` pe commit cu **toate bifele**: de exemplu `v0.3` sau `v1.0`
-- [ ] code review #3 2 proiecte
+**UI Text:**
+* **JetBrains Mono** (`jetbrains.ttf`):
+  https://www.jetbrains.com/lp/mono/
+  *Used for the Heads-Up Display (HUD), Ship Computer Log, and Menus.*
 
-## Resurse
+### 4. Documentation Used
 
-- [SFML](https://github.com/SFML/SFML/tree/3.0.2)
-- [Implementare particule SFML](https://www.sfml-dev.org/tutorials/3.0/graphics/vertex-array/#example-particle-system)
-- [Soundtrack](https://pixabay.com/music/ambient-space-ambient-cinematic-442834/)
-- [Sound Effects](https://sfxr.me/)
+**Official Documentation:**
+* SFML 3.0 Documentation:
+  https://www.sfml-dev.org/documentation/3.0.0/
+
+**Tutorials & References:**
+* SFML Particle System Tutorial (Adapted for `ParticleSystem.h`):
+  https://www.sfml-dev.org/tutorials/3.0/graphics/vertex-array/#example-particle-system
+
+### 5. Technologies Used
+
+* **C++ 23**: Core programming language.
+* **SFML 3.0.2**: Graphics, Windowing, System, and Audio modules.
+* **CMake**: Build system and dependency management (FetchContent).
+
+### 6. Design Patterns & Architecture
+
+To ensure code quality and extensibility, the project implements several Object-Oriented Design Patterns:
+
+* **Game Manager Pattern:** Encapsulates the entire game state, window management, and reset logic (`GameManager.h`).
+* **Factory Pattern:** Used in `Factory.h` to dynamically generate Celestial bodies (Stars, Planets, Black holes, Asteroids) based on biome types.
+* **Command Pattern:** Used in the Menu system to decouple UI buttons from their specific actions (Start Game, Exit, Regenerate).
+* **Smart Pointers:** `std::unique_ptr` is used for memory management of the Universe and Starfield to prevent memory leaks during world regeneration.
