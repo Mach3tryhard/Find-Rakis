@@ -99,6 +99,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         code/GameManager.cpp
         code/GameManager.h
         code/ShipComputer.h
+        code/Explosion.cpp
+        code/Explosion.h
 )
 
 # NOTE: Add all defined targets (e.g. executables, libraries, etc. )

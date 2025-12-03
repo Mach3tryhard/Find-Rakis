@@ -15,6 +15,8 @@ void GameManager::resetGame(){
     player.setDistance_travelled(0);
     player.setWon(false);
     computer.ClearLog();
+
+    isplayerexploding=false;
 }
 
 void GameManager::Run() {
@@ -79,7 +81,7 @@ void GameManager::Run() {
         }
 
         window.clear();
-        if (isPaused || player.getDead() || player.getWon()) {
+        if (isPaused || player.getWon()) {
             dt = sf::Time::Zero;
         }
         if (inMenu) {
@@ -90,6 +92,12 @@ void GameManager::Run() {
             starfield->Update(dt,window,player);
         }
         else {
+            std::erase_if(explosions, [&](auto& ex) {
+                return !ex->update(dt);
+            });
+            for (const auto& ex : explosions) {
+                window.draw(*ex);
+            }
 
             player.SetRefuel(false,{0,0},0,sf::Color::White);
             /// UNIVERSE STUFF
@@ -144,6 +152,10 @@ void GameManager::Run() {
                 winMenu.Draw(window);
             }
             if (player.getDead()) {
+                if (!isplayerexploding) {
+                    explosions.push_back(std::make_unique<Explosion>(player.getShape().getPosition(), Explosion::Type::Ship));
+                    isplayerexploding=true;
+                }
                 window.setView(window.getDefaultView());
 
                 sf::RectangleShape Screen(sf::Vector2f(window.getSize()));

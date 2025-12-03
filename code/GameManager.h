@@ -10,6 +10,7 @@
 #include "Bullet.h"
 #include "Celestial.h"
 #include "Exceptions.h"
+#include "Explosion.h"
 #include "Generator.h"
 #include "GUI.h"
 #include "ParticleSystem.h"
@@ -55,6 +56,9 @@ private:
 
     sf::Font gameFont;
     sf::Text scoreText;
+
+    std::vector<std::unique_ptr<Explosion>> explosions;
+    bool isplayerexploding =false;
 public:
     void resetGame();
     void Run();
