@@ -59,6 +59,7 @@ void Rakis::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRec
     atmosphere.setOrigin({pulseRadius, pulseRadius});
     atmosphere.setPosition({screenX, screenY});
     atmosphere.setFillColor(atmosphereColor);
+    atmosphere.setPointCount(100);
 
     window.draw(atmosphere);
 }

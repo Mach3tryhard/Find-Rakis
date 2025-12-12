@@ -18,6 +18,7 @@ void Planet::initialize(std::mt19937& gen,float _orbitRadius) {
     shape.setFillColor(possibleColors[distrib_color(gen)]);
     Pair pos = physics.getPosition();
     shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
+    shape.setPointCount(100);
 }
 void Planet::isCrashed(SpaceShip& player) {
     Pair velocity = player.getPhysics().getVelocity();
@@ -52,6 +53,7 @@ void Planet::CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRe
     atmosphere.setOrigin({pulseRadius, pulseRadius});
     atmosphere.setPosition({screenX, screenY});
     atmosphere.setFillColor(atmosphereColor);
+    atmosphere.setPointCount(100);
 
     window.draw(atmosphere);
 }

@@ -35,6 +35,7 @@ public:
         Pair pos = physics.getPosition();
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(color);
+        shape.setPointCount(100);
     }
 
     Celestial(const Physics& physics,int health,double radius,int color,bool solid) : collider(radius){
@@ -47,6 +48,7 @@ public:
         Pair pos = physics.getPosition();
         shape.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
         shape.setFillColor(sf::Color::Blue);
+        shape.setPointCount(100);
     }
 
     bool ToDisplay(int screenX,int screenY,float radius,sf::FloatRect& viewRect);

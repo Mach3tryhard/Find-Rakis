@@ -45,6 +45,7 @@ void Blackhole::CelestialEffects(sf::RenderWindow& window, Pair player, sf::Floa
 
     disk.setScale({ 2.0f, 0.9f });
     disk.setRotation(sf::degrees(rotationAngle));
+    disk.setPointCount(100);
 
     window.draw(disk);
 

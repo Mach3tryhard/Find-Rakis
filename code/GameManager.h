@@ -88,7 +88,10 @@ public:
         OSTSound.setPitch(1.0f);
         OSTSound.setLooping(true);
         OSTSound.play();
-        window.create(sf::VideoMode({1280, 960}), "Find Rakis", sf::Style::Titlebar | sf::Style::Close);
+
+        sf::ContextSettings settings;
+        settings.antiAliasingLevel = 8;
+        window.create(sf::VideoMode({1280, 960}), "Find Rakis", sf::Style::Titlebar | sf::Style::Close,sf::State::Windowed,settings);
         window.setVerticalSyncEnabled(true);
         view = sf::View(sf::FloatRect({0, 0}, {1280, 960}));
         window.setView(view);

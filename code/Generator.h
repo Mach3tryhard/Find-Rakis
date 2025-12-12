@@ -37,6 +37,7 @@ private:
     }
 public:
     Generator(unsigned int size, sf::Color baseColor,int type) {
+        texture.setSmooth(true);
         if (type==0)
             generateDitheredPlanet(size, baseColor);
         else
