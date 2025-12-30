@@ -1,9 +1,13 @@
 #include "Menu.h"
 
+#include "Exceptions.h"
+
 Button::Button(float x, float y, const std::string& str, sf::Font& font, Command* cmd)
     : text(font, str, 24), idleColor(70, 70, 70), hoverColor(150, 150, 150), command(cmd), Audio(buffer) {
     text.setFillColor(sf::Color::White);
-    if (!buffer.loadFromFile("audio/button.wav")) {std::cerr << "COULD NOT LOAD BUTTON SOUND";}
+    if (!buffer.loadFromFile("audio/button.wav")) {
+        throw ResourceLoadException("audio/button.wav lipseste");
+    }
 
     CenterOrigin(text);
     text.setPosition({x, y});

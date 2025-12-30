@@ -77,12 +77,16 @@ public:
         scoreText.setCharacterSize(35);
         scoreText.setFillColor(sf::Color::White);
 
-        if (!EscBuffer.loadFromFile("audio/button.wav")) { std::cerr << "COULD NOT LOAD BUTTON ESC SOUND"; }
+        if (!EscBuffer.loadFromFile("audio/button.wav")) {
+            throw ResourceLoadException("audio/button.wav lipseste");
+        }
         EscSound.setBuffer(EscBuffer);
         EscSound.setVolume(40.f);
         EscSound.setPitch(1.0f);
 
-        if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")) { std::cerr << "COULD NOT LOAD OST SOUND"; }
+        if (!soundtrackBuffer.loadFromFile("audio/ambient.mp3")) {
+            throw ResourceLoadException("audio/ambient.wav lipseste");
+        }
         OSTSound.setBuffer(soundtrackBuffer);
         OSTSound.setVolume(20.f);
         OSTSound.setPitch(1.0f);

@@ -9,6 +9,7 @@
 #include "Planet.h"
 #include "Star.h"
 #include "Asteroid.h"
+#include "Exceptions.h"
 #include "SpaceShip.h"
 #include "Factory.h"
 
@@ -22,7 +23,9 @@ private:
 public:
     explicit SolarSystem(const Physics& physics,std::mt19937& gen,int number) : explosionSound(explosionBuffer) {
 
-        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")){std::cerr << "COULD NOT LOAD EXPLOSION CELESTIAL SOUND";}
+        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")) {
+            throw ResourceLoadException("audio/explosion3.wav lipseste");
+        }
         explosionSound.setBuffer(explosionBuffer);
         explosionSound.setVolume(20.f);
         explosionSound.setPitch(1.0f);
@@ -62,7 +65,9 @@ public:
         for (const auto* b : bodies) delete b;
     }
     SolarSystem(const SolarSystem& other) : physics(other.physics), explosionSound(explosionBuffer) {
-        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")){std::cerr << "COULD NOT LOAD EXPLOSION CELESTIAL SOUND";}
+        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")) {
+            throw ResourceLoadException("audio/explosion3.wav lipseste");
+        }
         explosionSound.setBuffer(explosionBuffer);
         explosionSound.setVolume(20.f);
         explosionSound.setPitch(1.0f);
@@ -77,7 +82,9 @@ public:
     }
     friend void swap(SolarSystem& a, SolarSystem& b) noexcept;
     SolarSystem(SolarSystem&& other) noexcept : physics(other.physics), bodies(other.bodies), explosionSound(explosionBuffer) {
-        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")){std::cerr << "COULD NOT LOAD EXPLOSION CELESTIAL SOUND";}
+        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")) {
+            throw ResourceLoadException("explosion3/button.wav lipseste");
+        }
         explosionSound.setBuffer(explosionBuffer);
         explosionSound.setVolume(20.f);
         explosionSound.setPitch(1.0f);

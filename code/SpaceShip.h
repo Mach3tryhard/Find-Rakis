@@ -9,6 +9,7 @@
 #include "Pair.h"
 #include <SFML/Audio.hpp>
 
+#include "Exceptions.h"
 #include "ShipComputer.h"
 
 class SpaceShip {
@@ -56,12 +57,11 @@ public:
     SpaceShip(const Physics& physics,float radius, double fuel, double energy, double ore)
         : collider(radius / 2), engineSound(engineBuffer), laserSound(laserBuffer), refuelSound(refuelBuffer),
           hyperSound(hyperBuffer), explosionSound(explosionBuffer) {
-        if (!engineBuffer.loadFromFile("audio/engine3.wav")) {std::cerr << "COULD NOT LOAD ENGINE SOUND";}
-        if (!laserBuffer.loadFromFile("audio/laser.wav")) {std::cerr << "COULD NOT LOAD LASER SOUND";}
-        if (!refuelBuffer.loadFromFile("audio/refuel.wav")) {std::cerr << "COULD NOT LOAD REFUEL SOUND";}
-        if (!refuelBuffer.loadFromFile("audio/refuel.wav")) {std::cerr << "COULD NOT LOAD REFUEL SOUND";}
-        if (!hyperBuffer.loadFromFile("audio/powerUp.wav")) {std::cerr << "COULD NOT LOAD HYPER SOUND";}
-        if (!explosionBuffer.loadFromFile("audio/explosion.wav")) {std::cerr << "COULD NOT LOAD EXPLOSION SOUND";}
+        if (!engineBuffer.loadFromFile("audio/engine3.wav")) {throw ResourceLoadException("audio/engine3.wav lipseste");}
+        if (!laserBuffer.loadFromFile("audio/laser.wav")) {throw ResourceLoadException("audio/laser.wav lipseste");}
+        if (!refuelBuffer.loadFromFile("audio/refuel.wav")) {throw ResourceLoadException("audio/refuel.wav lipseste");}
+        if (!hyperBuffer.loadFromFile("audio/powerUp.wav")) {throw ResourceLoadException("audio/powerUp.wav lipseste");}
+        if (!explosionBuffer.loadFromFile("audio/explosion.wav")) {throw ResourceLoadException("audio/explosion.wav lipseste");}
         laserSound.setBuffer(laserBuffer);
         laserSound.setVolume(40.f);
         laserSound.setPitch(1.0f);
