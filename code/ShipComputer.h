@@ -26,7 +26,7 @@ private:
 public:
     ShipComputer(float width, float height) : textObj(font) {
         if (!font.openFromFile("fonts/jetbrains.ttf")) {
-            std::cerr << "Nu exsta le jetbrains font";
+            throw ResourceLoadException("fonts/jetbrains.ttf lipseste");
         }
         textObj.setFont(font);
         textObj.setCharacterSize(14);

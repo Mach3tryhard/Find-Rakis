@@ -71,7 +71,7 @@ public:
                     winMenu(SCR_WIDTH, SCR_HEIGHT, "YOU WIN"), OSTSound(soundtrackBuffer), EscSound(EscBuffer),
                     scoreText(gameFont) {
         if (!gameFont.openFromFile("fonts/jetbrains.ttf")) {
-            std::cerr << "Failed to load font\n";
+            throw ResourceLoadException("fonts/jetbrains.ttf lipseste");
         }
         scoreText.setFont(gameFont);
         scoreText.setCharacterSize(35);

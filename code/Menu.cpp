@@ -53,7 +53,7 @@ void Button::Draw(sf::RenderWindow& window) {
 
 Menu::Menu(float width, float height,const std::string& text) : title(font, text,60) {
     if (!font.openFromFile("fonts/jetbrains.ttf")) {
-        std::cerr << "Font error\n";
+        throw ResourceLoadException("fonts/jetbrains.ttf lipseste");
     }
 
     title.setFillColor(sf::Color(255, 255, 255));
