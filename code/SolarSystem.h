@@ -81,10 +81,11 @@ public:
         return *this;
     }
     friend void swap(SolarSystem& a, SolarSystem& b) noexcept;
-    SolarSystem(SolarSystem&& other) noexcept : physics(other.physics), bodies(other.bodies), explosionSound(explosionBuffer) {
-        if (!explosionBuffer.loadFromFile("audio/explosion3.wav")) {
-            throw ResourceLoadException("explosion3/button.wav lipseste");
-        }
+    SolarSystem(SolarSystem&& other) noexcept :
+    physics(other.physics),
+    bodies(other.bodies),
+    explosionBuffer(std::move(other.explosionBuffer)),
+    explosionSound(std::move(other.explosionSound)) {
         explosionSound.setBuffer(explosionBuffer);
         explosionSound.setVolume(20.f);
         explosionSound.setPitch(1.0f);
