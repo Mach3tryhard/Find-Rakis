@@ -16,7 +16,7 @@ void GameManager::resetGame(){
     player.setWon(false);
     computer.ClearLog();
 
-    isplayerexploding=false;
+    playerExploding=false;
 }
 
 void GameManager::Run() {
@@ -153,9 +153,9 @@ void GameManager::Run() {
                 winMenu.Draw(window);
             }
             if (player.getDead()) {
-                if (!isplayerexploding) {
+                if (!playerExploding) {
                     explosions.push_back(std::make_unique<Explosion>(player.getShape().getPosition(), Explosion::Type::Celestial));
-                    isplayerexploding=true;
+                    playerExploding=true;
                 }
                 window.setView(window.getDefaultView());
 

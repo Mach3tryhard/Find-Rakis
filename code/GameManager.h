@@ -60,7 +60,7 @@ private:
     sf::Text scoreText;
 
     std::vector<std::unique_ptr<Explosion>> explosions;
-    bool isplayerexploding =false;
+    bool playerExploding = false;
 public:
     void resetGame();
     void Run();
