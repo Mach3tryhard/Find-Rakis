@@ -157,23 +157,8 @@ public:
     void playExplosion() {
         explosionSound.play();
     }
-    void setFuel(int i) {
-        fuel=i;
-    }
-    void setEnergy(int i) {
-        energy=i;
-    }
-    void setOre(int i) {
-        ore=i;
-    }
-    void setTimer(int i) {
-        timer=i;
-    }
     void setLast(Pair position) {
         lastpos=position;
-    }
-    void setDistance_travelled(int i) {
-        distance_travelled=i;
     }
 };
 
