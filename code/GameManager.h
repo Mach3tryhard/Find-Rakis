@@ -63,6 +63,13 @@ private:
     bool playerExploding = false;
 public:
     void resetGame(int regenerate);
+
+    void HandleEvents();
+
+    void UpdateGameplay(sf::Time dt);
+
+    void RenderOverlays();
+
     void Run();
     GameManager() : player(playerphysics, 15.f, 100, 100, 100), noise(1000, sf::Color::White, 0),
                     computer(SCR_WIDTH, SCR_HEIGHT),
@@ -147,7 +154,7 @@ public:
         });
 
         winMenu.AddButton<SpaceShip>("RESTART", 750.f, &player, [this](SpaceShip *) {
-            this->resetGame(1);
+            this->resetGame(0);
         });
         winMenu.AddButton<bool>("EXIT", 850.f, &inMenu, [this](bool *val) {
             *val = true;
