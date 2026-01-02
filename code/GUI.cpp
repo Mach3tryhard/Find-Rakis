@@ -80,10 +80,19 @@ void GUI::DrawMiniMap(sf::RenderWindow& window, Universe& universe, SpaceShip& p
         for (auto& body: system.getBodies()) {
             sf::CircleShape dot1(200.f);
             dot1.setOrigin({100.f, 100.f});
-            if (body->isRakis())
+            /// nu mai poluez interfata
+            Rakis* isItRakis = dynamic_cast<Rakis*>(body);
+            if (isItRakis != nullptr) {
+                dot1.setFillColor(sf::Color(0XFF9900FF));
+            }
+            else {
+                dot1.setFillColor(sf::Color::White);
+            }
+
+            /*if (body->isRakis())
                 dot1.setFillColor(sf::Color(0XFF9900FF));
             else
-                dot1.setFillColor(sf::Color::White);
+                dot1.setFillColor(sf::Color::White);*/
             auto pos = body->getPhysics().getPosition();
             dot1.setPosition({static_cast<float>(pos.x), static_cast<float>(pos.y)});
             window.draw(dot1);

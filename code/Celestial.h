@@ -63,7 +63,6 @@ public:
     sf::CircleShape& getShape();
     Physics& getPhysics();
     friend std::ostream& operator<<(std::ostream& out,const Celestial& body);
-    virtual bool isRakis()=0;
     virtual void RefuelCheck(SpaceShip &player){(void)player;}
     virtual void CelestialEffects(sf::RenderWindow& window, Pair player, sf::FloatRect& viewRect) = 0;
     virtual ~Celestial() = default;
