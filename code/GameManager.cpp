@@ -1,11 +1,17 @@
 #include "GameManager.h"
 #include "SpaceShip.h"
 
-void GameManager::resetGame(){
+void GameManager::resetGame(int regenerate){
+    if (regenerate==true) {
+        delete universe;
+        delete starfield;
+
+        universe = new Universe(25, gen);
+        starfield = new Starfield(250, window.getSize());
+    }
+
     player.reset(center);
-
     computer.ClearLog();
-
     playerExploding=false;
 }
 
