@@ -2,18 +2,8 @@
 #include "SpaceShip.h"
 
 void GameManager::resetGame(){
-    player.getPhysics().setPosition({center.x, center.y});
-    player.setLast({center.x, center.y});
-    player.getPhysics().setVelocity({0, 0});
-    player.getPhysics().setAcceleration({0, 0});
+    player.reset(center);
 
-    player.setFuel(100);
-    player.setDead(false);
-    player.setEnergy(100);
-    player.setOre(100);
-    player.setTimer(0);
-    player.setDistance_travelled(0);
-    player.setWon(false);
     computer.ClearLog();
 
     playerExploding=false;

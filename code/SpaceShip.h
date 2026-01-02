@@ -153,6 +153,7 @@ public:
     void UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect& viewRect);
     void alignToPlanet(const Physics& planetPhys);
 
+    void reset(sf::Vector2f center);
     void playExplosion() {
         explosionSound.play();
     }

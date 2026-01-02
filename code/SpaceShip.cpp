@@ -243,7 +243,19 @@ void SpaceShip::UpdateBullets(sf::Time dt,sf::RenderWindow& window,sf::FloatRect
         }
     }
 }
-
+void SpaceShip::reset(sf::Vector2f center) {
+    physics.setPosition({center.x,center.y});
+    setLast({center.x,center.y});
+    physics.setVelocity({0,0});
+    physics.setAcceleration({0,0});
+    fuel=100;
+    DEAD=false;
+    energy=100;
+    ore=100;
+    timer=0;
+    distance_travelled=0;
+    WON=false;
+}
 float SpaceShip::getFuel() const {
     return fuel;
 }
