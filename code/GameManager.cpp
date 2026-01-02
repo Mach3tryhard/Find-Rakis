@@ -1,7 +1,7 @@
 #include "GameManager.h"
 #include "SpaceShip.h"
 
-void GameManager::resetGame(int regenerate){
+void GameManager::resetGame(bool regenerate){
     if (regenerate==true) {
         delete universe;
         delete starfield;

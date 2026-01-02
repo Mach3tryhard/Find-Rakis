@@ -62,7 +62,7 @@ private:
     std::vector<std::unique_ptr<Explosion>> explosions;
     bool playerExploding = false;
 public:
-    void resetGame(int regenerate);
+    void resetGame(bool regenerate);
 
     void HandleEvents();
 
@@ -128,7 +128,7 @@ public:
             *val = false;
         });
         mainMenu.AddButton<bool>("REGENERATE", 550.f, &isPaused, [this](bool *val) {
-            this->resetGame(1);
+            this->resetGame(true);
 
             *val = false;
         });
@@ -142,23 +142,23 @@ public:
         pauseMenu.AddButton<bool>("QUIT", 550.f, &inMenu, [this](bool *val) {
             *val = true;
             isPaused = false;
-            this->resetGame(0);
+            this->resetGame(false);
         });
 
         deathMenu.AddButton<SpaceShip>("PERSIST", 450.f, &player, [this](SpaceShip *) {
-            this->resetGame(0);
+            this->resetGame(false);
         });
         deathMenu.AddButton<bool>("EXIT", 550.f, &inMenu, [this](bool *val) {
             *val = true;
-            this->resetGame(0);
+            this->resetGame(true);
         });
 
         winMenu.AddButton<SpaceShip>("RESTART", 750.f, &player, [this](SpaceShip *) {
-            this->resetGame(0);
+            this->resetGame(false);
         });
         winMenu.AddButton<bool>("EXIT", 850.f, &inMenu, [this](bool *val) {
             *val = true;
-            this->resetGame(1);
+            this->resetGame(true);
         });
     }
 
