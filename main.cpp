@@ -2,8 +2,7 @@
 
 int main() {
     try {
-        GameManager game;
-        game.Run();
+        GameManager::getInstance().Run();
     }
     catch (const ResourceLoadException& e) {
         std::cerr << e.what() << "\n";

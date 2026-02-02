@@ -61,16 +61,7 @@ private:
 
     std::vector<std::unique_ptr<Explosion>> explosions;
     bool playerExploding = false;
-public:
-    void resetGame(bool regenerate);
 
-    void HandleEvents();
-
-    void UpdateGameplay(sf::Time dt);
-
-    void RenderOverlays();
-
-    void Run();
     GameManager() : player(playerphysics, 15.f, 100, 100, 100), noise(1000, sf::Color::White, 0),
                     computer(SCR_WIDTH, SCR_HEIGHT),
                     mainMenu(SCR_WIDTH, SCR_HEIGHT, "FIND RAKIS"),
@@ -162,6 +153,22 @@ public:
         });
     }
 
+public:
+    static GameManager& getInstance() {
+        static GameManager instance;
+        return instance;
+    }
+
+    void resetGame(bool regenerate);
+
+    void HandleEvents();
+
+    void UpdateGameplay(sf::Time dt);
+
+    void RenderOverlays();
+
+    void Run();
+
     GameManager(const GameManager&) = delete;
     GameManager& operator=(const GameManager&) = delete;
     ~GameManager() {
@@ -169,6 +176,5 @@ public:
         delete starfield;
     }
 };
-
 
 #endif //OOP_GAMEMANAGER_H
